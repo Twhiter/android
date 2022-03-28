@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.mobilepay.ui.register.RegisterViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".ui.register.EmailAndPhoneVerify">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="sans-serif-black"
+            android:includeFontPadding="false"
+            android:text="@string/add_your_mobile_phone_PROMPT"
+            android:textAlignment="inherit"
+            android:textSize="20sp"
+            android:textStyle="normal|bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/we_ll_need_to_confirm_it_by_sending_a_text_prompt"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/codeSelectLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:hint="@string/code_prompt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <AutoCompleteTextView
+                android:id="@+id/codeSelect"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@{viewModel.phoneCode}"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneLayout"
+            style="@style/input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:hint="@string/mobile_number_prompt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/codeSelectLayout"
+            app:layout_constraintTop_toTopOf="@+id/codeSelectLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:text="@{viewModel.phone}"
+                android:textColorHint="#757575" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneVerifyCodeLayout"
+            style="@style/input"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/verify_code_prompt"
+            app:layout_constraintEnd_toStartOf="@+id/send"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/codeSelectLayout"
+            app:layout_constraintTop_toBottomOf="@+id/codeSelectLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phoneVerifyCode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/send"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:includeFontPadding="false"
+            android:text="@string/send_prompt"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/phoneVerifyCodeLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/phoneVerifyCodeLayout" />
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/next_prompt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="@string/add_your_email_prompt"
+            android:textSize="20sp"
+            android:textStyle="normal|bold"
+            app:layout_constraintEnd_toEndOf="@+id/phoneLayout"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/codeSelectLayout"
+            app:layout_constraintTop_toBottomOf="@+id/phoneVerifyCodeLayout" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/we_ll_need_to_confirm_it_by_sending_a_text_prompt"
+            app:layout_constraintEnd_toEndOf="@+id/textView3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailInputLayout"
+            style="@style/input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            android:hint="@string/email_prompt"
+            app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:text="@{viewModel.email}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout4"
+            style="@style/input"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="12dp"
+            android:hint="@string/verify_code_prompt"
+            app:layout_constraintEnd_toEndOf="@+id/phoneVerifyCodeLayout"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/phoneVerifyCodeLayout"
+            app:layout_constraintTop_toBottomOf="@+id/emailInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailVerifyCode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/sendEmail"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@string/send_prompt"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textInputLayout4"
+            app:layout_constraintEnd_toEndOf="@+id/send"
+            app:layout_constraintStart_toStartOf="@+id/send"
+            app:layout_constraintTop_toTopOf="@+id/textInputLayout4" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

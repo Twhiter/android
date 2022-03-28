@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.mobilepay.ui.register.RegisterViewModel"/>
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".ui.register.RegisterFragment">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/first_name_layout"
+            style="@style/input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/first_name_prompt"
+            app:layout_constraintEnd_toEndOf="@+id/textView5"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/first_name"
+                android:text="@{viewmodel.firstName}"
+                android:layout_width="match_parent"
+                android:maxLines="1"
+                android:layout_height="wrap_content"
+                android:textColorHint="#757575"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/family_name_layout"
+            style="@style/input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/family_name_prompt"
+            app:layout_constraintEnd_toEndOf="@+id/first_name_layout"
+            app:layout_constraintStart_toStartOf="@+id/first_name_layout"
+            app:layout_constraintTop_toBottomOf="@+id/first_name_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/family_name"
+                android:layout_width="match_parent"
+                android:text="@{viewmodel.familyName}"
+                android:maxLines="1"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nationality_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/nationality_prompt"
+            app:layout_constraintEnd_toEndOf="@+id/family_name_layout"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/family_name_layout"
+            app:layout_constraintTop_toBottomOf="@+id/family_name_layout">
+
+            <AutoCompleteTextView
+                android:id="@+id/country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                selectedItem="@{viewmodel.nationality}"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/IDNumberTextInput"
+            style="@style/input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/id_number_prompt"
+            app:layout_constraintEnd_toEndOf="@+id/nationality_input_layout"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/nationality_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/nationality_input_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/IDNumber"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:text="@{viewmodel.idNumber}"
+                android:layout_height="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:text="@string/next_prompt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/family_name_layout"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/family_name_layout" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/collect_Id_prompt"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/IDNumberTextInput" />
+
+        <Button
+            android:id="@+id/upload"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/upload_prompt"
+            app:cornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/family_name_layout"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/family_name_layout"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="87dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/upload"
+            imageBitmap="@{viewmodel.idPhoto}"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="@+id/upload"
+            app:layout_constraintTop_toBottomOf="@+id/upload"
+            tools:src="@tools:sample/avatars" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

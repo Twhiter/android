@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">mobilePay</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="prompt_phone">Phone Number</string>
+    <string name="forget_password_prompt">Forget Password?</string>
+    <string name="login_promopt">Login</string>
+
+
+    <!--related to register-->
+    <string name="register_prompt">Register</string>
+    <string name="first_name_prompt">First Name</string>
+    <string name="family_name_prompt">Family Name</string>
+    <string name="confirm_password_prompt">Confirm Password</string>
+    <string name="next_prompt">next</string>
+    <string name="first_name_empty_prompt">First name can\'t be empty</string>
+    <string name="first_name_whiterspace_prompt">First name can\'t contain whiter space</string>
+    <string name="family_name_empty_prompt">Family name can\'t be empty</string>
+    <string name="family_name_whiterspace_prompt">Family name can\'t contain whiter space</string>
+    <string name="nationality_prompt">Nationality</string>
+    <string name="id_number_prompt">ID Number</string>
+    <string name="select_nationality_prompt">Please Select Nationality</string>
+    <string name="input_IDNumber_prompt">Please Input Your ID Number</string>
+    <string name="upload_document_ID_prompt">Please Upload Your ID Photo</string>
+
+
+    <!--related to register part 2-->
+    <string name="add_your_mobile_phone_PROMPT">Add your mobile phone number</string>
+    <string name="we_ll_need_to_confirm_it_by_sending_a_text_prompt">We\'ll need to confirm it by sending a text</string>
+    <string name="code_prompt">code</string>
+    <string name="mobile_number_prompt">Mobile number</string>
+    <string name="country_region_prompt">Country or Region</string>
+    <string name="send_prompt">Send</string>
+    <string name="verify_code_prompt">Verify Code</string>
+    <string name="add_your_email_prompt">Add your email</string>
+    <string name="email_prompt">Email</string>
+    <string name="upload_prompt">Upload</string>
+    <string name="upload_text">Upload your ID image</string>
+    <string name="collect_Id_prompt">We\'ll collect your ID document to verify you, please upload your ID document</string>
+    <string name="select_code_prompt">Please select Phone code</string>
+    <string name="incorrect_phone_number_prompt">Incorrect Phone Number</string>
+    <string name="incorrect_verify_code_prompt">Incorrect Verify Code</string>
+    <string name="incorrect_email_prompt">Incorrect Email</string>
+
+
+
+    <string name="set_login_password_prompt">Set Your Login Password</string>
+    <string name="set_your_payment_password_prompt">Set Your Payment Password</string>
+    <string name="finish_register_prompt">Finish</string>
+
+    <string name="password_not_same_prompt">Password not same</string>
+
+
+</resources>

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="Belgium">
+        <item>Belgium</item>
+        <item>+32</item>
+    </string-array>
+
+    <string-array name="Bulgaria">
+        <item>Bulgaria</item>
+        <item>+359</item>
+    </string-array>
+
+    <string-array name="Belarus">
+        <item>Belarus</item>
+        <item>+375</item>
+    </string-array>
+
+    <string-array name="Russia">
+        <item>Russia</item>
+        <item>+7</item>
+    </string-array>
+
+    <string-array name="Serbia">
+        <item>Serbia</item>
+        <item>+381</item>
+    </string-array>
+
+    <string-array name="Romania">
+        <item>Romania</item>
+        <item>+40</item>
+    </string-array>
+
+    <string-array name="Greece">
+        <item>Greece</item>
+        <item>+30</item>
+    </string-array>
+
+    <string-array name="Japan">
+        <item>Japan</item>
+        <item>+81</item>
+    </string-array>
+
+    <string-array name="Georgia">
+        <item>Georgia</item>
+        <item>+995</item>
+    </string-array>
+
+
+    <string-array name="United_Kingdom">
+        <item>United Kingdom</item>
+        <item>+44</item>
+    </string-array>
+
+    <string-array name="Greenland">
+        <item>Greenland</item>
+        <item>+299</item>
+    </string-array>
+
+    <string-array name="Hong_Kong">
+        <item>Hong Kong China</item>
+        <item>+852</item>
+    </string-array>
+
+
+    <string-array name="Portugal">
+        <item>Portugal</item>
+        <item>+351</item>
+    </string-array>
+
+    <string-array name="Poland">
+        <item>Poland</item>
+        <item>+48</item>
+    </string-array>
+
+
+    <string-array name="Estonia">
+        <item>Estonia</item>
+        <item>+372</item>
+    </string-array>
+
+    <string-array name="Italy">
+        <item>Italy</item>
+        <item>+39</item>
+    </string-array>
+
+    <string-array name="Ethiopia">
+        <item>Ethiopia</item>
+        <item>+251</item>
+    </string-array>
+
+
+    <string-array name="Spain">
+        <item>Spain</item>
+        <item>+34</item>
+    </string-array>
+
+    <string-array name="Israel">
+        <item>Israel</item>
+        <item>+972</item>
+    </string-array>
+
+    <string-array name="France">
+        <item>France</item>
+        <item>+33</item>
+    </string-array>
+
+    <string-array name="Finland">
+        <item>Finland</item>
+        <item>+358</item>
+    </string-array>
+
+    <string-array name="Netherlands">
+        <item>Netherlands</item>
+        <item>+31</item>
+    </string-array>
+
+    <string-array name="Norway">
+        <item>Norway</item>
+        <item>+47</item>
+    </string-array>
+
+
+    <string-array name="New_Zealand">
+        <item>New Zealand</item>
+        <item>+64</item>
+    </string-array>
+
+
+    <string-array name="Switzerland">
+        <item>Switzerland</item>
+        <item>+41</item>
+    </string-array>
+
+    <string-array name="China">
+        <item>China</item>
+        <item>+86</item>
+    </string-array>
+
+    <string-array name="Canada">
+        <item>Canada</item>
+        <item>+1</item>
+    </string-array>
+
+    <string-array name="Czech_Republic">
+        <item>Czech Republic</item>
+        <item>+420</item>
+    </string-array>
+
+
+    <string-array name="Swaziland">
+        <item>Swaziland</item>
+        <item>+268</item>
+    </string-array>
+
+    <string-array name="Slovakia">
+        <item>Slovakia</item>
+        <item>+421</item>
+    </string-array>
+
+    <string-array name="South_Korea">
+        <item>South Korea</item>
+        <item>+82</item>
+    </string-array>
+
+    <string-array name="Slovenia">
+        <item>Slovenia</item>
+        <item>+386</item>
+    </string-array>
+
+    <string-array name="Singapore">
+        <item>Singapore</item>
+        <item>+65</item>
+    </string-array>
+
+    <string-array name="Sweden">
+        <item>Sweden</item>
+        <item>+46</item>
+    </string-array>
+
+    <string-array name="Denmark">
+        <item>Denmark</item>
+        <item>+45</item>
+    </string-array>
+
+    <string-array name="Germany">
+        <item>Germany</item>
+        <item>+49</item>
+    </string-array>
+
+    <string-array name="United_States">
+        <item>United States</item>
+        <item>+1</item>
+    </string-array>
+
+    <string-array name="Taiwan">
+        <item>Taiwan China</item>
+        <item>+886</item>
+    </string-array>
+
+    <string-array name="Turkey">
+        <item>Turkey</item>
+        <item>+90</item>
+    </string-array>
+
+    <string-array name="Liechtenstein">
+        <item>Liechtenstein</item>
+        <item>+423</item>
+    </string-array>
+
+    <string-array name="Latvia">
+        <item>Latvia</item>
+        <item>+371</item>
+    </string-array>
+
+    <string-array name="Lithuania">
+        <item>Lithuania</item>
+        <item>+370</item>
+    </string-array>
+
+    <string-array name="Luxembourg">
+        <item>Luxembourg</item>
+        <item>+352</item>
+    </string-array>
+
+    <string-array name="Iceland">
+        <item>Iceland</item>
+        <item>+354</item>
+    </string-array>
+
+    <string-array name="Australia">
+        <item>Australia</item>
+        <item>+61</item>
+    </string-array>
+
+    <string-array name="Austria">
+        <item>Austria</item>
+        <item>+43</item>
+    </string-array>
+
+    <string-array name="Ireland">
+        <item>Ireland</item>
+        <item>+353</item>
+    </string-array>
+
+    <string-array name="Ukraine">
+        <item>Ukraine</item>
+        <item>+380</item>
+    </string-array>
+
+
+    <array name="phoneCodes">
+        <item>@array/Belgium</item>
+        <item>@array/Bulgaria</item>
+        <item>@array/Belarus</item>
+        <item>@array/Russia</item>
+        <item>@array/Serbia</item>
+        <item>@array/Romania</item>
+        <item>@array/Greece</item>
+        <item>@array/Japan</item>
+        <item>@array/Georgia</item>
+        <item>@array/United_Kingdom</item>
+        <item>@array/Greenland</item>
+        <item>@array/Hong_Kong</item>
+        <item>@array/Portugal</item>
+        <item>@array/Poland</item>
+        <item>@array/Estonia</item>
+        <item>@array/Italy</item>
+        <item>@array/Ethiopia</item>
+        <item>@array/Spain</item>
+        <item>@array/Israel</item>
+        <item>@array/France</item>
+        <item>@array/Finland</item>
+        <item>@array/Netherlands</item>
+        <item>@array/Norway</item>
+        <item>@array/New_Zealand</item>
+        <item>@array/Switzerland</item>
+        <item>@array/China</item>
+        <item>@array/Canada</item>
+        <item>@array/Czech_Republic</item>
+        <item>@array/Swaziland</item>
+        <item>@array/Slovakia</item>
+        <item>@array/South_Korea</item>
+        <item>@array/Slovenia</item>
+        <item>@array/Singapore</item>
+        <item>@array/Sweden</item>
+        <item>@array/Denmark</item>
+        <item>@array/Germany</item>
+        <item>@array/United_States</item>
+        <item>@array/Taiwan</item>
+        <item>@array/Turkey</item>
+        <item>@array/Liechtenstein</item>
+        <item>@array/Latvia</item>
+        <item>@array/Lithuania</item>
+        <item>@array/Luxembourg</item>
+        <item>@array/Iceland</item>
+        <item>@array/Australia</item>
+        <item>@array/Austria</item>
+        <item>@array/Ireland</item>
+        <item>@array/Ukraine</item>
+    </array>
+
+
+</resources>
