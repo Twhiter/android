@@ -19,23 +19,23 @@
         <item name="hintTextColor">@color/input_stroke_color</item>
     </style>
 
-    <!--主题样式-->
-    <style name="dialog_pay_theme" parent="@android:style/Theme.Dialog">
+<!--    &lt;!&ndash;主题样式&ndash;&gt;-->
+<!--    <style name="dialog_pay_theme" parent="@android:style/Theme.Dialog">-->
 
-<!--        <item name="colorPrimary">@color/pay_primary_blue</item>-->
-<!--        <item name="colorPrimaryVariant">@color/pay_primary_dark</item>-->
-<!--        <item name="colorOnPrimary">@color/white</item>-->
+<!--&lt;!&ndash;        <item name="colorPrimary">@color/pay_primary_blue</item>&ndash;&gt;-->
+<!--&lt;!&ndash;        <item name="colorPrimaryVariant">@color/pay_primary_dark</item>&ndash;&gt;-->
+<!--&lt;!&ndash;        <item name="colorOnPrimary">@color/white</item>&ndash;&gt;-->
 
-        <!--边框-->
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:backgroundDimAmount">0.4</item><!--弹框背景灰度-->
-    </style>
+<!--        &lt;!&ndash;边框&ndash;&gt;-->
+<!--        <item name="android:windowFrame">@null</item>-->
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowBackground">@android:color/transparent</item>-->
+<!--        <item name="android:backgroundDimAmount">0.4</item>&lt;!&ndash;弹框背景灰度&ndash;&gt;-->
+<!--    </style>-->
 
-    <!--动画方式-->
-    <style name="dialogOpenAnimation" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/dialog_payview_in</item>
-        <item name="android:windowExitAnimation">@anim/dialog_payview_out</item>
-    </style>
+<!--    &lt;!&ndash;动画方式&ndash;&gt;-->
+<!--    <style name="dialogOpenAnimation" parent="android:Animation">-->
+<!--        <item name="android:windowEnterAnimation">@anim/dialog_payview_in</item>-->
+<!--        <item name="android:windowExitAnimation">@anim/dialog_payview_out</item>-->
+<!--    </style>-->
 </resources>
