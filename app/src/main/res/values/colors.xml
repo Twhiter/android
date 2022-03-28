@@ -5,9 +5,34 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+
+<!--    <color name="pay_primary_blue">#3F51B5</color>-->
+<!--    <color name="pay_primary_dark">#303F9F</color>-->
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grayf9">#f9f9f9</color>
+    <color name="gray_gb">#dddddd</color>
+    <color name="grayc4">#c4c4c4</color>
+    <color name="graye3">#e3e7ee</color>
+    <color name="alipay">#00a5ff</color>
+    <color name="gray_e5">#e5e5e5</color>
+
+
+
 
     <color name="input_stroke_color">#3F51B5</color>
+
+    <color name="color_payment_dialog_primary">#3F51B5</color>
+    <color name="color_payment_dialog_primary_dark">#303F9F</color>
+    <color name="color_payment_dialog_accent">#FF4081</color>
+
+
+
+
+
+
+
 
 </resources>

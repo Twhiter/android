@@ -1,12 +1,13 @@
 package com.example.mobilepay.ui.register
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.example.mobilepay.R
-import com.example.mobilepay.databinding.FragmentEmailAndPhoneVerifyBinding
 import com.example.mobilepay.databinding.FragmentRegisterPasswordSetBinding
 import com.lzj.pass.dialog.PayPassDialog
 import com.lzj.pass.dialog.PayPassView
@@ -44,6 +45,11 @@ class PasswordSetFragment : Fragment() {
             else
                 binding.confirmPasswordLayout.error = null
         }
+
+        binding.paymentPassword.setOnClickListener {
+            payDialog()
+        }
+
     }
 
 
@@ -53,6 +59,7 @@ class PasswordSetFragment : Fragment() {
         dialog.payViewPass
             .setRandomNumber(true)
             .setHintText("Please Input password")
+            .setForgetText("Forget Password?")
             .setPayClickListener(object :PayPassView.OnPayClickListener {
                 override fun onPassFinish(password: String?) {
 
@@ -68,11 +75,7 @@ class PasswordSetFragment : Fragment() {
 
             })
 
-
-
-
-
-
+        dialog.payViewPass.setBackgroundColor(requireContext().getColor(R.color.white))
     }
 
 
