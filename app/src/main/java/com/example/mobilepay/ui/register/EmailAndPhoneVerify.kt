@@ -190,7 +190,7 @@ class EmailAndPhoneVerify : Fragment() {
 
     private fun checkEmail():Boolean {
         binding.email.text?.apply {
-            val pattern = Regex(Util.emailPattern)
+            val pattern = Regex(Util.EMAIL_PATTERN)
             if (matches(pattern)) {
                 binding.emailInputLayout.error = null
                 return true
@@ -262,6 +262,7 @@ class EmailAndPhoneVerify : Fragment() {
                 return@launch
 
             withContext(Dispatchers.Main) {
+                viewModel.setPhoneCode(binding.codeSelect.text.toString())
                 viewModel.setPhone(binding.phone.text.toString())
                 viewModel.setEmail(binding.email.text.toString())
                 val action =  EmailAndPhoneVerifyDirections.actionEmailAndPhoneVerifyToPasswordSetFragment()
