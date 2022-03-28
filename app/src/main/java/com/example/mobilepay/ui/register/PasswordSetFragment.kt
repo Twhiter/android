@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import com.example.mobilepay.R
 import com.example.mobilepay.databinding.FragmentEmailAndPhoneVerifyBinding
 import com.example.mobilepay.databinding.FragmentRegisterPasswordSetBinding
+import com.lzj.pass.dialog.PayPassDialog
+import com.lzj.pass.dialog.PayPassView
 
 
 class PasswordSetFragment : Fragment() {
@@ -42,6 +44,31 @@ class PasswordSetFragment : Fragment() {
             else
                 binding.confirmPasswordLayout.error = null
         }
+    }
+
+
+    private fun payDialog() {
+
+        val dialog = PayPassDialog(requireContext())
+        dialog.payViewPass
+            .setRandomNumber(true)
+            .setHintText("Please Input password")
+            .setPayClickListener(object :PayPassView.OnPayClickListener {
+                override fun onPassFinish(password: String?) {
+
+                }
+
+                override fun onPayClose() {
+                    dialog.dismiss()
+                }
+
+                override fun onPayForget() {
+
+                }
+
+            })
+
+
 
 
 

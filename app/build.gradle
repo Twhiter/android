@@ -77,4 +77,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.googlecode.libphonenumber/libphonenumber
     implementation("com.googlecode.libphonenumber:libphonenumber:8.12.45")
 
+    //androidX版本
+    implementation 'com.github.lzjin:AlipayPassDialog:2.2'
+
+
 }
