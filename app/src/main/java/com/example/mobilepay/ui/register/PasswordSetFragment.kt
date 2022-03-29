@@ -1,5 +1,6 @@
 package com.example.mobilepay.ui.register
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -10,11 +11,20 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.mobilepay.R
 import com.example.mobilepay.databinding.FragmentRegisterPasswordSetBinding
+import com.example.mobilepay.entity.ResponseData
+import com.example.mobilepay.network.UserApi
 import com.lzj.pass.dialog.PayPassDialog
 import com.lzj.pass.dialog.PayPassView
-import kotlin.math.log
+import kotlinx.coroutines.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.util.*
 
 
 typealias onPayFinishHandler = (pass:String?) -> Unit
@@ -93,7 +103,7 @@ class PasswordSetFragment : Fragment() {
     }
 
     private fun checkPaymentPassword():Boolean {
-        return if (viewModel.password.value.isNullOrEmpty()) {
+        return if (viewModel.paymentPassword.value.isNullOrEmpty()) {
             Toast.makeText(requireContext(),"Payment password not set",Toast.LENGTH_LONG).show()
             false
         }else
@@ -113,9 +123,59 @@ class PasswordSetFragment : Fragment() {
             return
         viewModel.setPassword(binding.password.text.toString())
 
+        CoroutineScope(Dispatchers.Default).launch {
 
+            val resp = submitData()
 
+            if (resp.status != ResponseData.OK) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(),resp.errorPrompt,Toast.LENGTH_LONG).show()
+                }
+                return@launch
+            }
+
+            withContext(Dispatchers.Main) {
+                toFinalPage()
+            }
+        }
     }
+
+
+    private suspend fun submitData():ResponseData<*> {
+
+        val country = MultipartBody.Part.createFormData("country",viewModel.nationality.value!!)
+        val email = MultipartBody.Part.createFormData("email",viewModel.email.value!!)
+        val firstName = MultipartBody.Part.createFormData("firstName",viewModel.firstName.value!!)
+        val lastName = MultipartBody.Part.createFormData("lastName",viewModel.familyName.value!!)
+        val passportNumber = MultipartBody.Part.createFormData("passportNumber",viewModel.IdNumber.value!!)
+        val password = MultipartBody.Part.createFormData("password",viewModel.password.value!!)
+        val paymentPassword = MultipartBody.Part.createFormData("paymentPassword"
+            ,viewModel.paymentPassword.value!!)
+        val phoneNumber = MultipartBody.Part.createFormData("phoneNumber"
+            ,viewModel.phoneCode.value!! + viewModel.phone.value!!)
+
+        return withContext(Dispatchers.IO) {
+            val f = File(requireContext().filesDir,UUID.randomUUID().toString() + ".")
+
+            viewModel.IdPhoto.value!!.compress(Bitmap.CompressFormat.JPEG,100,f.outputStream())
+
+            val passportPhoto = MultipartBody.Part.createFormData("passportPhoto",f.name,
+                RequestBody.create(MediaType.parse("image/*"),f))
+
+
+            UserApi.service.register(country, email, firstName, lastName, passportNumber
+                , passportPhoto, password, paymentPassword, phoneNumber)
+        }
+    }
+
+    private fun toFinalPage() {
+        val action = PasswordSetFragmentDirections.actionPasswordSetFragmentToFinalFragment()
+        findNavController().navigate(action)
+    }
+
+
+
+
 
 
     private fun payDialog(title:String,handler: onPayFinishHandler) {

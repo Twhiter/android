@@ -37,6 +37,8 @@ class RegisterViewModel : ViewModel() {
     private val _paymentPassword = MutableLiveData<String>()
     val paymentPassword:LiveData<String> get() = _paymentPassword
 
+    val phoneNumber:String get() = phoneCode.value + phone.value
+
 
     fun setFirstName(firstName:String) {
         _firstName.value = firstName

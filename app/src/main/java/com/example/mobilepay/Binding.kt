@@ -22,3 +22,7 @@ fun setSelection(atv: AutoCompleteTextView,value:String?) {
     }
 }
 
+fun string(resourceId: Int,vararg formatArgs:Any) = MainApplication.applicationContext()
+    .getString(resourceId,formatArgs)
+
+

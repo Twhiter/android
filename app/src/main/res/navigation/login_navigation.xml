@@ -36,5 +36,13 @@
         android:id="@+id/passwordSetFragment"
         android:name="com.example.mobilepay.ui.register.PasswordSetFragment"
         android:label="fragment_register_password_set"
-        tools:layout="@layout/fragment_register_password_set" />
+        tools:layout="@layout/fragment_register_password_set" >
+        <action
+            android:id="@+id/action_passwordSetFragment_to_finalFragment"
+            app:destination="@id/finalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/finalFragment"
+        android:name="com.example.mobilepay.ui.register.FinalFragment"
+        android:label="FinalFragment" />
 </navigation>

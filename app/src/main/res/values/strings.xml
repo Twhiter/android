@@ -45,12 +45,18 @@
     <string name="incorrect_email_prompt">Incorrect Email</string>
 
 
-
     <string name="set_login_password_prompt">Set Your Login Password</string>
     <string name="set_your_payment_password_prompt">Set Your Payment Password</string>
     <string name="finish_register_prompt">Finish</string>
 
     <string name="password_not_same_prompt">Password not same</string>
+
+    <!--Final Part-->
+    <string name="wait_prompt">We will verify your submitted form.We will notify you via your email and your phone number submitted as soon as your information has been checked.Usually it takes no more than 7 days</string>
+    <string name="your_phone_number_prompt">Your Phone Number: %s</string>
+    <string name="your_email_prompt">Your Email: %s</string>
+    <string name="thanks_for_your_usage_prompt">Thanks For Your Usage</string>
+    <string name="close_prompt">Close</string>
 
 
 </resources>

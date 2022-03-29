@@ -16,6 +16,9 @@ class MainApplication:Application() {
             return instance!!.applicationContext
         }
 
-       const val REQUEST_IMAGE_CAPTURE = 1
+        fun application():MainApplication {
+            return instance!!
+        }
+
     }
 }
