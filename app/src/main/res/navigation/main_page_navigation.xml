@@ -10,4 +10,14 @@
         android:name="com.example.mobilepay.ui.mainPage.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/personalDealFrament"
+        android:name="com.example.mobilepay.ui.mainPage.PersonalDeal"
+        android:label="fragment_personal_deal"
+        tools:layout="@layout/fragment_personal_deal" />
+    <fragment
+        android:id="@+id/businessDealFragment"
+        android:name="com.example.mobilepay.ui.mainPage.BusinessDeal"
+        android:label="fragment_business_deal"
+        tools:layout="@layout/fragment_business_deal" />
 </navigation>
