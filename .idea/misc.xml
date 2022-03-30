@@ -7,14 +7,17 @@
         <entry key="app/src/main/res/drawable/ic_be.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/ic_sharp_smartphone_24.xml" value="0.3625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3453125" />
+        <entry key="app/src/main/res/layout/activity_main_page.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/fragment_email_and_phone_verify.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_final.xml" value="0.26927083333333335" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_password_set.xml" value="0.25364583333333335" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.3055922501100837" />
         <entry key="app/src/main/res/layout/fragment_register_password_set.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_country_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_phone_code_item.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/menu/home_bottom_navigation_menu.xml" value="0.3614583333333333" />
       </map>
     </option>
   </component>
