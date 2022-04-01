@@ -14,7 +14,7 @@
     <item
         android:id="@+id/businessDeal"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_currency_exchange_24"
+        android:icon="@drawable/ic_business"
         android:title=""
         />
 </menu>

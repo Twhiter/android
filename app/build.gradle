@@ -77,8 +77,19 @@ dependencies {
     // https://mvnrepository.com/artifact/com.googlecode.libphonenumber/libphonenumber
     implementation("com.googlecode.libphonenumber:libphonenumber:8.12.45")
 
-    //androidX版本
+    //androidX
     implementation 'com.github.lzjin:AlipayPassDialog:2.2'
 
+    //scanner barcode
+    implementation 'com.google.mlkit:barcode-scanning:17.0.2'
 
+    //camerax
+    def camerax_version = "1.1.0-beta02"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    implementation "androidx.camera:camera-video:${camerax_version}"
+
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    implementation "androidx.camera:camera-extensions:${camerax_version}"
 }

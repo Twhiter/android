@@ -3,11 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/clickable.xml" value="0.3135" />
+        <entry key="app/src/main/res/drawable/ic___.xml" value="0.3135" />
+        <entry key="app/src/main/res/drawable/ic_base_transfer_24.xml" value="0.3135" />
+        <entry key="app/src/main/res/drawable/ic_baseline_currency_exchange_24.xml" value="0.3135" />
+        <entry key="app/src/main/res/drawable/ic_baseline_dashboard_24.xml" value="0.3135" />
+        <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.3135" />
         <entry key="app/src/main/res/drawable/ic_baseline_key_24.xml" value="0.3625" />
+        <entry key="app/src/main/res/drawable/ic_baseline_qr_code_scanner_24.xml" value="0.3135" />
         <entry key="app/src/main/res/drawable/ic_be.xml" value="0.3625" />
+        <entry key="app/src/main/res/drawable/ic_business.xml" value="0.3135" />
         <entry key="app/src/main/res/drawable/ic_sharp_smartphone_24.xml" value="0.3625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3453125" />
         <entry key="app/src/main/res/layout/activity_main_page.xml" value="0.2755208333333333" />
+        <entry key="app/src/main/res/layout/activity_scan.xml" value="0.32135416666666666" />
         <entry key="app/src/main/res/layout/fragment_business_deal.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_email_and_phone_verify.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_final.xml" value="0.26927083333333335" />
@@ -17,6 +26,7 @@
         <entry key="app/src/main/res/layout/fragment_personal_deal.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.3055922501100837" />
         <entry key="app/src/main/res/layout/fragment_register_password_set.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_country_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_phone_code_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/menu/home_bottom_navigation_menu.xml" value="0.3614583333333333" />
