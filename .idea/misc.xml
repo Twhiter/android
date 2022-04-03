@@ -26,12 +26,16 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_password_set.xml" value="0.25364583333333335" />
+        <entry key="app/src/main/res/layout/fragment_pay.xml" value="0.3171875" />
         <entry key="app/src/main/res/layout/fragment_personal_deal.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.3055922501100837" />
         <entry key="app/src/main/res/layout/fragment_register_password_set.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/fragment_transfer_choose.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/list_country_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_phone_code_item.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/search_result_header_item.xml" value="0.3458333333333333" />
+        <entry key="app/src/main/res/layout/search_result_list_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/test.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/menu/home_bottom_navigation_menu.xml" value="0.3614583333333333" />
       </map>

@@ -57,14 +57,16 @@
     <string name="your_email_prompt">Your Email: %s</string>
     <string name="thanks_for_your_usage_prompt">Thanks For Your Usage</string>
     <string name="close_prompt">Close</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- related to main page after login -->
     <string name="pay_prompt">Pay</string>
     <string name="transfer_prompt">Transfer</string>
     <string name="receive_prompt">Receive</string>
     <string name="scan_amp_pay_prompt"><![CDATA[Scan & Pay]]></string>
     <string name="request_prompt">Request</string>
     <string name="your_balance_prompt">Your Balance</string>
+    <string name="transfer_search_prompt">Enter mobile no, email, merchant ID, name</string>
 
 
 </resources>

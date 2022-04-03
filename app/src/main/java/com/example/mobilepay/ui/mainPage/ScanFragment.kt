@@ -210,15 +210,15 @@ class ScanFragment : Fragment() {
 
                 val barcode = barcodes[0]
 
-                if (barcode.valueType != Barcode.TYPE_URL)
+                if (barcode.valueType != Barcode.TYPE_TEXT)
                     return@addOnSuccessListener
 
-                val title = barcode.url!!.title
-                val url = barcode.url!!.url
+
+                val text = barcode.rawValue!!
 
                 Toast.makeText(
                     requireContext(),
-                    "title is $title,url is $url",
+                    "content is $text",
                     Toast.LENGTH_SHORT
                 ).show()
             }.addOnFailureListener {
