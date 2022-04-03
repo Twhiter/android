@@ -8,6 +8,9 @@
 
 
 
+
+    <color name="gray_bg">#F8F8F8</color>
+
     <color name="grayf9">#f9f9f9</color>
     <color name="gray_gb">#dddddd</color>
     <color name="grayc4">#c4c4c4</color>

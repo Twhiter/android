@@ -1,12 +1,14 @@
-package com.example.mobilepay.ui.scan
+package com.example.mobilepay.ui.mainPage
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -15,41 +17,58 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.mobilepay.databinding.ActivityScanBinding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.example.mobilepay.databinding.FragmentScanBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
-import java.lang.Exception
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class ScanActivity : AppCompatActivity() {
+class ScanFragment : Fragment() {
+
+    private val viewModel by activityViewModels<MainPageViewModel>()
 
 
-    private lateinit var binding: ActivityScanBinding
+    private lateinit var binding: FragmentScanBinding
     private lateinit var cameraExecutor: ExecutorService
 
 
 
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding =  ActivityScanBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onResume() {
+        super.onResume()
+        MainPageActivity.getInstance()?.setFullScreenVisibility(View.GONE)
+    }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding =  FragmentScanBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         if (allPermissionsGranted()) {
             startCamera()
         }else {
             tryRequestPermissions()
         }
-
         cameraExecutor = Executors.newSingleThreadExecutor()
-        supportActionBar?.hide()
-
     }
+
+
+
+
 
 
     override fun onRequestPermissionsResult(
@@ -62,7 +81,7 @@ class ScanActivity : AppCompatActivity() {
                 if (allPermissionsGranted())
                     startCamera()
             else {
-                Toast.makeText(this,
+                Toast.makeText(requireContext(),
                     "Permissions not granted by the user.",
                     Toast.LENGTH_SHORT).show()
             }
@@ -76,7 +95,7 @@ class ScanActivity : AppCompatActivity() {
 
     private fun startCamera() {
 
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
 
@@ -105,7 +124,7 @@ class ScanActivity : AppCompatActivity() {
             }catch (e: Exception) {
                 Log.d("Mainss","error")
             }
-        },ContextCompat.getMainExecutor(this))
+        },ContextCompat.getMainExecutor(requireContext()))
     }
 
 
@@ -115,19 +134,19 @@ class ScanActivity : AppCompatActivity() {
 
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(this,it) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(requireContext(),it) == PackageManager.PERMISSION_GRANTED
     }
 
 
 
     private fun tryRequestPermissions() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity()
                 ,Manifest.permission.CAMERA)) {
 
             Snackbar.make(binding.root,"Need this permission", Snackbar.LENGTH_INDEFINITE)
                 .setAction("OK"){
                     ActivityCompat.requestPermissions(
-                        this,
+                        requireActivity(),
                         REQUIRED_PERMISSIONS,
                         REQUEST_CODE_PERMISSIONS
                     )
@@ -135,7 +154,7 @@ class ScanActivity : AppCompatActivity() {
         }
         else
             ActivityCompat.requestPermissions(
-                this,
+                requireActivity(),
                 REQUIRED_PERMISSIONS,
                 REQUEST_CODE_PERMISSIONS
             )
@@ -184,7 +203,7 @@ class ScanActivity : AppCompatActivity() {
                     return@addOnSuccessListener
                 else if (barcodes.size != 1) {
                     Toast.makeText(
-                        this@ScanActivity, "Try to make camera only one Qr code",
+                        requireContext(), "Try to make camera only one Qr code",
                         Toast.LENGTH_SHORT).show()
                     return@addOnSuccessListener
                 }
@@ -198,7 +217,7 @@ class ScanActivity : AppCompatActivity() {
                 val url = barcode.url!!.url
 
                 Toast.makeText(
-                    this@ScanActivity,
+                    requireContext(),
                     "title is $title,url is $url",
                     Toast.LENGTH_SHORT
                 ).show()

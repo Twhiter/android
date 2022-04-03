@@ -62,6 +62,9 @@
     <string name="pay_prompt">Pay</string>
     <string name="transfer_prompt">Transfer</string>
     <string name="receive_prompt">Receive</string>
+    <string name="scan_amp_pay_prompt"><![CDATA[Scan & Pay]]></string>
+    <string name="request_prompt">Request</string>
+    <string name="your_balance_prompt">Your Balance</string>
 
 
 </resources>

@@ -1,108 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".ui.mainPage.HomeFragment">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".ui.mainPage.HomeFragment">
 
 
-    <LinearLayout
-        android:background="@drawable/clickable"
-        android:id="@+id/payLinearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:baselineAligned="false"
-        android:clickable="true"
-        android:orientation="vertical"
-        android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
 
-        <ImageView
-            android:layout_width="78dp"
-            android:layout_height="72dp"
-            android:src="@drawable/ic_scan_qr_code_24" />
+            android:id="@+id/balanceArea"
+            android:clickable="true"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/background_and_clickable"
+            app:layout_constraintBottom_toTopOf="@+id/payBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="34dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="32dp"
+                android:src="@drawable/ic_balance_baseline_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.508" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Br. 0.00"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/your_balance_prompt"
+                app:layout_constraintStart_toStartOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/layout_bg"
+            app:layout_constraintBottom_toTopOf="@+id/balanceArea"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/payLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/clickable"
+                android:baselineAligned="false"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:src="@drawable/ic_scan_qr_code_24" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:text="@string/pay_prompt"
+                    android:textAlignment="center"
+                    android:textColor="@color/design_default_color_secondary_variant"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/receiveLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/clickable"
+                android:baselineAligned="false"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/transferLinearLayout"
+                app:layout_constraintStart_toEndOf="@+id/payLinearLayout"
+                app:layout_constraintTop_toTopOf="@+id/payLinearLayout">
+
+                <ImageView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:src="@drawable/ic_receive_code_24" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:text="@string/receive_prompt"
+                    android:textAlignment="center"
+                    android:textColor="@color/design_default_color_secondary_variant"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/transferLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="36dp"
+                android:background="@drawable/clickable"
+                android:baselineAligned="false"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/receiveLinearLayout">
+
+                <ImageView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:src="@drawable/ic_base_transfer_24" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center"
+                    android:text="@string/transfer_prompt"
+                    android:textAlignment="center"
+                    android:textColor="@color/design_default_color_secondary_variant"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/payBtn"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:gravity="center"
-            android:text="@string/pay_prompt"
-            android:textAlignment="center"
-            android:textColor="@color/design_default_color_secondary_variant"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginEnd="16dp"
+            android:text="@string/scan_amp_pay_prompt"
+            app:cornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/requestBtn"
+            app:layout_constraintEnd_toStartOf="@+id/view"
+            app:layout_constraintStart_toStartOf="@+id/balanceArea"
+            app:layout_constraintTop_toTopOf="@+id/requestBtn"
+            app:layout_constraintVertical_bias="0.0" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:background="@drawable/clickable"
-        android:clickable="true"
-        android:id="@+id/transferLinearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/payLinearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/receiveLinearLayout"
-        app:layout_constraintStart_toEndOf="@+id/payLinearLayout"
-        app:layout_constraintVertical_bias="1.0">
-
-        <ImageView
-            android:layout_width="78dp"
-            android:layout_height="72dp"
-            android:src="@drawable/ic_base_transfer_24" />
-
-        <TextView
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/requestBtn"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:gravity="center"
-            android:text="@string/transfer_prompt"
-            android:textAlignment="center"
-            android:textColor="@color/design_default_color_secondary_variant"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/request_prompt"
+            app:cornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/balanceArea"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/view" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:background="@drawable/clickable"
-        android:id="@+id/receiveLinearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:baselineAligned="false"
-        android:clickable="true"
-        android:orientation="vertical"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/transferLinearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/transferLinearLayout">
-
-        <ImageView
-            android:layout_width="78dp"
-            android:layout_height="72dp"
-            android:src="@drawable/ic_receive_code_24" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:gravity="center"
-            android:text="@string/receive_prompt"
-            android:textAlignment="center"
-            android:textColor="@color/design_default_color_secondary_variant"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+        <View
+            android:id="@+id/view"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="@+id/payBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/payBtn" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

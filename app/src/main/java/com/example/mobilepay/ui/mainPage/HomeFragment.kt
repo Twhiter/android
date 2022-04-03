@@ -6,19 +6,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.mobilepay.R
-import com.example.mobilepay.databinding.FragmentEmailAndPhoneVerifyBinding
 import com.example.mobilepay.databinding.FragmentHomeBinding
-import com.example.mobilepay.ui.scan.ScanActivity
 
 
 class HomeFragment : Fragment() {
 
+    private val viewModel:MainPageViewModel by activityViewModels()
 
     private lateinit var _binding:FragmentHomeBinding
 
     val binding get() = _binding
+
+    override fun onResume() {
+        super.onResume()
+        MainPageActivity.getInstance()?.setFullScreenVisibility(View.VISIBLE)
+    }
 
 
 
@@ -40,12 +45,14 @@ class HomeFragment : Fragment() {
         binding.receiveLinearLayout.setOnClickListener {  }
         binding.transferLinearLayout.setOnClickListener {  }
 
+        binding.payBtn.setOnClickListener { toPay() }
+
+
     }
 
 
     private fun toPay() {
-        val intent = Intent(requireContext(),ScanActivity::class.java)
-        requireActivity().startActivity(intent)
+        requireView().findNavController().navigate(R.id.scanFragment)
     }
 
 
