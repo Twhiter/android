@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/personalDealFrament"
-        android:name="com.example.mobilepay.ui.mainPage.PersonalDeal"
+        android:name="com.example.mobilepay.ui.mainPage.PersonalDealFragment"
         android:label="fragment_personal_deal"
         tools:layout="@layout/fragment_personal_deal" />
     <fragment

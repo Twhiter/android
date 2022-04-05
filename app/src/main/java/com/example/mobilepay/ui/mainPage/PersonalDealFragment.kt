@@ -11,7 +11,7 @@ import com.example.mobilepay.R
 import com.example.mobilepay.databinding.FragmentPersonalDealBinding
 
 
-class PersonalDeal : Fragment() {
+class PersonalDealFragment : Fragment() {
 
 
     private val viewModel:MainPageViewModel by activityViewModels()
