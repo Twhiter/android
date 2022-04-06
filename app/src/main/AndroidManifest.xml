@@ -24,9 +24,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MobilePay"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".ui.mainPage.ScanFragment"
-            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -39,10 +36,10 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.mainPage.MainPageActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.mainPage.MainPageActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,7 +1,9 @@
 package com.example.mobilepay.network
 
+import com.example.mobilepay.entity.LoginResp
 import com.example.mobilepay.entity.ResponseData
 import okhttp3.MultipartBody
+import retrofit2.http.Body
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -21,6 +23,13 @@ interface UserApiService {
                          , @Part paymentPassword:MultipartBody.Part
                          , @Part phoneNumber:MultipartBody.Part)
     :ResponseData<*>
+
+    @POST("/api/token/user")
+    suspend fun login(@Body phoneAndPwd:Map<String,String>):ResponseData<LoginResp>
+
+
+
+
 }
 
 object UserApi {

@@ -1,8 +1,12 @@
 package com.example.mobilepay
 
+import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.mobilepay.network.VerifyApi
+import com.example.mobilepay.room.roomEntity.KV
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.runBlocking
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,6 +25,12 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.example.mobilepay", appContext.packageName)
+    }
+
+
+    @Test
+    fun testToken() {
+
     }
 
 
