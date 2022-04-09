@@ -1,6 +1,5 @@
 package com.example.mobilepay.ui.mainPage
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,11 +9,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.mobilepay.R
 import com.example.mobilepay.databinding.FragmentHomeBinding
+import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
 
 
 class HomeFragment : Fragment() {
 
-    private val viewModel:MainPageViewModel by activityViewModels()
+    private val viewModel: MainPageViewModel by activityViewModels()
 
     private lateinit var _binding:FragmentHomeBinding
 
@@ -40,14 +40,13 @@ class HomeFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         binding.payLinearLayout.setOnClickListener{ toPay() }
         binding.receiveLinearLayout.setOnClickListener {  }
         binding.transferLinearLayout.setOnClickListener {  }
-
         binding.payBtn.setOnClickListener { toPay() }
 
-
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
 
 

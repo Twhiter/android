@@ -6,11 +6,13 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.mobilepay.R
 import com.example.mobilepay.databinding.ActivityMainPageBinding
+import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
 
 
 class MainPageActivity: AppCompatActivity() {
@@ -20,10 +22,9 @@ class MainPageActivity: AppCompatActivity() {
     private lateinit var navController: NavController
     private var selectedFramentId:Int = -1
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         INSTANCE = this
 

@@ -1,17 +1,25 @@
 package com.example.mobilepay.room
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import com.example.mobilepay.MainApplication
+import com.example.mobilepay.entity.Merchant
+import com.example.mobilepay.entity.User
 import com.example.mobilepay.room.roomDao.KVDao
+import com.example.mobilepay.room.roomDao.MerchantDao
+import com.example.mobilepay.room.roomDao.UserDao
 import com.example.mobilepay.room.roomEntity.KV
+import java.math.BigDecimal
 
-@Database(entities = [KV::class], version = 1, exportSchema = false)
+@TypeConverters(value = [Converters::class])
+@Database(entities = [KV::class, Merchant::class,User::class], version = 1, exportSchema = false)
 abstract class AppDatabase:RoomDatabase() {
 
-    abstract fun KVDao():KVDao
+    abstract fun kvDao():KVDao
+
+    abstract fun merchantDao():MerchantDao
+
+    abstract fun userDao():UserDao
 
 
     companion object {
@@ -31,5 +39,18 @@ abstract class AppDatabase:RoomDatabase() {
                 return instance!!
             }
         }
+    }
+}
+
+class Converters {
+
+    @TypeConverter
+    fun fromBigDecimalToString(value:BigDecimal):String {
+        return value.toPlainString()
+    }
+
+    @TypeConverter
+    fun stringToBigDecimal(value:String):BigDecimal {
+        return BigDecimal(value).setScale(4,BigDecimal.ROUND_HALF_UP)
     }
 }

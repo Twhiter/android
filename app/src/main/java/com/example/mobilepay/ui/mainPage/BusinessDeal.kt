@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.mobilepay.R
-
+import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
 
 
 class BusinessDeal : Fragment() {
 
 
-    private val viewModel:MainPageViewModel by activityViewModels()
+    private val viewModel: MainPageViewModel by activityViewModels()
 
     override fun onResume() {
         super.onResume()

@@ -1,6 +1,6 @@
 package com.example.mobilepay.ui.login
 
-import android.content.Intent
+import android.app.VoiceInteractor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +12,8 @@ import com.example.mobilepay.MainActivity
 import com.example.mobilepay.MainApplication
 import com.example.mobilepay.databinding.FragmentLoginBinding
 import com.example.mobilepay.entity.ResponseData
+import com.example.mobilepay.entity.User
+import com.example.mobilepay.network.MerchantApi
 import com.example.mobilepay.network.UserApi
 import com.example.mobilepay.room.roomEntity.KV
 import kotlinx.coroutines.*
@@ -54,6 +56,7 @@ class LoginFragment : Fragment() {
 
     private suspend fun login() {
 
+        val db = MainApplication.db()
         val phoneAndPwd = HashMap<String, String>()
 
         phoneAndPwd["phone"] = binding.phone.text.toString()
@@ -70,7 +73,6 @@ class LoginFragment : Fragment() {
                 return@launch
             }
 
-
             resp.data?.let {
 
                 if (!it.isOkay) {
@@ -80,15 +82,37 @@ class LoginFragment : Fragment() {
                     return@launch
                 }
 
-                withContext(Dispatchers.Main) {
-                    //store the token inside
-                    withContext(Dispatchers.IO) {
-                        MainApplication.db().KVDao().set(KV("token",it.token))
+
+
+                //store the token
+                db.kvDao().set(KV("token",it.token))
+
+                val userResp = UserApi.service.fetchInfo(it.token)
+                val merchantResp = MerchantApi.service.fetchInfo(it.token)
+
+                if (userResp.errorPrompt != null || userResp.data == null) {
+                   withContext(Dispatchers.Main) {
+                        Toast
+                            .makeText(requireContext(),userResp.errorPrompt?:"error",Toast.LENGTH_SHORT)
+                            .show()
                     }
+                    return@launch
+                }
+
+
+                //store userId, user and merchant
+                db.kvDao().set(KV("userId", userResp.data.userId.toString()))
+                db.userDao().insert(userResp.data)
+
+                //store merchant if it is not null
+                merchantResp.data?.let {
+                    db.merchantDao().insert(it)
+                }
+
+
+                withContext(Dispatchers.Main) {
                     Toast.makeText(requireContext(), "Successfully Login!", Toast.LENGTH_SHORT)
                         .show()
-                    delay(300)
-                    MainActivity.toMainPage(requireActivity())
                 }
             }
         }
@@ -100,6 +124,8 @@ class LoginFragment : Fragment() {
 
         withContext(Dispatchers.Main) {
             binding.loginLoading.visibility = View.GONE
+            delay(300)
+            MainActivity.toMainPage(requireActivity())
         }
     }
 }

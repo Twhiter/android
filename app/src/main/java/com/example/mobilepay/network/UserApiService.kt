@@ -1,12 +1,11 @@
 package com.example.mobilepay.network
 
 import com.example.mobilepay.entity.LoginResp
+import com.example.mobilepay.entity.Merchant
 import com.example.mobilepay.entity.ResponseData
+import com.example.mobilepay.entity.User
 import okhttp3.MultipartBody
-import retrofit2.http.Body
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
+import retrofit2.http.*
 
 interface UserApiService {
 
@@ -28,8 +27,8 @@ interface UserApiService {
     suspend fun login(@Body phoneAndPwd:Map<String,String>):ResponseData<LoginResp>
 
 
-
-
+    @GET("/api/user/self")
+    suspend fun fetchInfo(@Header("token") token:String):ResponseData<User>
 }
 
 object UserApi {

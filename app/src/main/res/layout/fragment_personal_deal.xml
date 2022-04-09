@@ -1,145 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.mainPage.PersonalDealFragment">
 
-    <Button
-        android:id="@+id/bill"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:text="Bill"
-        android:textAllCaps="false"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.mobilepay.ui.mainPage.model.MainPageViewModel" />
+        <import type="android.view.View"/>
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/background_and_clickable"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bill">
+        android:layout_width="match_parent"
+        tools:context=".ui.mainPage.PersonalDealFragment"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView16"
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/your_balance_prompt"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-            app:layout_constraintStart_toEndOf="@+id/imageView5"
-            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+            android:indeterminate="true"
+            tools:visibility="gone"
+            android:visibility="@{viewModel.userLoading?View.VISIBLE:View.GONE}"
 
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/archivo_black"
-            android:text="4.00 BYN"
-            android:textSize="40sp"
-            app:layout_constraintStart_toStartOf="@+id/imageView5"
-            app:layout_constraintTop_toBottomOf="@+id/imageView5"
-            tools:text="4.00 BYN" />
-
-        <TextView
-            android:id="@+id/frozenText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="90dp"
-            android:fontFamily="sans-serif"
-            android:text="15 BYN Frozen"
-            android:textColor="?attr/colorError"
-            android:textSize="16sp"
-            android:tooltipText="Frozen"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView21"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="46dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_balance_baseline_24"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/moneyAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="sans-serif"
-            android:text="4.00 BYN"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView16"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView16" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="21dp"
-            android:layout_height="22dp"
-            android:layout_marginStart="2dp"
-            android:src="@drawable/ic_question_25"
-            app:layout_constraintStart_toEndOf="@+id/frozenText"
-            app:layout_constraintTop_toTopOf="@+id/frozenText" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.userLoading?View.GONE:View.VISIBLE}">
+
+            <Button
+                android:id="@+id/bill"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/bill_prompt"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/background_and_clickable"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bill">
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/your_balance_prompt"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/archivo_black"
+                    android:text="@{String.format(@string/Byn_format,viewModel.userMoneyFormatted)}"
+                    android:textSize="40sp"
+                    app:layout_constraintStart_toStartOf="@+id/imageView5"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView5"
+                    tools:text="4.00 BYN" />
+
+                <TextView
+                    android:id="@+id/frozenText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="90dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@{String.format(@string/Byn_format,viewModel.userFrozenMoneyFormatted)}"
+                    tools:text="15.00 BYN Frozen"
+                    android:textColor="?attr/colorError"
+                    android:textSize="16sp"
+                    android:tooltipText="Frozen"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView21"
+                    app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="46dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_balance_baseline_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/moneyAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@{String.format(@string/Byn_format,viewModel.userMoneyFormatted)}"
+                    tools:text="4.00 BYN"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView16" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="21dp"
+                    android:layout_height="22dp"
+                    android:layout_marginStart="2dp"
+                    android:src="@drawable/ic_question_25"
+                    app:layout_constraintStart_toEndOf="@+id/frozenText"
+                    app:layout_constraintTop_toTopOf="@+id/frozenText" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/importBtn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/import_prompt"
+                app:cornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+            <Button
+                android:id="@+id/exportBnt"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/export_prompt"
+                app:cornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/importBtn"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/importBtn"
+                app:layout_constraintTop_toBottomOf="@+id/importBtn" />
+
+            <Button
+                android:id="@+id/transferBtn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/transfer_prompt"
+                app:cornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/exportBnt"
+                app:layout_constraintStart_toStartOf="@+id/exportBnt"
+                app:layout_constraintTop_toBottomOf="@+id/exportBnt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/importBtn"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="import"
-        app:cornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
-    <Button
-        android:id="@+id/exportBnt"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Export"
-        app:cornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/importBtn"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/importBtn"
-        app:layout_constraintTop_toBottomOf="@+id/importBtn" />
 
-    <Button
-        android:id="@+id/transferBtn"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Transfer"
-        app:cornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/exportBnt"
-        app:layout_constraintStart_toStartOf="@+id/exportBnt"
-        app:layout_constraintTop_toBottomOf="@+id/exportBnt" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

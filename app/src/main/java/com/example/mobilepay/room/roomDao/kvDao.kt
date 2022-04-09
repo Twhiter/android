@@ -15,5 +15,6 @@ interface KVDao {
 
     @Delete
     suspend fun delete(kv: KV)
-
 }
+
+
