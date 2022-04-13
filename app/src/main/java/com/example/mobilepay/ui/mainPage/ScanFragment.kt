@@ -19,23 +19,31 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.mobilepay.Util
 import com.example.mobilepay.databinding.FragmentScanBinding
+import com.example.mobilepay.entity.QrCodeContent
 import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class ScanFragment : Fragment() {
 
-    private val viewModel by activityViewModels<MainPageViewModel>()
-
-
     private lateinit var binding: FragmentScanBinding
     private lateinit var cameraExecutor: ExecutorService
+
 
 
 
@@ -175,11 +183,7 @@ class ScanFragment : Fragment() {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
             }.toTypedArray()
-    }
 
-
-
-    private inner class QRCodeImageAnalyzer : ImageAnalysis.Analyzer {
 
         private val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(
@@ -187,9 +191,13 @@ class ScanFragment : Fragment() {
             .build()
 
         private val scanner = BarcodeScanning.getClient(options)
+    }
 
 
 
+    private inner class QRCodeImageAnalyzer : ImageAnalysis.Analyzer {
+
+        val mutex = Mutex()
 
         @SuppressLint("UnsafeOptInUsageError")
         override fun analyze(imageProxy: ImageProxy) {
@@ -204,7 +212,7 @@ class ScanFragment : Fragment() {
                     return@addOnSuccessListener
                 else if (barcodes.size != 1) {
                     Toast.makeText(
-                        requireContext(), "Try to make camera only one Qr code",
+                        requireContext(), "Try to make camera scan only one qr code",
                         Toast.LENGTH_SHORT).show()
                     return@addOnSuccessListener
                 }
@@ -214,23 +222,31 @@ class ScanFragment : Fragment() {
                 if (barcode.valueType != Barcode.TYPE_TEXT)
                     return@addOnSuccessListener
 
-
                 val text = barcode.rawValue!!
 
-                Toast.makeText(
-                    requireContext(),
-                    "content is $text",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }.addOnFailureListener {
+                val qrCodeContent = Util.fromJsonToObject<QrCodeContent>(text)
+                Log.d("Mainss","run out")
 
-                Log.e("Mainss", it.toString())
-                println("Exception")
+                lifecycleScope.launch(Dispatchers.Main){
+                    qrCodeContent?.let {
+                        mutex.lock()
+                        try {
+                            Log.d("Mainss","run in")
+                            val action = ScanFragmentDirections.actionScanFragmentToPayFragment(it)
+                            findNavController().navigate(action)
+                            lifecycleScope.coroutineContext.cancelChildren()
+                        }catch (e:Exception) {
+                            mutex.unlock()
+                        }
+                    }
+                }
+
+                Log.d("Mainss","run over")
+            }.addOnFailureListener {
                 imageProxy.close()
             }.addOnCompleteListener {
                 imageProxy.close()
             }
         }
     }
-
 }

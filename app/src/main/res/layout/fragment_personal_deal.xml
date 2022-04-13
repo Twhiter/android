@@ -30,12 +30,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.userLoading?View.GONE:View.VISIBLE}">
+            android:visibility="@{viewModel.userLoading?View.GONE:View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <Button
                 android:id="@+id/bill"
@@ -54,9 +57,8 @@
                 android:id="@+id/constraintLayout2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/background_and_clickable"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,13 +97,13 @@
                     android:layout_marginBottom="90dp"
                     android:fontFamily="sans-serif"
                     android:text="@{String.format(@string/Byn_format,viewModel.userFrozenMoneyFormatted)}"
-                    tools:text="15.00 BYN Frozen"
                     android:textColor="?attr/colorError"
                     android:textSize="16sp"
                     android:tooltipText="Frozen"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView21"
-                    app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView21"
+                    tools:text="15.00 BYN Frozen" />
 
                 <ImageView
                     android:id="@+id/imageView5"
@@ -120,11 +122,11 @@
                     android:layout_marginEnd="8dp"
                     android:fontFamily="sans-serif"
                     android:text="@{String.format(@string/Byn_format,viewModel.userMoneyFormatted)}"
-                    tools:text="4.00 BYN"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView16"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView16" />
+                    app:layout_constraintTop_toTopOf="@+id/textView16"
+                    tools:text="4.00 BYN" />
 
                 <ImageView
                     android:id="@+id/imageView4"

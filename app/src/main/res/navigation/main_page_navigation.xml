@@ -24,10 +24,18 @@
         android:id="@+id/scanFragment"
         android:name="com.example.mobilepay.ui.mainPage.ScanFragment"
         android:label="fragment_scan"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_scanFragment_to_payFragment"
+            app:destination="@id/payFragment" />
+    </fragment>
     <fragment
         android:id="@+id/payFragment"
         android:name="com.example.mobilepay.ui.mainPage.PayFragment"
         android:label="fragment_pay"
-        tools:layout="@layout/fragment_pay" />
+        tools:layout="@layout/fragment_pay" >
+        <argument
+            android:name="qrCodeContent"
+            app:argType="com.example.mobilepay.entity.QrCodeContent" />
+    </fragment>
 </navigation>

@@ -1,9 +1,6 @@
 package com.example.mobilepay.ui.mainPage.model
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.mobilepay.MainApplication
 import com.example.mobilepay.Util
 import com.example.mobilepay.entity.Merchant
@@ -13,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 
 class MainPageViewModel:ViewModel() {
     var user:MutableLiveData<User> = MutableLiveData(User.mock)
@@ -21,12 +19,20 @@ class MainPageViewModel:ViewModel() {
     val userLoading:MutableLiveData<Boolean> = MutableLiveData(true)
     val merchantExist:MutableLiveData<Boolean> = MutableLiveData(false)
 
-    val userMoneyFormatted:String get() = Util.formatBigDecimalToStr(user.value!!.moneyAmount)
-    val userFrozenMoneyFormatted:String get() = Util.formatBigDecimalToStr(user.value!!.frozenMoney)
+    val userMoneyFormatted:LiveData<String> = Transformations.map(user) {
+        Util.formatBigDecimalToStr(user.value!!.moneyAmount)
+    }
+    val userFrozenMoneyFormatted:LiveData<String> = Transformations.map(user) {
+        Util.formatBigDecimalToStr(user.value!!.frozenMoney)
+    }
 
-    val merchantMoneyFormatted:String get() = Util.formatBigDecimalToStr(merchant.value!!.moneyAmount)
-    val merchantFrozenMoneyFormatted:String get() = Util.formatBigDecimalToStr(merchant.value!!.frozenMoney)
+    val merchantMoneyFormatted:LiveData<String> = Transformations.map(user) {
+        Util.formatBigDecimalToStr(merchant.value!!.moneyAmount)
+    }
 
+    val merchantFrozenMoneyFormatted:LiveData<String> = Transformations.map(user) {
+        Util.formatBigDecimalToStr(merchant.value!!.frozenMoney)
+    }
 
     init {
         viewModelScope.launch {
@@ -53,7 +59,6 @@ class MainPageViewModel:ViewModel() {
 
                 }
             }
-
         }
     }
 

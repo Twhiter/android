@@ -13,7 +13,7 @@ data class Merchant(
     @JsonProperty("merchantLicense") val merchantLicense: String,
     @JsonProperty("merchantLicensePhoto") val merchantLicensePhoto: String,
     @JsonProperty("merchantPhoneNumber") val merchantPhoneNumber: String,
-    @JsonProperty("merchantLogo") val merchantLogo: String,
+    @JsonProperty("merchantLogo") val merchantLogo: String?,
     @JsonProperty("merchantEmail") val merchantEmail: String,
     @JsonProperty("frozenMoney") val frozenMoney: BigDecimal,
     @JsonProperty("moneyAmount") val moneyAmount: BigDecimal,

@@ -66,13 +66,16 @@
     <string name="scan_amp_pay_prompt"><![CDATA[Scan & Pay]]></string>
     <string name="request_prompt">Request</string>
     <string name="your_balance_prompt">Your Balance</string>
-    <string name="transfer_search_prompt">Enter mobile no, email, merchant ID, name</string>
+    <string name="transfer_search_prompt">Enter mobile no, email, name</string>
     <string name="Br_balance">Br. %s</string>
     <string name="Byn_format">%s BYN</string>
     <string name="bill_prompt">Bill</string>
     <string name="frozen_format">%s BYN Frozen</string>
     <string name="import_prompt">import</string>
     <string name="export_prompt">Export</string>
+    <string name="amount_promt">Amount</string>
+    <string name="remarks_prompt">remarks, maximum 40 characters</string>
+    <string name="empty_amount_prompt">Please input amount</string>
 
 
 </resources>

@@ -1,9 +1,6 @@
 package com.example.mobilepay.network
 
-import com.example.mobilepay.entity.LoginResp
-import com.example.mobilepay.entity.Merchant
-import com.example.mobilepay.entity.ResponseData
-import com.example.mobilepay.entity.User
+import com.example.mobilepay.entity.*
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -29,6 +26,15 @@ interface UserApiService {
 
     @GET("/api/user/self")
     suspend fun fetchInfo(@Header("token") token:String):ResponseData<User>
+
+
+    @GET("/api/user/overview/{userId}")
+    suspend fun fetchOverviewInfo(@Path("userId") userId:Int):ResponseData<OverviewInfo>
+
+
+
+
+
 }
 
 object UserApi {

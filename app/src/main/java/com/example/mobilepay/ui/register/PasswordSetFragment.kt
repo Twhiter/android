@@ -11,9 +11,11 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.mobilepay.R
+import com.example.mobilepay.Util
 import com.example.mobilepay.databinding.FragmentRegisterPasswordSetBinding
 import com.example.mobilepay.entity.ResponseData
 import com.example.mobilepay.network.UserApi
@@ -123,7 +125,7 @@ class PasswordSetFragment : Fragment() {
             return
         viewModel.setPassword(binding.password.text.toString())
 
-        CoroutineScope(Dispatchers.Default).launch {
+        lifecycleScope.launch(Dispatchers.Default) {
 
             val resp = submitData()
 
@@ -181,27 +183,17 @@ class PasswordSetFragment : Fragment() {
     private fun payDialog(title:String,handler: onPayFinishHandler) {
 
         val dialog = PayPassDialog(requireContext(),R.style.dialog_pay_theme)
-
-        dialog.setAlertDialog(false)
-            .setWindowSize(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,0.4f)
-            .setOutColse(false)
-            .setGravity(R.style.dialogOpenAnimation, Gravity.BOTTOM)
-
-        dialog.payViewPass
-            .setRandomNumber(true)
-            .setHintText(title)
-            .setForgetText("")
-            .setPayClickListener(object :PayPassView.OnPayClickListener {
-                override fun onPassFinish(password: String?) {
+        Util.showPayDialog(requireContext(),title,"",object :PayPassView.OnPayClickListener {
+            override fun onPassFinish(password: String?) {
                     handler(password)
                     dialog.dismiss()
-                }
-                override fun onPayClose() {
+            }
+            override fun onPayClose() {
                     viewModel.setPaymentPassword("")
-                    Log.d("Mainss",viewModel.paymentPassword.value.toString())
                     dialog.dismiss()
-                }
-                override fun onPayForget() {}
-            })
+            }
+            override fun onPayForget() {}
+
+        },dialog)
     }
 }
