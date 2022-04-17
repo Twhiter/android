@@ -48,6 +48,7 @@ class TransferChooseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //initialize history
+        //todo
 
 
 
