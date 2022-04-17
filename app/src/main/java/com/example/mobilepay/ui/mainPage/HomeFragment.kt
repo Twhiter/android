@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.mobilepay.R
 import com.example.mobilepay.databinding.FragmentHomeBinding
 import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
@@ -42,7 +43,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.payLinearLayout.setOnClickListener{ toPay() }
         binding.receiveLinearLayout.setOnClickListener {  }
-        binding.transferLinearLayout.setOnClickListener {  }
+        binding.transferLinearLayout.setOnClickListener { toTransfer() }
         binding.payBtn.setOnClickListener { toPay() }
 
         binding.viewModel = viewModel
@@ -52,6 +53,11 @@ class HomeFragment : Fragment() {
 
     private fun toPay() {
         requireView().findNavController().navigate(R.id.scanFragment)
+    }
+
+    private fun toTransfer() {
+        val action = HomeFragmentDirections.actionHomeFragmentToTransferChooseFragment()
+        findNavController().navigate(action)
     }
 
 

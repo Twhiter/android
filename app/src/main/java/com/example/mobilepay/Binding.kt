@@ -7,6 +7,7 @@ import androidx.core.net.toUri
 
 import androidx.databinding.BindingAdapter
 import coil.load
+import com.example.mobilepay.network.BASE_URL
 
 
 @BindingAdapter("imageBitmap")
@@ -19,7 +20,7 @@ fun loadImage(iv: ImageView, bitmap: Bitmap?) {
 fun bindImage(imgView: ImageView, imgUrl: String?) {
 
     imgUrl?.takeIf { it.isNotEmpty() }?.let {
-        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+        val imgUri = (BASE_URL + imgUrl).toUri().buildUpon().scheme("http").build()
         imgView.load(imgUri) {
             placeholder(R.drawable.loading_animation)
             error(R.drawable.ic_broken_image)

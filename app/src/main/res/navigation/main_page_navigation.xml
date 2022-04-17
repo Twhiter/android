@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.mobilepay.ui.mainPage.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_transferChooseFragment"
+            app:destination="@id/transferChooseFragment" />
+    </fragment>
     <fragment
         android:id="@+id/personalDealFrament"
         android:name="com.example.mobilepay.ui.mainPage.PersonalDealFragment"
@@ -37,5 +41,31 @@
         <argument
             android:name="qrCodeContent"
             app:argType="com.example.mobilepay.entity.QrCodeContent" />
+        <action
+            android:id="@+id/action_payFragment_to_paymentSuccess"
+            app:destination="@id/paymentSuccess"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/paymentSuccess"
+        android:name="com.example.mobilepay.ui.mainPage.PaymentSuccess"
+        android:label="fragment_payment_success"
+        tools:layout="@layout/fragment_payment_success" >
+        <argument android:name="moneyAmount"
+            app:argType="string" />
+        <argument
+            android:name="receiverName"
+            app:argType="string" />
+        <argument android:name="balanceAmount"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_paymentSuccess_to_homeFragment2"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/transferChooseFragment"
+        android:name="com.example.mobilepay.ui.mainPage.TransferChooseFragment"
+        android:label="fragment_transfer_choose"
+        tools:layout="@layout/fragment_transfer_choose" />
 </navigation>

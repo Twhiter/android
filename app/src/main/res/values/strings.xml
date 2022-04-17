@@ -77,5 +77,11 @@
     <string name="remarks_prompt">remarks, maximum 40 characters</string>
     <string name="empty_amount_prompt">Please input amount</string>
 
+    <!-- Related with successful payment result -->
+    <string name="successfully_paid_prompt">Success</string>
+    <string name="balance_prompt">Balance</string>
+    <string name="receiver">Receiver:</string>
+    <string name="okay">Okay</string>
+
 
 </resources>

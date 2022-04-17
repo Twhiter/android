@@ -29,8 +29,6 @@ data class ResponseData<T>(
         return b
     }
 
-    fun handleOne(handler: RespHandler<T>):Boolean = handle(handler)
-
     fun handleOneWithDefault(context:Context,handler: RespHandler<T>):Boolean =
         handle(defaultHandle(context,this),handler)
 
@@ -56,8 +54,6 @@ data class ResponseData<T>(
         }
 
 
-        val defaultHandler:(context:Context,resp:ResponseData<*>) -> RespHandler<*> =
-            {c,r -> defaultHandle(c,r)}
     }
 }
 

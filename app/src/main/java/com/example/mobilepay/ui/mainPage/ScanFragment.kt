@@ -44,11 +44,6 @@ class ScanFragment : Fragment() {
     private lateinit var binding: FragmentScanBinding
     private lateinit var cameraExecutor: ExecutorService
 
-
-
-
-
-
     override fun onResume() {
         super.onResume()
         MainPageActivity.getInstance()?.setFullScreenVisibility(View.GONE)
@@ -135,13 +130,6 @@ class ScanFragment : Fragment() {
             }
         },ContextCompat.getMainExecutor(requireContext()))
     }
-
-
-
-
-
-
-
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireContext(),it) == PackageManager.PERMISSION_GRANTED
     }
@@ -225,13 +213,11 @@ class ScanFragment : Fragment() {
                 val text = barcode.rawValue!!
 
                 val qrCodeContent = Util.fromJsonToObject<QrCodeContent>(text)
-                Log.d("Mainss","run out")
 
                 lifecycleScope.launch(Dispatchers.Main){
                     qrCodeContent?.let {
                         mutex.lock()
                         try {
-                            Log.d("Mainss","run in")
                             val action = ScanFragmentDirections.actionScanFragmentToPayFragment(it)
                             findNavController().navigate(action)
                             lifecycleScope.coroutineContext.cancelChildren()
@@ -241,7 +227,6 @@ class ScanFragment : Fragment() {
                     }
                 }
 
-                Log.d("Mainss","run over")
             }.addOnFailureListener {
                 imageProxy.close()
             }.addOnCompleteListener {

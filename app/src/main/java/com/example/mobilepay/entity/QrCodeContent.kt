@@ -14,5 +14,6 @@ data class QrCodeContent(
 
 enum class Type(@JsonValue val value: String) {
     User("user"),
-    Merchant("merchant")
+    Merchant("merchant"),
+    MerchantWithConfirmation("merchantConfirmation")
 }

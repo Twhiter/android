@@ -5,14 +5,13 @@ import androidx.room.*
 import com.example.mobilepay.MainApplication
 import com.example.mobilepay.entity.Merchant
 import com.example.mobilepay.entity.User
-import com.example.mobilepay.room.roomDao.KVDao
-import com.example.mobilepay.room.roomDao.MerchantDao
-import com.example.mobilepay.room.roomDao.UserDao
+import com.example.mobilepay.room.roomDao.*
 import com.example.mobilepay.room.roomEntity.KV
+import com.example.mobilepay.room.roomEntity.SearchHistory
 import java.math.BigDecimal
 
 @TypeConverters(value = [Converters::class])
-@Database(entities = [KV::class, Merchant::class,User::class], version = 1, exportSchema = false)
+@Database(entities = [KV::class, Merchant::class,User::class, SearchHistory::class], version = 1, exportSchema = false)
 abstract class AppDatabase:RoomDatabase() {
 
     abstract fun kvDao():KVDao
@@ -20,6 +19,8 @@ abstract class AppDatabase:RoomDatabase() {
     abstract fun merchantDao():MerchantDao
 
     abstract fun userDao():UserDao
+
+    abstract fun searchHistoryDao():SearchHistoryDao
 
 
     companion object {

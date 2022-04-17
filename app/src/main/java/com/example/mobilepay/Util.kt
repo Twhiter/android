@@ -4,9 +4,17 @@ import android.text.InputFilter
 import android.text.Spanned
 import android.view.Gravity
 import android.widget.LinearLayout
+import com.example.mobilepay.entity.RespHandler
+import com.example.mobilepay.entity.ResponseData
+import com.example.mobilepay.network.MerchantApi
+import com.example.mobilepay.network.UserApi
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.lzj.pass.dialog.PayPassDialog
 import com.lzj.pass.dialog.PayPassView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.regex.Matcher
@@ -56,7 +64,37 @@ class Util {
                 .setHintText(title)
                 .setForgetText(forgetText)
                 .setPayClickListener(onPayClickListener)
+        }
 
+        suspend fun updateSelfInfo() {
+
+            withContext(Dispatchers.IO) {
+
+                try {
+                    val token = MainApplication.db().kvDao().get("token")
+                    token?.let {
+                        val resp = UserApi.service.fetchInfo(it)
+                       val isOkay = resp.handle({ r-> r.status == ResponseData.OK},
+                           {r -> r.data != null })
+
+                        if (!isOkay)
+                            return@withContext
+
+                        MainApplication.db().userDao().update(resp.data!!)
+
+                        val resp1 = MerchantApi.service.fetchInfo(it)
+                        val isOkay1 = resp.handle({ r-> r.status == ResponseData.OK},
+                            {r -> r.data != null })
+
+                        if (!isOkay1)
+                            return@withContext
+
+                        MainApplication.db().merchantDao().update(merchant = resp1.data!!)
+                    }
+                }catch (e:Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 }
