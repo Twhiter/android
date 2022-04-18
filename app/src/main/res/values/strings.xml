@@ -82,6 +82,7 @@
     <string name="balance_prompt">Balance</string>
     <string name="receiver">Receiver:</string>
     <string name="okay">Okay</string>
+    <string name="clear">Clear History</string>
 
 
 </resources>
