@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilepay.*
 import com.example.mobilepay.databinding.FragmentTransferChooseBinding
 import com.example.mobilepay.entity.OverviewInfo
+import com.example.mobilepay.network.UserApi
 import com.example.mobilepay.room.roomEntity.SearchHistory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TransferChooseFragment : Fragment() {
 
@@ -129,11 +131,28 @@ class TransferChooseFragment : Fragment() {
 
     fun search() {
         viewModel.onSearchMode.value = true
+        viewModel.page.value = 1
         viewModel.searchingLoading.value = true
-        val overviewInfo = OverviewInfo(1,"user","/avatar/1.png"
-            ,"Cheng Cheng Liang","+8619917910891","1065582542@qq.com")
-        viewModel.searchingLoading.value = false
-        viewModel.searchResults.value = listOf(overviewInfo)
+        lifecycleScope.launch(Dispatchers.Default) {
+            val resp = withContext(Dispatchers.IO) {
+                UserApi.service.searchUsers(binding.searchText.text.toString(),1,10)
+            }
+
+            withContext(Dispatchers.Main) {
+                resp.handleOneWithDefault(requireContext()) { r ->
+                    when (r.data) {
+                        null -> false
+                        else -> {
+                            viewModel.searchResults.value = r.data
+                            true
+                        }
+                    }
+                }
+                withContext(Dispatchers.Main) {
+                    viewModel.searchingLoading.value = false
+                }
+            }
+        }
     }
 
     fun addHistory() {
@@ -266,6 +285,8 @@ class TransferChooseViewModel: ViewModel() {
     val onSearchMode = MutableLiveData(false)
     val searchResults:MutableLiveData<List<OverviewInfo>> = MutableLiveData(listOf())
     val searchingLoading = MutableLiveData(false)
+    val page = MutableLiveData(1)
+
 
     val searchResultsReady:LiveData<Boolean> = CombinedLiveData(onSearchMode,searchingLoading) {
         (it[0] as Boolean) && (!(it[1] as Boolean))

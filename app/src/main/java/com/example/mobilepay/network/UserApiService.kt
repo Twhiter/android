@@ -1,6 +1,9 @@
 package com.example.mobilepay.network
 
-import com.example.mobilepay.entity.*
+import com.example.mobilepay.entity.LoginResp
+import com.example.mobilepay.entity.OverviewInfo
+import com.example.mobilepay.entity.ResponseData
+import com.example.mobilepay.entity.User
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -21,19 +24,23 @@ interface UserApiService {
     :ResponseData<*>
 
     @POST("/api/token/user")
-    suspend fun login(@Body phoneAndPwd:Map<String,String>):ResponseData<LoginResp>
+    suspend fun login(@Body phoneAndPwd: Map<String, String>): ResponseData<LoginResp>
 
 
     @GET("/api/user/self")
-    suspend fun fetchInfo(@Header("token") token:String):ResponseData<User>
+    suspend fun fetchInfo(@Header("token") token: String): ResponseData<User>
 
 
     @GET("/api/user/overview/{userId}")
-    suspend fun fetchOverviewInfo(@Path("userId") userId:Int):ResponseData<OverviewInfo>
+    suspend fun fetchOverviewInfo(@Path("userId") userId: Int): ResponseData<OverviewInfo>
 
 
-
-
+    @GET("/api/user/search")
+    suspend fun searchUsers(
+        @Query("keyword") keyword: String,
+        @Query("page") page: Int,
+        @Query("pageCount") pageSize: Int,
+    ): ResponseData<List<OverviewInfo>>
 
 }
 
