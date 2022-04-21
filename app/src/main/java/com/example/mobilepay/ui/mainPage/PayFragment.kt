@@ -26,9 +26,9 @@ import com.example.mobilepay.network.MerchantApi
 import com.example.mobilepay.network.PayApi
 import com.example.mobilepay.network.TransferApi
 import com.example.mobilepay.network.UserApi
+import com.example.mobilepay.ui.lib.PayHandler
+import com.example.mobilepay.ui.lib.PaymentDialog
 import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
-import com.lzj.pass.dialog.PayPassDialog
-import com.lzj.pass.dialog.PayPassView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -43,7 +43,7 @@ class PayFragment : Fragment() {
     private val args:PayFragmentArgs by navArgs()
     private val activityViewModel:MainPageViewModel by activityViewModels()
 
-    private lateinit var dialog:PayPassDialog
+    private lateinit var paymentDialog:PaymentDialog
 
 
     override fun onCreateView(
@@ -100,22 +100,21 @@ class PayFragment : Fragment() {
                 }
             }
 
-             dialog = PayPassDialog(requireContext(),R.style.dialog_pay_theme)
-
-            Util.showPayDialog(requireContext(),"Pay","Forget Password?",
-                object :PayPassView.OnPayClickListener{
-                    override fun onPassFinish(password: String) {
-
-                        when(args.qrCodeContent.type) {
-                            Type.Merchant -> pay(password)
-                            Type.User -> transfer(password)
-                            else -> {}
-                        }
+            paymentDialog = PaymentDialog(requireContext(),layoutInflater)
+            paymentDialog.setTitle("Pay")
+            paymentDialog.setForgetText("forget password?")
+            paymentDialog.setHandler(object :PayHandler {
+                override fun onFinish(password: String) {
+                    when(args.qrCodeContent.type) {
+                        Type.Merchant -> pay(password)
+                        Type.User -> transfer(password)
+                        else -> {}
                     }
+                }
+                override fun onClose() {}
+                override fun onForgetPassword() {}
+            }).show()
 
-                    override fun onPayClose() {dialog.dismiss()}
-                    override fun onPayForget() {}
-                },dialog)
         }
     }
 
@@ -169,7 +168,7 @@ class PayFragment : Fragment() {
 
                 withContext(Dispatchers.Main) {
                     progressDialog.dismiss()
-                    dialog.dismiss()
+                    paymentDialog.dismiss()
                 }
 
             }
@@ -225,7 +224,7 @@ class PayFragment : Fragment() {
 
                 withContext(Dispatchers.Main) {
                     progressDialog.dismiss()
-                    dialog.dismiss()
+                    paymentDialog.dismiss()
                 }
 
             }

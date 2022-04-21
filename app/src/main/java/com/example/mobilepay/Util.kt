@@ -15,8 +15,6 @@ import com.example.mobilepay.entity.ResponseData
 import com.example.mobilepay.network.MerchantApi
 import com.example.mobilepay.network.UserApi
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.lzj.pass.dialog.PayPassDialog
-import com.lzj.pass.dialog.PayPassView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
@@ -49,27 +47,6 @@ class Util {
             }catch (e: Exception){
                 null
             }
-        }
-
-         fun showPayDialog(
-             context: Context,
-             title: String,
-             forgetText: String,
-             onPayClickListener: PayPassView.OnPayClickListener,
-             dialog: PayPassDialog? = null,
-         ) {
-
-             val dialog2:PayPassDialog = dialog ?: PayPassDialog(context,R.style.dialog_pay_theme)
-
-            dialog2.setAlertDialog(false)
-                .setWindowSize(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,0.4f)
-                .setOutColse(false)
-                .setGravity(R.style.dialogOpenAnimation, Gravity.BOTTOM)
-
-            dialog2.payViewPass
-                .setHintText(title)
-                .setForgetText(forgetText)
-                .setPayClickListener(onPayClickListener)
         }
 
         suspend fun updateSelfInfo() {

@@ -56,6 +56,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1"
 
+    implementation "androidx.gridlayout:gridlayout:1.0.0"
+
     //navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
@@ -78,9 +80,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.googlecode.libphonenumber/libphonenumber
     implementation("com.googlecode.libphonenumber:libphonenumber:8.12.45")
-
-    //androidX
-    implementation 'com.github.lzjin:AlipayPassDialog:2.2'
 
     //scanner barcode
     implementation 'com.google.mlkit:barcode-scanning:17.0.2'

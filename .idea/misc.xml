@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.243" />
         <entry key="app/src/main/res/drawable/background_and_clickable.xml" value="0.305" />
         <entry key="app/src/main/res/drawable/clickable.xml" value="0.3135" />
         <entry key="app/src/main/res/drawable/ic___.xml" value="0.3135" />
@@ -13,13 +14,18 @@
         <entry key="app/src/main/res/drawable/ic_baseline_dashboard_24.xml" value="0.3135" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.3135" />
         <entry key="app/src/main/res/drawable/ic_baseline_key_24.xml" value="0.3625" />
+        <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/ic_baseline_qr_code_scanner_24.xml" value="0.3135" />
         <entry key="app/src/main/res/drawable/ic_be.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/ic_broken_image.xml" value="0.254" />
         <entry key="app/src/main/res/drawable/ic_business.xml" value="0.3135" />
+        <entry key="app/src/main/res/drawable/ic_cross_24.xml" value="0.322" />
+        <entry key="app/src/main/res/drawable/ic_crossing_white.xml" value="0.1965" />
+        <entry key="app/src/main/res/drawable/ic_not_found.xml" value="0.1805" />
         <entry key="app/src/main/res/drawable/ic_sharp_smartphone_24.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/layout_bg.xml" value="0.1265" />
         <entry key="app/src/main/res/drawable/loading_img.xml" value="0.1825" />
+        <entry key="app/src/main/res/drawable/round_button.xml" value="0.3495" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3453125" />
         <entry key="app/src/main/res/layout/activity_main_page.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/activity_scan.xml" value="0.32135416666666666" />
@@ -30,17 +36,20 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_password_set.xml" value="0.25364583333333335" />
         <entry key="app/src/main/res/layout/fragment_pay.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/fragment_pay_keyboard.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_payment_success.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/fragment_personal_deal.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_receive.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.3055922501100837" />
         <entry key="app/src/main/res/layout/fragment_register_password_set.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.3614583333333333" />
-        <entry key="app/src/main/res/layout/fragment_transfer_choose.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/fragment_transfer_choose.xml" value="0.29322916666666665" />
         <entry key="app/src/main/res/layout/list_country_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_history_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_history_item_tail.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_phone_code_item.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/list_search_result_item.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/not_found.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/search_result_header_item.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/search_result_list_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/test.xml" value="0.3614583333333333" />

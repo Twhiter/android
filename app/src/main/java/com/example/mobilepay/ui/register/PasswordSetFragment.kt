@@ -2,26 +2,23 @@ package com.example.mobilepay.ui.register
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.mobilepay.R
-import com.example.mobilepay.Util
 import com.example.mobilepay.databinding.FragmentRegisterPasswordSetBinding
 import com.example.mobilepay.entity.ResponseData
 import com.example.mobilepay.network.UserApi
-import com.lzj.pass.dialog.PayPassDialog
-import com.lzj.pass.dialog.PayPassView
-import kotlinx.coroutines.*
+import com.example.mobilepay.ui.lib.PayHandler
+import com.example.mobilepay.ui.lib.PaymentDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -60,27 +57,40 @@ class PasswordSetFragment : Fragment() {
         }
 
         binding.paymentPassword.setOnClickListener {
-            payDialog("Please set password") { it1 ->
-                val first:String? = it1
 
-                payDialog("Please confirm password") {
-                    val second:String? = it
-                    if (first.equals(second)) {
-                        Toast.makeText(requireContext(),"setting password successfully!"
-                            ,Toast.LENGTH_LONG).show()
-                        viewModel.setPaymentPassword(it!!)
+            viewModel.setPassword("")
+            val paymentDialog = PaymentDialog(requireContext(),layoutInflater)
+            paymentDialog.setTitle("Please set password")
+            paymentDialog.setForgetText("")
+            paymentDialog.setHandler(object :PayHandler {
+                override fun onFinish(password: String) {
 
-                    } else {
-                        Toast.makeText(requireContext(),"Password not the same",
-                            Toast.LENGTH_LONG).show()
-                        viewModel.setPaymentPassword("")
-                    }
+                    val first:String = password
 
-                    Log.d("Mainss",viewModel.paymentPassword.value.toString())
+                    val paymentDialog2 = PaymentDialog(requireContext(),layoutInflater)
+                    paymentDialog2.setTitle("Please confirm password")
+                    paymentDialog2.setForgetText("")
+
+                    paymentDialog2.setHandler(object :PayHandler {
+                        override fun onFinish(password: String) {
+                            val second:String = password
+                            if (first == second) {
+                                Toast.makeText(requireContext(),"setting password successfully!"
+                                    ,Toast.LENGTH_SHORT).show()
+                                viewModel.setPaymentPassword(second)
+                            } else
+                                Toast.makeText(requireContext(),"Password not the same",
+                                    Toast.LENGTH_SHORT).show()
+                        }
+                        override fun onClose() {}
+                        override fun onForgetPassword() {}
+                    }).show()
 
                 }
+                override fun onClose() {}
+                override fun onForgetPassword() {}
 
-            }
+            }).show()
         }
 
         binding.finish.setOnClickListener { finish() }
@@ -177,23 +187,4 @@ class PasswordSetFragment : Fragment() {
 
 
 
-
-
-
-    private fun payDialog(title:String,handler: onPayFinishHandler) {
-
-        val dialog = PayPassDialog(requireContext(),R.style.dialog_pay_theme)
-        Util.showPayDialog(requireContext(),title,"",object :PayPassView.OnPayClickListener {
-            override fun onPassFinish(password: String?) {
-                    handler(password)
-                    dialog.dismiss()
-            }
-            override fun onPayClose() {
-                    viewModel.setPaymentPassword("")
-                    dialog.dismiss()
-            }
-            override fun onPayForget() {}
-
-        },dialog)
-    }
 }

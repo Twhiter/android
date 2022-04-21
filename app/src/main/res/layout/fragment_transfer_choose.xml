@@ -45,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="2dp"
-            android:visibility="@{viewmodel.searchResultsReady?View.VISIBLE:View.GONE}"
+            android:visibility="@{viewmodel.searchResultsFound?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout"
@@ -77,6 +77,19 @@
             app:layout_constraintEnd_toEndOf="@+id/result"
             app:layout_constraintStart_toStartOf="@+id/result"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="gone"
+            android:visibility="@{viewmodel.searchResultsNotFound?View.VISIBLE:View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+            <include layout="@layout/not_found" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,6 @@
 package com.example.mobilepay.network
 
-import com.example.mobilepay.entity.LoginResp
-import com.example.mobilepay.entity.OverviewInfo
-import com.example.mobilepay.entity.ResponseData
-import com.example.mobilepay.entity.User
+import com.example.mobilepay.entity.*
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -40,7 +37,7 @@ interface UserApiService {
         @Query("keyword") keyword: String,
         @Query("page") page: Int,
         @Query("pageCount") pageSize: Int,
-    ): ResponseData<List<OverviewInfo>>
+    ): ResponseData<Page<OverviewInfo>>
 
 }
 

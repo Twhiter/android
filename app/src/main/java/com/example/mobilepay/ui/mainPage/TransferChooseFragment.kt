@@ -10,15 +10,22 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilepay.*
 import com.example.mobilepay.databinding.FragmentTransferChooseBinding
 import com.example.mobilepay.entity.OverviewInfo
+import com.example.mobilepay.entity.QrCodeContent
+import com.example.mobilepay.entity.Type
 import com.example.mobilepay.network.UserApi
 import com.example.mobilepay.room.roomEntity.SearchHistory
 import kotlinx.coroutines.Dispatchers
@@ -140,12 +147,13 @@ class TransferChooseFragment : Fragment() {
 
             withContext(Dispatchers.Main) {
                 resp.handleOneWithDefault(requireContext()) { r ->
-                    when (r.data) {
-                        null -> false
-                        else -> {
-                            viewModel.searchResults.value = r.data
-                            true
-                        }
+                    if (r.data == null)
+                        false
+                    else {
+                        // render data and update maxPage
+                        viewModel.searchResults.value = r.data.data
+                        viewModel.maxPage.value = r.data.maxPage
+                        true
                     }
                 }
                 withContext(Dispatchers.Main) {
@@ -155,6 +163,7 @@ class TransferChooseFragment : Fragment() {
         }
     }
 
+
     fun addHistory() {
         binding.searchText.text.toString().takeIf {it.isNotBlank()}?.let {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -162,10 +171,6 @@ class TransferChooseFragment : Fragment() {
             }
         }
     }
-
-
-
-
 
     inner class HistoryItemAdapter
         : ListAdapter<SearchHistory, RecyclerView.ViewHolder>(Diff()) {
@@ -249,28 +254,34 @@ class TransferChooseFragment : Fragment() {
     inner class SearchResultAdapter
         :ListAdapter<OverviewInfo, SearchResultAdapter.SearchResultItem>(SearchResultDiff()) {
 
-
-        inner class SearchResultItem(itemView: View):RecyclerView.ViewHolder(itemView) {
+         inner class SearchResultItem(view: View):RecyclerView.ViewHolder(view) {
 
             private val avatar:ImageView = itemView.findViewById(R.id.avatar)
             private val name:TextView = itemView.findViewById(R.id.name)
             private val phoneNumber:TextView = itemView.findViewById(R.id.phoneNumber)
             private val email:TextView = itemView.findViewById(R.id.email)
+            private val layout:ConstraintLayout = itemView.findViewById(R.id.resultItem)
 
             fun bind(overviewInfo: OverviewInfo) {
-
                 bindImage(avatar,overviewInfo.avatar)
                 name.text = overviewInfo.name
                 phoneNumber.text = overviewInfo.phoneNumber
                 email.text = overviewInfo.email
-            }
 
+                layout.setOnClickListener {
+                    val qrCodeContent = QrCodeContent(overviewInfo.id,Type.User)
+                    val action = TransferChooseFragmentDirections
+                        .actionTransferChooseFragmentToPayFragment(qrCodeContent)
+                    findNavController().navigate(action)
+                }
+            }
         }
 
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultItem {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_search_result_item,parent,false)
-            return SearchResultItem(view)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_search_result_item,parent,false)
+                return SearchResultItem(view)
         }
 
         override fun onBindViewHolder(holder: SearchResultItem, position: Int) {
@@ -281,16 +292,25 @@ class TransferChooseFragment : Fragment() {
 
 class TransferChooseViewModel: ViewModel() {
 
-    val historyRecords:MutableLiveData<List<SearchHistory>> = MutableLiveData(listOf())
+    val historyRecords: MutableLiveData<List<SearchHistory>> = MutableLiveData(listOf())
     val onSearchMode = MutableLiveData(false)
     val searchResults:MutableLiveData<List<OverviewInfo>> = MutableLiveData(listOf())
     val searchingLoading = MutableLiveData(false)
     val page = MutableLiveData(1)
-
+    val maxPage = MutableLiveData(1)
 
     val searchResultsReady:LiveData<Boolean> = CombinedLiveData(onSearchMode,searchingLoading) {
         (it[0] as Boolean) && (!(it[1] as Boolean))
     }
+
+    val searchResultsFound: LiveData<Boolean> = CombinedLiveData(searchResultsReady,searchResults) {
+        (it[0] as Boolean) && (it[1] as List<OverviewInfo>).isNotEmpty()
+    }
+
+    val searchResultsNotFound:LiveData<Boolean> = CombinedLiveData(searchResultsReady,searchResults) {
+        (it[0] as Boolean) && (it[1] as List<OverviewInfo>).isEmpty()
+    }
+
 }
 
 
