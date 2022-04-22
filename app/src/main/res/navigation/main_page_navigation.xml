@@ -13,12 +13,19 @@
         <action
             android:id="@+id/action_homeFragment_to_transferChooseFragment"
             app:destination="@id/transferChooseFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_qrCodeReceiveFragment2"
+            app:destination="@id/qrCodeReceiveFragment2" />
     </fragment>
     <fragment
         android:id="@+id/personalDealFrament"
         android:name="com.example.mobilepay.ui.mainPage.PersonalDealFragment"
         android:label="fragment_personal_deal"
-        tools:layout="@layout/fragment_personal_deal" />
+        tools:layout="@layout/fragment_personal_deal" >
+        <action
+            android:id="@+id/action_personalDealFrament_to_transferChooseFragment"
+            app:destination="@id/transferChooseFragment" />
+    </fragment>
     <fragment
         android:id="@+id/businessDealFragment"
         android:name="com.example.mobilepay.ui.mainPage.BusinessDeal"
@@ -72,4 +79,8 @@
             android:id="@+id/action_transferChooseFragment_to_payFragment"
             app:destination="@id/payFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/qrCodeReceiveFragment2"
+        android:name="com.example.mobilepay.ui.mainPage.QrCodeReceiveFragment"
+        android:label="QrCodeReceiveFragment" />
 </navigation>

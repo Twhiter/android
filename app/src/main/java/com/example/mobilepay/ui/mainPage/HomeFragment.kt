@@ -42,9 +42,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.payLinearLayout.setOnClickListener{ toPay() }
-        binding.receiveLinearLayout.setOnClickListener {  }
+        binding.receiveLinearLayout.setOnClickListener { toReceive() }
         binding.transferLinearLayout.setOnClickListener { toTransfer() }
         binding.payBtn.setOnClickListener { toPay() }
+        binding.requestBtn.setOnClickListener { toTransfer()}
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -59,6 +60,14 @@ class HomeFragment : Fragment() {
         val action = HomeFragmentDirections.actionHomeFragmentToTransferChooseFragment()
         findNavController().navigate(action)
     }
+
+    private fun toReceive() {
+        val action = HomeFragmentDirections.actionHomeFragmentToQrCodeReceiveFragment2()
+        findNavController().navigate(action)
+
+    }
+
+
 
 
 }

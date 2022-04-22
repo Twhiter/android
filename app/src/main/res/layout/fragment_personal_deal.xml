@@ -45,8 +45,7 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="4dp"
                 android:text="@string/bill_prompt"
                 android:textAllCaps="false"
                 android:textSize="14sp"
@@ -96,7 +95,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="90dp"
                     android:fontFamily="sans-serif"
-                    android:text="@{String.format(@string/Byn_format,viewModel.userFrozenMoneyFormatted)}"
+                    android:text="@{String.format(@string/frozen_format,viewModel.userFrozenMoneyFormatted)}"
                     android:textColor="?attr/colorError"
                     android:textSize="16sp"
                     android:tooltipText="Frozen"
@@ -127,15 +126,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView16"
                     tools:text="4.00 BYN" />
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="21dp"
-                    android:layout_height="22dp"
-                    android:layout_marginStart="2dp"
-                    android:src="@drawable/ic_question_25"
-                    app:layout_constraintStart_toEndOf="@+id/frozenText"
-                    app:layout_constraintTop_toTopOf="@+id/frozenText" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

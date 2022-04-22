@@ -93,7 +93,6 @@ class TransferChooseFragment : Fragment() {
         binding.lifecycleOwner = this
 
 
-
         //initialize history
         val historyAdapter = HistoryItemAdapter()
         binding.history.adapter = historyAdapter

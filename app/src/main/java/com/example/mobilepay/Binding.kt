@@ -3,11 +3,8 @@ package com.example.mobilepay
 import android.graphics.Bitmap
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
-import android.widget.ListAdapter
 import androidx.core.net.toUri
-
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.mobilepay.network.BASE_URL
 

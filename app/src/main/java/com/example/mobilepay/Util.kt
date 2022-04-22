@@ -1,11 +1,13 @@
 package com.example.mobilepay
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Matrix
 import android.text.InputFilter
 import android.text.Spanned
 import android.util.Log
-import android.view.Gravity
-import android.widget.LinearLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +17,8 @@ import com.example.mobilepay.entity.ResponseData
 import com.example.mobilepay.network.MerchantApi
 import com.example.mobilepay.network.UserApi
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
@@ -79,7 +83,47 @@ class Util {
                 }
             }
         }
+
+        /**
+         * merge logo in the center of the qr code
+         */
+        fun mergeBitmaps(logo: Bitmap, qrcode: Bitmap): Bitmap {
+            val combined = Bitmap.createBitmap(qrcode.width, qrcode.height, qrcode.config)
+            val canvas = Canvas(combined)
+            val canvasWidth = canvas.width
+            val canvasHeight = canvas.height
+            canvas.drawBitmap(qrcode, Matrix(), null)
+
+            val resizeLogo = Bitmap.
+            createScaledBitmap(logo, qrcode.width / 6, qrcode.height / 6, true)
+
+            val centreX = (canvasWidth - resizeLogo.width) / 2
+            val centreY = (canvasHeight - resizeLogo.height) / 2
+
+            canvas.drawBitmap(resizeLogo, centreX.toFloat(), centreY.toFloat(), null)
+            return combined
+        }
+
+        fun getQrCodeBitmap(content:String): Bitmap {
+            val size = 512 //pixels
+
+            val bits = QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, size, size)
+
+            return Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565).also {
+                for (x in 0 until size)
+                    for (y in 0 until size)
+                        it.setPixel(x, y, if (bits[x, y]) Color.BLACK else Color.WHITE)
+
+            }
+        }
+
+        fun getQrCodeBitmapWithLogo(content:String,logo: Bitmap): Bitmap {
+            return mergeBitmaps(logo, getQrCodeBitmap(content))
+        }
+
     }
+
+
 }
 
 class DecimalDigitsInputFilter(
@@ -112,8 +156,10 @@ class WrapContentLinearLayoutManager(context:Context) : LinearLayoutManager(cont
     }
 }
 
-class CombinedLiveData<R>(vararg liveDatas: LiveData<*>,
-                          private val combine: (datas: List<Any?>) -> R) : MediatorLiveData<R>() {
+class CombinedLiveData<R>(
+    vararg liveDatas: LiveData<*>,
+    private val combine: (datas: List<Any?>) -> R,
+) : MediatorLiveData<R>() {
 
     private val datas: MutableList<Any?> = MutableList(liveDatas.size) { index -> liveDatas[index].value }
 
@@ -126,3 +172,4 @@ class CombinedLiveData<R>(vararg liveDatas: LiveData<*>,
         }
     }
 }
+
