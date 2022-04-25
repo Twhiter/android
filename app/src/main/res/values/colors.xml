@@ -29,6 +29,10 @@
     <color name="color_payment_dialog_primary_dark">#303F9F</color>
     <color name="color_payment_dialog_accent">#FF4081</color>
 
+    <color name="color_success">#5cb85c</color>
+    <color name="color_danger">#d9534f</color>
+
+
 
 
 

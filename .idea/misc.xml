@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.243" />
         <entry key="app/src/main/res/drawable/background_and_clickable.xml" value="0.305" />
         <entry key="app/src/main/res/drawable/clickable.xml" value="0.3135" />
+        <entry key="app/src/main/res/drawable/dotted.xml" value="0.3475" />
         <entry key="app/src/main/res/drawable/ic___.xml" value="0.3135" />
         <entry key="app/src/main/res/drawable/ic_balance_baseline_24.xml" value="0.1265" />
         <entry key="app/src/main/res/drawable/ic_base_transfer_24.xml" value="0.3135" />
@@ -29,6 +30,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3453125" />
         <entry key="app/src/main/res/layout/activity_main_page.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/activity_scan.xml" value="0.32135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_bill.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/fragment_business_deal.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_email_and_phone_verify.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_final.xml" value="0.26927083333333335" />
@@ -45,11 +47,14 @@
         <entry key="app/src/main/res/layout/fragment_register_password_set.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_transfer_choose.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/list_bills_records_head.xml" value="0.3458333333333333" />
+        <entry key="app/src/main/res/layout/list_bills_records_item.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/list_country_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_history_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_history_item_tail.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_phone_code_item.xml" value="0.3614583333333333" />
-        <entry key="app/src/main/res/layout/list_search_result_item.xml" value="0.18854166666666666" />
+        <entry key="app/src/main/res/layout/list_search_result_item.xml" value="0.2833333333333333" />
+        <entry key="app/src/main/res/layout/loading_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/not_found.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/search_result_header_item.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/search_result_list_item.xml" value="0.3614583333333333" />

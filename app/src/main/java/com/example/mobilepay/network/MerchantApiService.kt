@@ -1,11 +1,11 @@
 package com.example.mobilepay.network
 
-import com.example.mobilepay.entity.Merchant
-import com.example.mobilepay.entity.OverviewInfo
-import com.example.mobilepay.entity.ResponseData
+import com.example.mobilepay.entity.*
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
+import retrofit2.http.Query
+import java.math.BigDecimal
 
 interface MerchantApiService {
 
@@ -14,6 +14,16 @@ interface MerchantApiService {
 
     @GET("/api/merchant/overview/{merchantId}")
     suspend fun fetchOverviewInfo(@Path("merchantId")merchantId:Int):ResponseData<OverviewInfo>
+
+    @GET("/api/bill/merchant")
+    suspend fun getMerchantBills(
+        @Header("token") token:String,
+        @Query("pageSize") pageSize:Int,
+        @Query("pageNum") pageNum:Int,
+        @Query("min") min: BigDecimal? = null,
+        @Query("max") max: BigDecimal? = null,
+        @Query("billTypes") billTypes:List<BillType>
+    ):ResponseData<Page<BillRecord>>
 
 
 }

@@ -84,9 +84,17 @@
     <string name="okay">Okay</string>
     <string name="clear">Clear History</string>
     <string name="not_found">Opps! We can\'t find that</string>
+
+    <!-- Related with qr code receive  -->
     <string name="user_receive_qr_code">User Receive QR Code</string>
     <string name="merchant_receive_qr_code">Merchant Receive QR Code</string>
     <string name="switch_prompt">Switch</string>
+
+
+    <!-- Related with bill-->
+    <string name="filter">Filter</string>
+    <string name="statistics">Statistics</string>
+    <string name="action_and_name">%s - %s</string>
 
 
 </resources>

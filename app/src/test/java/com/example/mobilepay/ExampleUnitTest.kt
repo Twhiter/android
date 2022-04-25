@@ -1,21 +1,16 @@
 package com.example.mobilepay
 
 
-import android.graphics.Region
-import com.example.mobilepay.entity.QrCodeContent
 import com.example.mobilepay.network.MerchantApi
-import com.example.mobilepay.network.UserApi
 import com.example.mobilepay.network.VerifyApi
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
-import kotlinx.coroutines.*
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
-import java.math.RoundingMode
+import java.time.LocalDate
+import java.time.Month
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 /**
@@ -65,7 +60,11 @@ class ExampleUnitTest {
     fun test7() {
 
 
-        println(BigDecimal("1."))
+        val dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
+
+        val dateOfBirth = LocalDate.of(1991, Month.OCTOBER, 13)
+        val formattedDob = dateOfBirth.format(dateFormatter)
+        println("Born: $formattedDob")
 
     }
 }

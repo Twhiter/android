@@ -3,6 +3,7 @@ package com.example.mobilepay.network
 import com.example.mobilepay.entity.*
 import okhttp3.MultipartBody
 import retrofit2.http.*
+import java.math.BigDecimal
 
 interface UserApiService {
 
@@ -38,6 +39,18 @@ interface UserApiService {
         @Query("page") page: Int,
         @Query("pageCount") pageSize: Int,
     ): ResponseData<Page<OverviewInfo>>
+
+
+    @GET("/api/bill/user")
+    suspend fun getUserBills(
+        @Header("token") token:String,
+        @Query("pageSize") pageSize:Int,
+        @Query("pageNum") pageNum:Int,
+        @Query("min") min: BigDecimal? = null,
+        @Query("max") max: BigDecimal? = null,
+        @Query("billTypes") billTypes:List<BillType>
+    ):ResponseData<Page<BillRecord>>
+
 
 }
 
