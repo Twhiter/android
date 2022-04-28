@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_personalDealFrament_to_transferChooseFragment"
             app:destination="@id/transferChooseFragment" />
+        <action
+            android:id="@+id/action_personalDealFrament_to_billFragment"
+            app:destination="@id/billFragment" />
     </fragment>
     <fragment
         android:id="@+id/businessDealFragment"
@@ -83,4 +86,28 @@
         android:id="@+id/qrCodeReceiveFragment2"
         android:name="com.example.mobilepay.ui.mainPage.QrCodeReceiveFragment"
         android:label="QrCodeReceiveFragment" />
+    <fragment
+        android:id="@+id/billFragment"
+        android:name="com.example.mobilepay.ui.mainPage.BillFragment"
+        android:label="fragment_bill"
+        tools:layout="@layout/fragment_bill" >
+        <argument
+            android:name="isUser"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_billFragment_to_billDetailFragment"
+            app:destination="@id/billDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/billDetailFragment"
+        android:name="com.example.mobilepay.ui.mainPage.BillDetailFragment"
+        android:label="fragment_bill_detail"
+        tools:layout="@layout/fragment_bill_detail" >
+        <argument
+            android:name="billRecord"
+            app:argType="com.example.mobilepay.entity.BillRecord" />
+        <argument
+            android:name="isUser"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

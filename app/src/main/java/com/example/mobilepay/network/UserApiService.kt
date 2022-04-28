@@ -4,6 +4,7 @@ import com.example.mobilepay.entity.*
 import okhttp3.MultipartBody
 import retrofit2.http.*
 import java.math.BigDecimal
+import java.util.*
 
 interface UserApiService {
 
@@ -41,14 +42,16 @@ interface UserApiService {
     ): ResponseData<Page<OverviewInfo>>
 
 
-    @GET("/api/bill/user")
+    @GET("/api/bills/user")
     suspend fun getUserBills(
         @Header("token") token:String,
         @Query("pageSize") pageSize:Int,
         @Query("pageNum") pageNum:Int,
         @Query("min") min: BigDecimal? = null,
         @Query("max") max: BigDecimal? = null,
-        @Query("billTypes") billTypes:List<BillType>
+        @Query("start") start:String? = null,
+        @Query("end") end:String? = null,
+        @Query("billTypes") billTypes:@JvmSuppressWildcards List<BillType>
     ):ResponseData<Page<BillRecord>>
 
 

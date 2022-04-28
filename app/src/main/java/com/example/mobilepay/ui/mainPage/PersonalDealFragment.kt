@@ -40,10 +40,17 @@ class PersonalDealFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.transferBtn.setOnClickListener {toTransfer()}
+        binding.bill.setOnClickListener { toBill() }
+
     }
 
     private fun toTransfer() {
         val action = PersonalDealFragmentDirections.actionPersonalDealFramentToTransferChooseFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun toBill() {
+        val action = PersonalDealFragmentDirections.actionPersonalDealFramentToBillFragment(true)
         findNavController().navigate(action)
     }
 

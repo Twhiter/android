@@ -30,7 +30,9 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3453125" />
         <entry key="app/src/main/res/layout/activity_main_page.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/activity_scan.xml" value="0.32135416666666666" />
+        <entry key="app/src/main/res/layout/filter.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_bill.xml" value="0.3458333333333333" />
+        <entry key="app/src/main/res/layout/fragment_bill_detail.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_business_deal.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_email_and_phone_verify.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_final.xml" value="0.26927083333333335" />
@@ -46,7 +48,7 @@
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.3055922501100837" />
         <entry key="app/src/main/res/layout/fragment_register_password_set.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.3614583333333333" />
-        <entry key="app/src/main/res/layout/fragment_transfer_choose.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_transfer_choose.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_bills_records_head.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/list_bills_records_item.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/list_country_item.xml" value="0.3614583333333333" />

@@ -23,6 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -32,11 +34,26 @@ class Util {
     companion object {
 
         const val EMAIL_PATTERN = "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\$"
+         val billsRequestDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val billsShowDateFormat = SimpleDateFormat("MMM dd hh:mm")
 
         fun decimalPattern( digitsBeforeZero:Int, digitsAfterZero:Int):Pattern {
 
             val str = "([0-9]{0,${digitsBeforeZero - 1}})((\\.[0-9]{0,${digitsAfterZero - 1}})?|(\\.)?)"
            return Pattern.compile(str)
+        }
+
+        fun toBillRequestDataFormat(date: Date?):String? {
+            return date?.let {
+                billsRequestDateFormat.format(it)
+            }
+        }
+
+        @JvmStatic
+        fun toBillShowDateFormat(date: Date?):String? {
+            return date?.let {
+                billsShowDateFormat.format(it)
+            }
         }
 
 

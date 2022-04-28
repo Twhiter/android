@@ -6,6 +6,8 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.math.BigDecimal
+import java.sql.Timestamp
+import java.util.*
 
 interface MerchantApiService {
 
@@ -15,14 +17,16 @@ interface MerchantApiService {
     @GET("/api/merchant/overview/{merchantId}")
     suspend fun fetchOverviewInfo(@Path("merchantId")merchantId:Int):ResponseData<OverviewInfo>
 
-    @GET("/api/bill/merchant")
+    @GET("/api/bills/merchant")
     suspend fun getMerchantBills(
         @Header("token") token:String,
         @Query("pageSize") pageSize:Int,
         @Query("pageNum") pageNum:Int,
         @Query("min") min: BigDecimal? = null,
         @Query("max") max: BigDecimal? = null,
-        @Query("billTypes") billTypes:List<BillType>
+        @Query("start") start: String? = null,
+        @Query("end") end: String? = null,
+        @Query("billTypes") billTypes:@JvmSuppressWildcards List<BillType>
     ):ResponseData<Page<BillRecord>>
 
 

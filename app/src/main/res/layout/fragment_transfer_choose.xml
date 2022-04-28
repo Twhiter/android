@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -89,7 +90,10 @@
             tools:visibility="gone"
             android:visibility="@{viewmodel.searchResultsNotFound?View.VISIBLE:View.GONE}"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
-            <include layout="@layout/not_found" />
+            <include
+                layout="@layout/not_found"
+                bind:text="@{@string/not_found}"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

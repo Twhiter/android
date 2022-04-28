@@ -95,6 +95,27 @@
     <string name="filter">Filter</string>
     <string name="statistics">Statistics</string>
     <string name="action_and_name">%s - %s</string>
+    <string name="no_record_found">Opps! You Have No Bill</string>
+    <string name="bill_type">Bill Type</string>
+    <string name="export">Export</string>
+    <string name="pay">Pay</string>
+    <string name="refunded">Refunded</string>
+    <string name="transfer_in">Transfer In</string>
+    <string name="transfer_out">Transfer Out</string>
+    <string name="minimum_amount">minimum amount</string>
+    <string name="maximum_amount">maximum amount</string>
+    <string name="date">Date</string>
+    <string name="to">To</string>
+    <string name="start_date">start date</string>
+    <string name="end_date">end date</string>
+
+
+    <string name="id">ID</string>
+    <string name="time">Time</string>
+    <string name="remarks">Remarks</string>
+    <string name="refunded_date">Refunded Date</string>
+    <string name="refund">Refund</string>
+    <string name="back">Back</string>
 
 
 </resources>

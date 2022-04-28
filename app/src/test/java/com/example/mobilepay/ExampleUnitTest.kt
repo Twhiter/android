@@ -7,10 +7,13 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.util.*
+import kotlin.collections.HashMap
 
 
 /**
@@ -60,11 +63,7 @@ class ExampleUnitTest {
     fun test7() {
 
 
-        val dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
-
-        val dateOfBirth = LocalDate.of(1991, Month.OCTOBER, 13)
-        val formattedDob = dateOfBirth.format(dateFormatter)
-        println("Born: $formattedDob")
+        println(SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(Date()))
 
     }
 }
