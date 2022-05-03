@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/merchant_register"
+    app:startDestination="@id/merchantRegisterFragment1">
+
+    <fragment
+        android:id="@+id/merchantRegisterFragment1"
+        android:name="com.example.mobilepay.ui.merchantRegister.MerchantRegisterFragment1"
+        android:label="MerchantRegisterFragment1" >
+        <action
+            android:id="@+id/action_merchantRegisterFragment1_to_merchantRegisterFragment2"
+            app:destination="@id/merchantRegisterFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/merchantRegisterFragment2"
+        android:name="com.example.mobilepay.ui.merchantRegister.MerchantRegisterFragment2"
+        android:label="fragment_merchant_register2"
+        tools:layout="@layout/fragment_merchant_register2" >
+        <action
+            android:id="@+id/action_merchantRegisterFragment2_to_merchantRegisterFinal"
+            app:destination="@id/merchantRegisterFinal" />
+    </fragment>
+    <fragment
+        android:id="@+id/merchantRegisterFinal"
+        android:name="com.example.mobilepay.ui.merchantRegister.MerchantRegisterFinal"
+        android:label="fragment_merchant_register_final"
+        tools:layout="@layout/fragment_merchant_register3" >
+        <action
+            android:id="@+id/action_merchantRegisterFinal_to_finalFragment3"
+            app:destination="@id/finalFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/finalFragment3"
+        android:name="com.example.mobilepay.ui.register.FinalFragment"
+        android:label="FinalFragment" >
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+</navigation>

@@ -30,7 +30,7 @@ class MainPageActivity: AppCompatActivity() {
 
         ActivityCompat.requestPermissions(this,
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            0);
+            0)
 
         binding = ActivityMainPageBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -4,21 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import com.example.mobilepay.PhoneCode
 import com.example.mobilepay.R
 import com.example.mobilepay.Util
+import com.example.mobilepay.Util.Companion.suspendSend
 import com.example.mobilepay.databinding.FragmentEmailAndPhoneVerifyBinding
 import com.example.mobilepay.entity.ResponseData
 import com.example.mobilepay.network.VerifyApi
+import com.example.mobilepay.network.VerifyApiService.Companion.sendVerifyCode
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.i18n.phonenumbers.NumberParseException
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class EmailAndPhoneVerify : Fragment() {
@@ -82,27 +85,16 @@ class EmailAndPhoneVerify : Fragment() {
     }
 
     private fun checkPhone():Boolean {
-        val phoneUtil =  PhoneNumberUtil.getInstance()
-        var phoneNUmber: Phonenumber.PhoneNumber? = null
+        val isOkay:Boolean = Util
+            .checkPhone(binding.codeSelect.toString() + binding.phone.text.toString())
 
-        try {
-            phoneNUmber = phoneUtil.parse(
-                binding.codeSelect.text.toString() + binding.phone.text.toString()
-                ,null)
-        }catch (e: NumberParseException) {
-            binding.phoneLayout.error = getString(R.string.incorrect_phone_number_prompt)
-            return false
-        }
-
-
-        return if (phoneUtil.isPossibleNumber(phoneNUmber)) {
-            binding.phoneLayout.error = null
+        return if (isOkay) {
             true
-        }
-        else {
+        }else {
             binding.phoneLayout.error = getString(R.string.incorrect_phone_number_prompt)
             false
         }
+
     }
 
     private suspend fun checkPhoneVerifyCode():Boolean {
@@ -145,7 +137,7 @@ class EmailAndPhoneVerify : Fragment() {
         if (!(checkPhoneCode() && checkPhone()))
             return
 
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val resp = sendVerifyCode("phone",
                 binding.codeSelect.text.toString() + binding.phone.text.toString())
 
@@ -159,30 +151,6 @@ class EmailAndPhoneVerify : Fragment() {
         }
     }
 
-
-
-    private suspend fun suspendSend(btn:Button) {
-        withContext(Dispatchers.Main) {
-            val text = btn.text
-            btn.isEnabled = false
-            for (i in 60 downTo 1) {
-                btn.text = i.toString()
-                delay(1000)
-            }
-            btn.text = text
-            btn.isEnabled = true
-        }
-    }
-
-    private suspend fun sendVerifyCode(type:String,target: String):ResponseData<*> {
-
-        val m = HashMap<String,String>()
-        m["type"] = type
-        m["target"] = target
-
-        return VerifyApi.service.sendVerifyCode(m)
-    }
-
     private suspend fun checkVerifyCode(type:String,target:String,code:String):ResponseData<Boolean> {
         return VerifyApi.service.checkVerifyCode(type, target, code)
     }
@@ -190,8 +158,8 @@ class EmailAndPhoneVerify : Fragment() {
 
     private fun checkEmail():Boolean {
         binding.email.text?.apply {
-            val pattern = Regex(Util.EMAIL_PATTERN)
-            if (matches(pattern)) {
+            val isOkay = Util.checkEmail(this.toString())
+            if (isOkay) {
                 binding.emailInputLayout.error = null
                 return true
             }
@@ -200,6 +168,9 @@ class EmailAndPhoneVerify : Fragment() {
         binding.emailInputLayout.error = getString(R.string.incorrect_email_prompt)
         return false
     }
+
+
+
 
     private fun sendEmailVerifyCode() {
         if (!checkEmail())
@@ -233,7 +204,7 @@ class EmailAndPhoneVerify : Fragment() {
         }
 
         if (resp.status != ResponseData.OK) {
-            CoroutineScope(Dispatchers.Main).launch {
+            lifecycleScope.launch(Dispatchers.Main) {
                 Toast.makeText(requireContext(),resp.errorPrompt,Toast.LENGTH_LONG).show()
             }
 
@@ -241,13 +212,13 @@ class EmailAndPhoneVerify : Fragment() {
         } else {
             if (resp.data == false) {
 
-                CoroutineScope(Dispatchers.Main).launch {
+                lifecycleScope.launch(Dispatchers.Main) {
                     binding.emailInputLayout.error = getString(R.string.incorrect_verify_code_prompt)
                 }
                 return false
             }
         }
-        CoroutineScope(Dispatchers.Main).launch {
+        lifecycleScope.launch(Dispatchers.Main) {
             binding.phoneVerifyCodeLayout.error = null
         }
         return true
@@ -256,7 +227,7 @@ class EmailAndPhoneVerify : Fragment() {
 
     private fun next() {
 
-        CoroutineScope(Dispatchers.Default).launch {
+        lifecycleScope.launch(Dispatchers.Default) {
 
             if (!(checkEmailVerifyCode() && checkPhoneVerifyCode()))
                 return@launch

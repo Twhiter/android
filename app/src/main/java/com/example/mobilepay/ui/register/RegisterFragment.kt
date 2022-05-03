@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.mobilepay.R
+import com.example.mobilepay.Util
 import com.example.mobilepay.databinding.FragmentRegisterBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -42,13 +43,6 @@ class RegisterFragment : Fragment() {
 
     private val viewModel:RegisterViewModel by activityViewModels()
 
-
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -226,7 +220,7 @@ class RegisterFragment : Fragment() {
             }
 
             byteArray?.apply {
-                bitMap = BitmapFactory.decodeByteArray(this,0, this.size?:0)
+                bitMap = BitmapFactory.decodeByteArray(this,0, this.size)
                 binding.imageView.setImageBitmap(bitMap)
             }
         } else {
@@ -240,9 +234,9 @@ class RegisterFragment : Fragment() {
 
         var photoFile:File? = null;
         try {
-            photoFile = createImageFile();
+            photoFile = Util.createImageFile()
         } catch (e:IOException) {
-
+            e.printStackTrace()
         }
 
 
@@ -265,20 +259,6 @@ class RegisterFragment : Fragment() {
 
     private fun selectFile() {
         selectImageLauncher.launch(arrayOf("image/*"))
-    }
-
-
-    @Throws(IOException::class)
-    private fun createImageFile():File {
-
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        )
     }
 }
 

@@ -32,6 +32,8 @@ data class ResponseData<T>(
     fun handleOneWithDefault(context:Context,handler: RespHandler<T>):Boolean =
         handle(defaultHandle(context,this),handler)
 
+    fun handleDefault(context: Context):Boolean = handle(defaultHandle(context,this))
+
 
 
 

@@ -5,9 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
+import android.os.Environment
 import android.text.InputFilter
 import android.text.Spanned
 import android.util.Log
+import android.widget.Button
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,10 +19,16 @@ import com.example.mobilepay.entity.ResponseData
 import com.example.mobilepay.network.MerchantApi
 import com.example.mobilepay.network.UserApi
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.i18n.phonenumbers.NumberParseException
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.IOException
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
@@ -49,6 +57,19 @@ class Util {
             }
         }
 
+        @Throws(IOException::class)
+         fun createImageFile(): File {
+
+            // Create an image file name
+            val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            val storageDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            )
+        }
+
         @JvmStatic
         fun toBillShowDateFormat(date: Date?):String? {
             return date?.let {
@@ -69,6 +90,26 @@ class Util {
                 null
             }
         }
+
+         suspend fun suspendSend(btn: Button) {
+            withContext(Dispatchers.Main) {
+                val text = btn.text
+                btn.isEnabled = false
+                for (i in 60 downTo 1) {
+                    btn.text = i.toString()
+                    delay(1000)
+                }
+                btn.text = text
+                btn.isEnabled = true
+            }
+        }
+
+        fun checkEmail(email:String):Boolean {
+            val pattern = Regex(EMAIL_PATTERN)
+            return email.matches(pattern)
+        }
+
+
 
         suspend fun updateSelfInfo() {
 
@@ -138,6 +179,21 @@ class Util {
             return mergeBitmaps(logo, getQrCodeBitmap(content))
         }
 
+        @Throws(NumberParseException::class)
+        fun checkPhone(phoneNumber:String):Boolean {
+            val phoneUtil =  PhoneNumberUtil.getInstance()
+            val phoneNUmber: Phonenumber.PhoneNumber?
+           try {
+                phoneNUmber = phoneUtil.parse(phoneNumber,
+                   null)
+           }catch (e:NumberParseException ) {
+               return false
+           }
+            return phoneUtil.isPossibleNumber(phoneNUmber)
+        }
+
+
+
     }
 
 
@@ -186,6 +242,55 @@ class CombinedLiveData<R>(
                 datas[i] = it
                 value = combine(datas)
             }
+        }
+    }
+}
+
+
+class Processor<T> {
+
+    private val list= mutableListOf<ProcessHandler<T?>>()
+
+    fun addHandler(handler: ProcessHandler<T?>): Processor<T> {
+        list.add(handler)
+        return this
+    }
+
+    fun process():T? {
+        list.forEach {
+            val result = it.handle()
+            if (result != null)
+                return result
+        }
+        return null
+    }
+}
+
+fun interface ProcessHandler<T> {
+    fun handle():T?
+}
+
+data class PhoneCode( val countryName:String,val code: String) {
+
+
+    companion object {
+        val COUNTRY_CODES = getCodes()
+        private fun getCodes():List<PhoneCode> {
+
+            val context: Context = MainApplication.applicationContext()
+
+            val ids = context.resources.obtainTypedArray(R.array.phoneCodes)
+            val codes:MutableList<PhoneCode> = mutableListOf()
+
+
+            for (i in 0 until ids.length()) {
+                val id = ids.getResourceId(i,0)
+
+                val arr = context.resources.getStringArray(id)
+                codes.add(PhoneCode(arr[0],arr[1]))
+            }
+            ids.recycle()
+            return codes
         }
     }
 }

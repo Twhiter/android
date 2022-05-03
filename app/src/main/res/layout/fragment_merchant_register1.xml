@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.mobilepay.ui.merchantRegister.ViewModel1" />
+        <variable
+            name="infoViewModel"
+            type="com.example.mobilepay.ui.merchantRegister.MerchantRegisterViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.merchantRegister.MerchantRegisterFragment1">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/companyNameLayout"
+            style="@style/input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="128dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/company_organization_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name"
+                android:text="@{infoViewModel.merchantRegisterInfo.companyName}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColorHint="#757575"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/companyLicenseNumber"
+            style="@style/input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="@string/company_organization_license_number"
+            app:layout_constraintEnd_toEndOf="@+id/companyNameLayout"
+            app:layout_constraintStart_toStartOf="@+id/companyNameLayout"
+            app:layout_constraintTop_toBottomOf="@+id/companyNameLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/licenseNumber"
+                android:text="@{infoViewModel.merchantRegisterInfo.licenseNumber}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColorHint="#757575"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView39"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/collect_company_license_photo_prompt"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/companyLicenseNumber" />
+
+        <Button
+            android:id="@+id/upload"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/upload_prompt"
+            app:cornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/companyLicenseNumber"
+            app:layout_constraintStart_toStartOf="@+id/companyLicenseNumber"
+            app:layout_constraintTop_toBottomOf="@+id/textView39" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            imageBitmap="@{infoViewModel.merchantRegisterInfo.licensePhoto}"
+            app:layout_constraintEnd_toEndOf="@+id/upload"
+            app:layout_constraintStart_toStartOf="@+id/upload"
+            app:layout_constraintTop_toBottomOf="@+id/upload"
+            tools:src="@tools:sample/avatars" />
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/next_prompt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/companyLicenseNumber"
+            app:layout_constraintStart_toStartOf="@+id/companyLicenseNumber"
+            app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

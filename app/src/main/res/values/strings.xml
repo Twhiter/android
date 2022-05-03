@@ -109,13 +109,26 @@
     <string name="start_date">start date</string>
     <string name="end_date">end date</string>
 
-
+    <!-- related with bill detail -->
     <string name="id">ID</string>
     <string name="time">Time</string>
     <string name="remarks">Remarks</string>
     <string name="refunded_date">Refunded Date</string>
     <string name="refund">Refund</string>
     <string name="back">Back</string>
+
+
+    <!-- Related with merchant registeration-->
+    <string name="company_organization_name">Company/Organization Name</string>
+    <string name="company_organization_license_number">Company/Organization License Number</string>
+    <string name="collect_company_license_photo_prompt">We\'ll collect your Company License Photo to verify, please upload your License photo</string>
+    <string name="add_your_phone">Add Your Phone</string>
+    <string name="useSamePhoneNumberPrompt">I want to use the same phone number with my individual account</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="add_your_email">Add Your Email</string>
+    <string name="useSameEmailPrompt">I want to use the same email with my individual account</string>
+    <string name="upload_license">Upload your license image</string>
 
 
 </resources>

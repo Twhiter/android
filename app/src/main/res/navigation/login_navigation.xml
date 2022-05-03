@@ -44,5 +44,12 @@
     <fragment
         android:id="@+id/finalFragment"
         android:name="com.example.mobilepay.ui.register.FinalFragment"
-        android:label="FinalFragment" />
+        android:label="FinalFragment" >
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
 </navigation>

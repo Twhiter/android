@@ -1,10 +1,9 @@
 package com.example.mobilepay.network
 
+import android.provider.ContactsContract
 import com.example.mobilepay.entity.*
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
-import retrofit2.http.Query
+import okhttp3.MultipartBody
+import retrofit2.http.*
 import java.math.BigDecimal
 import java.sql.Timestamp
 import java.util.*
@@ -28,6 +27,17 @@ interface MerchantApiService {
         @Query("end") end: String? = null,
         @Query("billTypes") billTypes:@JvmSuppressWildcards List<BillType>
     ):ResponseData<Page<BillRecord>>
+
+    @Multipart
+    @POST("/api/merchant")
+    suspend fun register(
+        @Header("token") token:String,
+        @Part companyName:MultipartBody.Part,
+        @Part licenseNumber:MultipartBody.Part,
+        @Part licensePhoto: MultipartBody.Part,
+        @Part phoneNumber: MultipartBody.Part? = null,
+        @Part email:MultipartBody.Part? = null
+    ):ResponseData<String?>
 
 
 }

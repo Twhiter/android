@@ -1,6 +1,7 @@
 package com.example.mobilepay
 
 import android.graphics.Bitmap
+import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import androidx.core.net.toUri
@@ -11,8 +12,15 @@ import com.example.mobilepay.network.BASE_URL
 
 @BindingAdapter("imageBitmap")
 fun loadImage(iv: ImageView, bitmap: Bitmap?) {
-    if (bitmap != null)
+
+
+
+    if (bitmap != null) {
         iv.setImageBitmap(bitmap)
+        iv.visibility = View.VISIBLE
+    }
+    else
+        iv.visibility = View.INVISIBLE
 }
 
 @BindingAdapter("imageUrl")

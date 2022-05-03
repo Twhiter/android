@@ -5,6 +5,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import java.util.HashMap
 
 interface VerifyApiService {
 
@@ -16,6 +17,18 @@ interface VerifyApiService {
                                 ,@Query("target")target:String
                                 ,@Query("code")code:String):ResponseData<Boolean>
 
+    companion object {
+
+        suspend fun sendVerifyCode(type:String,target: String):ResponseData<*> {
+
+            val m = HashMap<String,String>()
+            m["type"] = type
+            m["target"] = target
+
+            return VerifyApi.service.sendVerifyCode(m)
+        }
+
+    }
 }
 
 object VerifyApi {

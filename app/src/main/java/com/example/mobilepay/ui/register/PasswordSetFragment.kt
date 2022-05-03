@@ -167,13 +167,13 @@ class PasswordSetFragment : Fragment() {
             ,viewModel.phoneCode.value!! + viewModel.phone.value!!)
 
         return withContext(Dispatchers.IO) {
-            val f = File(requireContext().filesDir,UUID.randomUUID().toString() + ".")
+            val f = File(requireContext().filesDir,UUID.randomUUID().toString() + ".jpeg")
 
             viewModel.IdPhoto.value!!.compress(Bitmap.CompressFormat.JPEG,100,f.outputStream())
 
             val passportPhoto = MultipartBody.Part.createFormData("passportPhoto",f.name,
                 RequestBody.create(MediaType.parse("image/*"),f))
-
+            f.delete()
 
             UserApi.service.register(country, email, firstName, lastName, passportNumber
                 , passportPhoto, password, paymentPassword, phoneNumber)
@@ -181,7 +181,9 @@ class PasswordSetFragment : Fragment() {
     }
 
     private fun toFinalPage() {
-        val action = PasswordSetFragmentDirections.actionPasswordSetFragmentToFinalFragment()
+        val action = PasswordSetFragmentDirections.actionPasswordSetFragmentToFinalFragment(
+            viewModel.phoneNumber,viewModel.email.value!!
+        )
         findNavController().navigate(action)
     }
 
