@@ -10,11 +10,15 @@ interface KVDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun set(kv:KV)
 
-    @Query("select value from kv where `key` = :key")
+    @Query("select value from KV where `key` = :key")
     suspend fun get(key:String):String?
 
     @Delete
     suspend fun delete(kv: KV)
+
+
+    @Query("delete from KV")
+    suspend fun deleteAll()
 }
 
 

@@ -154,8 +154,8 @@
             android:layout_height="wrap_content"
             android:text="@string/finish_register_prompt"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/emailInputLayout"
-            app:layout_constraintStart_toStartOf="@+id/emailInputLayout"
+            app:layout_constraintEnd_toEndOf="@+id/isSameEmailText"
+            app:layout_constraintStart_toStartOf="@+id/isSameEmailText"
             app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
 

@@ -19,7 +19,8 @@ class MerchantRegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
             0)
 
 

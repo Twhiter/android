@@ -173,10 +173,12 @@ class PasswordSetFragment : Fragment() {
 
             val passportPhoto = MultipartBody.Part.createFormData("passportPhoto",f.name,
                 RequestBody.create(MediaType.parse("image/*"),f))
-            f.delete()
 
-            UserApi.service.register(country, email, firstName, lastName, passportNumber
+
+            val resp = UserApi.service.register(country, email, firstName, lastName, passportNumber
                 , passportPhoto, password, paymentPassword, phoneNumber)
+            f.delete()
+            resp
         }
     }
 

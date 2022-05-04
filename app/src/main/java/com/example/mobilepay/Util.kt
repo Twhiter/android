@@ -24,9 +24,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
 import java.math.BigDecimal
@@ -140,6 +138,40 @@ class Util {
                     e.printStackTrace()
                 }
             }
+        }
+
+
+        suspend fun tryUpdateSelfInfo(context: Context):Boolean {
+
+            var i = 0
+            while (i < 3) {
+
+                try {
+
+                    val token = MainApplication.db().kvDao().get("token") ?: throw Exception()
+                    val resp = UserApi.service.fetchInfo(token)
+                    if (!resp.handleDefault(context))
+                        throw Exception()
+
+                    MainApplication.db().userDao().insert(resp.data!!)
+                    val resp1 = MerchantApi.service.fetchInfo(token)
+                    resp1.handleDefault(context)
+
+                    if (!resp1.handleDefault(context))
+                        throw Exception()
+
+                    MainApplication.db().merchantDao().insert(merchant = resp1.data!!)
+                    break
+
+                }catch (e:Exception) {
+                    e.printStackTrace()
+                    i ++
+                    delay(10 * 1000L)
+                    continue
+                }
+            }
+
+            return i != 3
         }
 
         /**

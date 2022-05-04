@@ -201,10 +201,11 @@ class MerchantRegisterFinal : Fragment() {
 
             val licensePhoto = MultipartBody.Part.createFormData("licensePhoto",f.name
                 , RequestBody.create(MediaType.parse("image/*"),f))
-            f.delete()
 
-            MerchantApi.service.register(token!!,companyName, licenseNumber, licensePhoto,
+            val resp = MerchantApi.service.register(token!!,companyName, licenseNumber, licensePhoto,
                 phoneNumber,email)
+            f.delete()
+            resp
         }
     }
 

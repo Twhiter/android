@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,15 +28,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import java.io.File
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class RegisterFragment : Fragment() {
 
     private var _binding:FragmentRegisterBinding? = null
-
-    private lateinit var bitMap:Bitmap
 
     val binding get() = _binding!!
 
@@ -195,7 +190,7 @@ class RegisterFragment : Fragment() {
         lateinit var file:File
 
         override fun onActivityResult(result: ActivityResult?) {
-            binding.imageView.setImageBitmap(BitmapFactory.decodeFile(file.path))
+            viewModel.setIdPhoto(BitmapFactory.decodeFile(file.path))
         }
     }
 
@@ -220,8 +215,7 @@ class RegisterFragment : Fragment() {
             }
 
             byteArray?.apply {
-                bitMap = BitmapFactory.decodeByteArray(this,0, this.size)
-                binding.imageView.setImageBitmap(bitMap)
+                viewModel.setIdPhoto(BitmapFactory.decodeByteArray(this,0, this.size))
             }
         } else {
             Log.d("Mainss", "error");

@@ -109,6 +109,9 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.zxing/core
     implementation group: 'com.google.zxing', name: 'core', version: '3.4.1'
 
+    def work_version = "2.7.1"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
 
 
 

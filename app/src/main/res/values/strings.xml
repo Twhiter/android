@@ -129,6 +129,8 @@
     <string name="add_your_email">Add Your Email</string>
     <string name="useSameEmailPrompt">I want to use the same email with my individual account</string>
     <string name="upload_license">Upload your license image</string>
+    <string name="you_don_t_have_a_company_organization_account">You don\'t have a company/organization account</string>
+    <string name="apply">Apply</string>
 
 
 </resources>

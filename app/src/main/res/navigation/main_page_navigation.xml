@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/businessDealFragment"
-        android:name="com.example.mobilepay.ui.mainPage.BusinessDeal"
+        android:name="com.example.mobilepay.ui.mainPage.BusinessDealFragment"
         android:label="fragment_business_deal"
         tools:layout="@layout/fragment_business_deal" />
     <fragment

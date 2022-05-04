@@ -22,10 +22,14 @@ class MainActivity : AppCompatActivity() {
 
 
     init {
-        lifecycleScope.launchWhenCreated {
-            if (MainApplication.db().kvDao().get("token") != null)
-                toMainPage(this@MainActivity)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val token = MainApplication.db().kvDao().get("token")
+            if (token != null)
+                withContext(Dispatchers.Main) {
+                    toMainPage(this@MainActivity)
+                }
         }
+
     }
 
 
@@ -33,7 +37,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
             0)
 
         viewBinding = ActivityMainBinding.inflate(layoutInflater)

@@ -1,18 +1,22 @@
 package com.example.mobilepay.ui.mainPage
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.activity.viewModels
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.mobilepay.MainActivity
+import com.example.mobilepay.MainApplication
 import com.example.mobilepay.R
+import com.example.mobilepay.Util
 import com.example.mobilepay.databinding.ActivityMainPageBinding
-import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
+import kotlinx.coroutines.*
 
 
 class MainPageActivity: AppCompatActivity() {
@@ -21,6 +25,8 @@ class MainPageActivity: AppCompatActivity() {
     private lateinit var binding:ActivityMainPageBinding
     private lateinit var navController: NavController
     private var selectedFramentId:Int = -1
+    private var updateJob:Job? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,15 +67,63 @@ class MainPageActivity: AppCompatActivity() {
         binding.bottomNavigation.setOnItemReselectedListener {}
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (updateJob == null) {
+            updateJob = lifecycleScope.launch(Dispatchers.Default) {
+                while (true) {
+                    withContext(Dispatchers.IO) {
+
+                        Log.d("Mainss","do it")
+
+                        val isOkay = Util.tryUpdateSelfInfo(this@MainPageActivity)
+
+                        //if not okay, delete the old token, inform user to login and switch to login page
+                        if (!isOkay) {
+
+                            MainApplication.db().kvDao().deleteAll()
+
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(this@MainPageActivity,
+                                    "Token has expired, Please login again!"
+                                    ,Toast.LENGTH_SHORT).show()
+
+                                delay(1000L)
+
+                                val intent = Intent(this@MainPageActivity,
+                                    MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                this@MainPageActivity.startActivity(intent)
+                                this@MainPageActivity.finish()
+                            }
+                        }
+                    }
+                    //set delay for another 30 seconds to update info periodically
+                    delay(30 * 1000L)
+                }
+            }
+        }
+    }
+
+
+
+
+
+
     override fun onSupportNavigateUp(): Boolean {
         return super.onSupportNavigateUp() || navController.navigateUp()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+
 
     fun setFullScreenVisibility(viewVisibility:Int) {
         binding.userFloatingBtn.visibility = viewVisibility
         binding.bottomNavigation.visibility = viewVisibility
     }
-
 
     companion object {
         private  var INSTANCE:MainPageActivity? = null
