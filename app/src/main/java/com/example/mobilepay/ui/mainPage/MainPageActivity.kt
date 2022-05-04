@@ -19,13 +19,13 @@ import com.example.mobilepay.databinding.ActivityMainPageBinding
 import kotlinx.coroutines.*
 
 
-class MainPageActivity: AppCompatActivity() {
+class MainPageActivity : AppCompatActivity() {
 
 
-    private lateinit var binding:ActivityMainPageBinding
+    private lateinit var binding: ActivityMainPageBinding
     private lateinit var navController: NavController
-    private var selectedFramentId:Int = -1
-    private var updateJob:Job? = null
+    private var selectedFramentId: Int = -1
+    private var updateJob: Job? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,8 @@ class MainPageActivity: AppCompatActivity() {
         INSTANCE = this
 
         ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE),
             0)
 
         binding = ActivityMainPageBinding.inflate(layoutInflater)
@@ -53,15 +54,17 @@ class MainPageActivity: AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
 
 
-           val resId =  when(item.itemId) {
+            val resId = when (item.itemId) {
                 R.id.home -> R.id.homeFragment
                 R.id.personalDeal -> R.id.personalDealFrament
                 R.id.businessDeal -> R.id.businessDealFragment
-               else -> {-1}
-           }
-                navController.navigate(resId)
-                selectedFramentId = resId
-                true
+                else -> {
+                    -1
+                }
+            }
+            navController.navigate(resId)
+            selectedFramentId = resId
+            true
         }
 
         binding.bottomNavigation.setOnItemReselectedListener {}
@@ -74,7 +77,7 @@ class MainPageActivity: AppCompatActivity() {
                 while (true) {
                     withContext(Dispatchers.IO) {
 
-                        Log.d("Mainss","do it")
+                        Log.d("Mainss", "do it")
 
                         val isOkay = Util.tryUpdateSelfInfo(this@MainPageActivity)
 
@@ -85,8 +88,8 @@ class MainPageActivity: AppCompatActivity() {
 
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(this@MainPageActivity,
-                                    "Token has expired, Please login again!"
-                                    ,Toast.LENGTH_SHORT).show()
+                                    "Token has expired, Please login again!", Toast.LENGTH_SHORT)
+                                    .show()
 
                                 delay(1000L)
 
@@ -106,27 +109,18 @@ class MainPageActivity: AppCompatActivity() {
     }
 
 
-
-
-
-
     override fun onSupportNavigateUp(): Boolean {
         return super.onSupportNavigateUp() || navController.navigateUp()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
-
-
-    fun setFullScreenVisibility(viewVisibility:Int) {
+    fun setFullScreenVisibility(viewVisibility: Int) {
         binding.userFloatingBtn.visibility = viewVisibility
         binding.bottomNavigation.visibility = viewVisibility
     }
 
     companion object {
-        private  var INSTANCE:MainPageActivity? = null
+        private var INSTANCE: MainPageActivity? = null
         fun getInstance(): MainPageActivity? {
             return INSTANCE
         }

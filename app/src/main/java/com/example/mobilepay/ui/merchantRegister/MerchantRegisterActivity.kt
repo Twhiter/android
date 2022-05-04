@@ -37,6 +37,5 @@ class MerchantRegisterActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController)
 
 
-
     }
 }

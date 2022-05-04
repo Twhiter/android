@@ -14,7 +14,7 @@ interface MerchantDao {
     suspend fun update(merchant: Merchant)
 
     @Query("select * from merchant where merchantUserId = :merchantUserId")
-    fun get(merchantUserId:Int):Flow<Merchant>
+    fun get(merchantUserId: Int): Flow<Merchant>
 
     @Delete
     suspend fun delete(merchant: Merchant)

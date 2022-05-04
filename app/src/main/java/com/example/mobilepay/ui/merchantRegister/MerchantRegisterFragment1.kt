@@ -30,17 +30,17 @@ import java.io.IOException
 
 class MerchantRegisterFragment1 : Fragment() {
 
-    private lateinit var binding:FragmentMerchantRegister1Binding
-    private val viewModel:ViewModel1 by viewModels()
-    private val infoViewModel:MerchantRegisterViewModel by activityViewModels()
+    private lateinit var binding: FragmentMerchantRegister1Binding
+    private val viewModel: ViewModel1 by viewModels()
+    private val infoViewModel: MerchantRegisterViewModel by activityViewModels()
 
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentMerchantRegister1Binding.inflate(inflater,container,false)
+        binding = FragmentMerchantRegister1Binding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -82,13 +82,13 @@ class MerchantRegisterFragment1 : Fragment() {
 
 
     private fun uploadAction() {
-        val items = arrayOf("Camera","Select Image File")
+        val items = arrayOf("Camera", "Select Image File")
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.upload_license))
             .setItems(items) { _, which ->
 
-                when(which) {
+                when (which) {
                     0 -> openCamera()
                     1 -> selectFile()
                 }
@@ -99,7 +99,7 @@ class MerchantRegisterFragment1 : Fragment() {
     private inner class CaptureImageLauncherCallBack :
         ActivityResultCallback<ActivityResult> {
 
-        lateinit var file:File
+        lateinit var file: File
 
         override fun onActivityResult(result: ActivityResult?) {
             this@MerchantRegisterFragment1.infoViewModel.merchantRegisterInfo.licensePhoto =
@@ -110,23 +110,23 @@ class MerchantRegisterFragment1 : Fragment() {
     private val captureImageLauncherCallBack = CaptureImageLauncherCallBack()
 
     private val takeImageLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),captureImageLauncherCallBack)
+        ActivityResultContracts.StartActivityForResult(), captureImageLauncherCallBack)
 
     private val selectImageLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocument()) {result ->
+        ActivityResultContracts.OpenDocument()) { result ->
         if (result != null) {
 
             val resolver = requireContext().contentResolver
-            var byteArray:ByteArray? = null
+            var byteArray: ByteArray? = null
 
-            resolver.openInputStream(result).use { stream->
+            resolver.openInputStream(result).use { stream ->
                 stream?.let {
                     byteArray = it.readBytes()
                 }
             }
 
             byteArray?.apply {
-                val bitMap = BitmapFactory.decodeByteArray(this,0, this.size)
+                val bitMap = BitmapFactory.decodeByteArray(this, 0, this.size)
                 infoViewModel.merchantRegisterInfo.licensePhoto = bitMap
             }
         } else {
@@ -136,9 +136,9 @@ class MerchantRegisterFragment1 : Fragment() {
 
     private fun openCamera() {
 
-        var photoFile: File? = null;
+        var photoFile: File? = null
         try {
-            photoFile = createImageFile();
+            photoFile = createImageFile()
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -157,7 +157,7 @@ class MerchantRegisterFragment1 : Fragment() {
             takeImageLauncher.launch(takeImageIntent)
 
             MediaScannerConnection.scanFile(requireContext(), arrayOf(this.absolutePath),
-                null,null)
+                null, null)
         }
     }
 
@@ -166,7 +166,7 @@ class MerchantRegisterFragment1 : Fragment() {
     }
 
 
-    private fun checkCompanyName(text:String):Boolean {
+    private fun checkCompanyName(text: String): Boolean {
 
 
         val p = Processor<String>()
@@ -176,16 +176,16 @@ class MerchantRegisterFragment1 : Fragment() {
             else null
         }.process()
 
-        return if (r != null){
+        return if (r != null) {
             binding.companyNameLayout.error = r
             false
-        }else {
+        } else {
             binding.companyNameLayout.error = null
             true
         }
     }
 
-    private fun checkCompanyLicenseNumber(text: String):Boolean {
+    private fun checkCompanyLicenseNumber(text: String): Boolean {
 
 
         val p = Processor<String>()
@@ -204,10 +204,10 @@ class MerchantRegisterFragment1 : Fragment() {
         }
     }
 
-    private fun checkPhoto():Boolean {
+    private fun checkPhoto(): Boolean {
 
         if (infoViewModel.merchantRegisterInfo.licensePhoto == null) {
-            Toast.makeText(requireContext(),"Please Upload Your License Photo",
+            Toast.makeText(requireContext(), "Please Upload Your License Photo",
                 Toast.LENGTH_SHORT).show()
             return false
         }
@@ -215,6 +215,4 @@ class MerchantRegisterFragment1 : Fragment() {
     }
 }
 
-class ViewModel1:ViewModel() {
-
-}
+class ViewModel1 : ViewModel()

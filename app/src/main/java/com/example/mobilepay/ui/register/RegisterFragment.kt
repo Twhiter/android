@@ -1,7 +1,6 @@
 package com.example.mobilepay.ui.register
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.os.Bundle
@@ -32,19 +31,19 @@ import java.io.IOException
 
 class RegisterFragment : Fragment() {
 
-    private var _binding:FragmentRegisterBinding? = null
+    private var _binding: FragmentRegisterBinding? = null
 
     val binding get() = _binding!!
 
-    private val viewModel:RegisterViewModel by activityViewModels()
+    private val viewModel: RegisterViewModel by activityViewModels()
 
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentRegisterBinding.inflate(inflater,container,false)
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -69,7 +68,7 @@ class RegisterFragment : Fragment() {
 
         //set adaptor for countries
         val countries = requireContext().resources.getStringArray(R.array.country_list)
-        val adaptor = ArrayAdapter(requireContext(),R.layout.list_country_item,countries)
+        val adaptor = ArrayAdapter(requireContext(), R.layout.list_country_item, countries)
         binding.country.setAdapter(adaptor)
 
 
@@ -85,7 +84,8 @@ class RegisterFragment : Fragment() {
                 viewModel.setIdPhoto(binding.imageView.drawable.toBitmap())
 
 
-                val action =  RegisterFragmentDirections.actionRegisterFragmentToEmailAndPhoneVerify()
+                val action =
+                    RegisterFragmentDirections.actionRegisterFragmentToEmailAndPhoneVerify()
                 view.findNavController().navigate(action)
             }
         }
@@ -96,34 +96,36 @@ class RegisterFragment : Fragment() {
     }
 
 
-
-
-    private fun checkFirstName():Boolean {
-        return checkName(binding.firstName.text!!,binding.firstNameLayout,
+    private fun checkFirstName(): Boolean {
+        return checkName(binding.firstName.text!!, binding.firstNameLayout,
             getString(R.string.first_name_empty_prompt),
             getString(R.string.first_name_whiterspace_prompt))
+    }
+
+    private fun checkFamilyName(): Boolean {
+        return checkName(binding.familyName.text!!, binding.familyNameLayout,
+            getString(R.string.family_name_empty_prompt),
+            getString(R.string.family_name_whiterspace_prompt))
+    }
+
+    private fun checkName(
+        editable: CharSequence,
+        textLayoutInput: TextInputLayout,
+        vararg errorStrs: String,
+    ): Boolean {
+
+        if (editable.isBlank())
+            textLayoutInput.error = errorStrs[0]
+        else if (editable.contains(' '))
+            textLayoutInput.error = errorStrs[1]
+        else {
+            textLayoutInput.error = null
+            return true
         }
+        return false
+    }
 
-        private fun checkFamilyName():Boolean {
-            return checkName(binding.familyName.text!!,binding.familyNameLayout,
-                getString(R.string.family_name_empty_prompt),
-                getString(R.string.family_name_whiterspace_prompt))
-        }
-
-        private fun checkName(editable: CharSequence,textLayoutInput:TextInputLayout, vararg errorStrs:String):Boolean {
-
-            if (editable.isBlank())
-                textLayoutInput.error = errorStrs[0]
-            else if (editable.contains(' '))
-                textLayoutInput.error = errorStrs[1]
-            else {
-                textLayoutInput.error = null
-                return true
-            }
-            return false
-        }
-
-    private fun checkNationality():Boolean {
+    private fun checkNationality(): Boolean {
         if (binding.country.text.isBlank())
             binding.nationalityInputLayout.error = getString(R.string.select_nationality_prompt)
         else {
@@ -133,7 +135,7 @@ class RegisterFragment : Fragment() {
         return false
     }
 
-    private fun checkIDNumber():Boolean {
+    private fun checkIDNumber(): Boolean {
 
         binding.IDNumber.text?.apply {
 
@@ -148,10 +150,10 @@ class RegisterFragment : Fragment() {
         return true
     }
 
-    private fun checkIDDocument():Boolean {
+    private fun checkIDDocument(): Boolean {
 
         if (binding.imageView.drawable == null) {
-            Toast.makeText(requireContext(),R.string.upload_document_ID_prompt, Toast.LENGTH_LONG)
+            Toast.makeText(requireContext(), R.string.upload_document_ID_prompt, Toast.LENGTH_LONG)
                 .show()
             return false
         }
@@ -159,23 +161,23 @@ class RegisterFragment : Fragment() {
     }
 
 
-    private fun checkAll():Boolean {
+    private fun checkAll(): Boolean {
         return checkFirstName()
                 && checkFamilyName()
-                &&checkNationality()
-                &&checkIDNumber()
-                &&checkIDDocument()
+                && checkNationality()
+                && checkIDNumber()
+                && checkIDDocument()
     }
 
 
     private fun uploadAction() {
-        val items = arrayOf("Camera","Select Image File")
+        val items = arrayOf("Camera", "Select Image File")
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.upload_text))
             .setItems(items) { _, which ->
 
-                when(which) {
+                when (which) {
                     0 -> openCamera()
                     1 -> selectFile()
                 }
@@ -187,7 +189,7 @@ class RegisterFragment : Fragment() {
     private inner class CaptureImageLauncherCallBack :
         ActivityResultCallback<ActivityResult> {
 
-        lateinit var file:File
+        lateinit var file: File
 
         override fun onActivityResult(result: ActivityResult?) {
             viewModel.setIdPhoto(BitmapFactory.decodeFile(file.path))
@@ -197,39 +199,37 @@ class RegisterFragment : Fragment() {
     private val captureImageLauncherCallBack = CaptureImageLauncherCallBack()
 
     private val takeImageLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),captureImageLauncherCallBack)
-
+        ActivityResultContracts.StartActivityForResult(), captureImageLauncherCallBack)
 
 
     private val selectImageLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocument()) {result ->
+        ActivityResultContracts.OpenDocument()) { result ->
         if (result != null) {
 
             val resolver = requireContext().contentResolver
-            var byteArray:ByteArray? = null
+            var byteArray: ByteArray? = null
 
-            resolver.openInputStream(result).use { stream->
+            resolver.openInputStream(result).use { stream ->
                 stream?.let {
                     byteArray = it.readBytes()
                 }
             }
 
             byteArray?.apply {
-                viewModel.setIdPhoto(BitmapFactory.decodeByteArray(this,0, this.size))
+                viewModel.setIdPhoto(BitmapFactory.decodeByteArray(this, 0, this.size))
             }
         } else {
-            Log.d("Mainss", "error");
+            Log.d("Mainss", "error")
         }
     }
 
 
-
     private fun openCamera() {
 
-        var photoFile:File? = null;
+        var photoFile: File? = null
         try {
             photoFile = Util.createImageFile()
-        } catch (e:IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
         }
 
@@ -247,7 +247,7 @@ class RegisterFragment : Fragment() {
             takeImageLauncher.launch(takeImageIntent)
 
             MediaScannerConnection.scanFile(requireContext(), arrayOf(this.absolutePath),
-                null,null)
+                null, null)
         }
     }
 

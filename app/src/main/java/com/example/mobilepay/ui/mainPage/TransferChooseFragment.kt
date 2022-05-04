@@ -35,8 +35,8 @@ import kotlinx.coroutines.withContext
 
 class TransferChooseFragment : Fragment() {
 
-     lateinit var binding:FragmentTransferChooseBinding
-     val viewModel:TransferChooseViewModel by viewModels()
+    lateinit var binding: FragmentTransferChooseBinding
+    val viewModel: TransferChooseViewModel by viewModels()
 
     init {
         lifecycleScope.launchWhenCreated {
@@ -48,17 +48,20 @@ class TransferChooseFragment : Fragment() {
 
     companion object {
 
-        class Diff: DiffUtil.ItemCallback<SearchHistory>() {
+        class Diff : DiffUtil.ItemCallback<SearchHistory>() {
             override fun areItemsTheSame(oldItem: SearchHistory, newItem: SearchHistory): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: SearchHistory, newItem: SearchHistory): Boolean {
+            override fun areContentsTheSame(
+                oldItem: SearchHistory,
+                newItem: SearchHistory,
+            ): Boolean {
                 return oldItem.id == newItem.id
             }
         }
 
-        class SearchResultDiff:DiffUtil.ItemCallback<OverviewInfo>() {
+        class SearchResultDiff : DiffUtil.ItemCallback<OverviewInfo>() {
             override fun areItemsTheSame(oldItem: OverviewInfo, newItem: OverviewInfo): Boolean {
                 return oldItem.id == newItem.id
             }
@@ -69,15 +72,14 @@ class TransferChooseFragment : Fragment() {
         }
 
 
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
-        binding = FragmentTransferChooseBinding.inflate(inflater,container,false)
+        binding = FragmentTransferChooseBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -100,7 +102,7 @@ class TransferChooseFragment : Fragment() {
         //viewModel.historyRecords.value?.let(historyAdapter::submitList)
 
         //observe history and fresh recycleview when it updates
-        viewModel.historyRecords.observe(viewLifecycleOwner,historyAdapter::submitList)
+        viewModel.historyRecords.observe(viewLifecycleOwner, historyAdapter::submitList)
 
         //initialize search
         val searchResultAdapter = SearchResultAdapter()
@@ -108,12 +110,13 @@ class TransferChooseFragment : Fragment() {
         binding.result.layoutManager = WrapContentLinearLayoutManager(requireContext())
 
         //observe search result and fresh recycleview when it updates
-        viewModel.searchResults.observe(viewLifecycleOwner,searchResultAdapter::submitList)
+        viewModel.searchResults.observe(viewLifecycleOwner, searchResultAdapter::submitList)
 
 
         binding.searchText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT
-                && binding.searchText.text!!.isNotBlank()) {
+                && binding.searchText.text!!.isNotBlank()
+            ) {
                 search()
                 addHistory()
             }
@@ -122,8 +125,14 @@ class TransferChooseFragment : Fragment() {
 
         //set on change of the search input
         binding.searchText.addTextChangedListener(
-            object :TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int,
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
@@ -141,7 +150,7 @@ class TransferChooseFragment : Fragment() {
         viewModel.searchingLoading.value = true
         lifecycleScope.launch(Dispatchers.Default) {
             val resp = withContext(Dispatchers.IO) {
-                UserApi.service.searchUsers(binding.searchText.text.toString(),1,10)
+                UserApi.service.searchUsers(binding.searchText.text.toString(), 1, 10)
             }
 
             withContext(Dispatchers.Main) {
@@ -164,9 +173,9 @@ class TransferChooseFragment : Fragment() {
 
 
     fun addHistory() {
-        binding.searchText.text.toString().takeIf {it.isNotBlank()}?.let {
+        binding.searchText.text.toString().takeIf { it.isNotBlank() }?.let {
             lifecycleScope.launch(Dispatchers.IO) {
-                MainApplication.db().searchHistoryDao().insert(SearchHistory(0,it))
+                MainApplication.db().searchHistoryDao().insert(SearchHistory(0, it))
             }
         }
     }
@@ -175,13 +184,12 @@ class TransferChooseFragment : Fragment() {
         : ListAdapter<SearchHistory, RecyclerView.ViewHolder>(Diff()) {
 
 
-
         inner class HistoryRecord(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-            private val crossing:ImageView = itemView.findViewById(R.id.crossing)
-            private val history:TextView = itemView.findViewById(R.id.history)
+            private val crossing: ImageView = itemView.findViewById(R.id.crossing)
+            private val history: TextView = itemView.findViewById(R.id.history)
 
-            fun onBind(searchHistory:SearchHistory) {
+            fun onBind(searchHistory: SearchHistory) {
 
                 history.text = searchHistory.keyword
 
@@ -201,7 +209,7 @@ class TransferChooseFragment : Fragment() {
 
         }
 
-        inner class TailButton(itemView: View):RecyclerView.ViewHolder(itemView) {
+        inner class TailButton(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val clearBtn: Button = itemView.findViewById(R.id.clear)
 
             fun onBind() {
@@ -215,14 +223,14 @@ class TransferChooseFragment : Fragment() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view:View
+            val view: View
             if (viewType == 0) {
                 view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_history_item,parent,false)
+                    .inflate(R.layout.list_history_item, parent, false)
                 return HistoryRecord(view)
-            }else {
+            } else {
                 view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_history_item_tail,parent,false)
+                    .inflate(R.layout.list_history_item_tail, parent, false)
                 return TailButton(view)
             }
         }
@@ -249,26 +257,25 @@ class TransferChooseFragment : Fragment() {
     }
 
 
-
     inner class SearchResultAdapter
-        :ListAdapter<OverviewInfo, SearchResultAdapter.SearchResultItem>(SearchResultDiff()) {
+        : ListAdapter<OverviewInfo, SearchResultAdapter.SearchResultItem>(SearchResultDiff()) {
 
-         inner class SearchResultItem(view: View):RecyclerView.ViewHolder(view) {
+        inner class SearchResultItem(view: View) : RecyclerView.ViewHolder(view) {
 
-            private val avatar:ImageView = itemView.findViewById(R.id.avatar)
-            private val name:TextView = itemView.findViewById(R.id.name)
-            private val phoneNumber:TextView = itemView.findViewById(R.id.phoneNumber)
-            private val email:TextView = itemView.findViewById(R.id.email)
-            private val layout:ConstraintLayout = itemView.findViewById(R.id.resultItem)
+            private val avatar: ImageView = itemView.findViewById(R.id.avatar)
+            private val name: TextView = itemView.findViewById(R.id.name)
+            private val phoneNumber: TextView = itemView.findViewById(R.id.phoneNumber)
+            private val email: TextView = itemView.findViewById(R.id.email)
+            private val layout: ConstraintLayout = itemView.findViewById(R.id.resultItem)
 
             fun bind(overviewInfo: OverviewInfo) {
-                bindImage(avatar,overviewInfo.avatar)
+                bindImage(avatar, overviewInfo.avatar)
                 name.text = overviewInfo.name
                 phoneNumber.text = overviewInfo.phoneNumber
                 email.text = overviewInfo.email
 
                 layout.setOnClickListener {
-                    val qrCodeContent = QrCodeContent(overviewInfo.id,Type.User)
+                    val qrCodeContent = QrCodeContent(overviewInfo.id, Type.User)
                     val action = TransferChooseFragmentDirections
                         .actionTransferChooseFragmentToPayFragment(qrCodeContent)
                     findNavController().navigate(action)
@@ -278,9 +285,9 @@ class TransferChooseFragment : Fragment() {
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultItem {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_search_result_item,parent,false)
-                return SearchResultItem(view)
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_search_result_item, parent, false)
+            return SearchResultItem(view)
         }
 
         override fun onBindViewHolder(holder: SearchResultItem, position: Int) {
@@ -289,26 +296,28 @@ class TransferChooseFragment : Fragment() {
     }
 }
 
-class TransferChooseViewModel: ViewModel() {
+class TransferChooseViewModel : ViewModel() {
 
     val historyRecords: MutableLiveData<List<SearchHistory>> = MutableLiveData(listOf())
     val onSearchMode = MutableLiveData(false)
-    val searchResults:MutableLiveData<List<OverviewInfo>> = MutableLiveData(listOf())
+    val searchResults: MutableLiveData<List<OverviewInfo>> = MutableLiveData(listOf())
     val searchingLoading = MutableLiveData(false)
     val page = MutableLiveData(1)
     val maxPage = MutableLiveData(1)
 
-    val searchResultsReady:LiveData<Boolean> = CombinedLiveData(onSearchMode,searchingLoading) {
+    val searchResultsReady: LiveData<Boolean> = CombinedLiveData(onSearchMode, searchingLoading) {
         (it[0] as Boolean) && (!(it[1] as Boolean))
     }
 
-    val searchResultsFound: LiveData<Boolean> = CombinedLiveData(searchResultsReady,searchResults) {
-        (it[0] as Boolean) && (it[1] as List<OverviewInfo>).isNotEmpty()
-    }
+    val searchResultsFound: LiveData<Boolean> =
+        CombinedLiveData(searchResultsReady, searchResults) {
+            (it[0] as Boolean) && (it[1] as List<OverviewInfo>).isNotEmpty()
+        }
 
-    val searchResultsNotFound:LiveData<Boolean> = CombinedLiveData(searchResultsReady,searchResults) {
-        (it[0] as Boolean) && (it[1] as List<OverviewInfo>).isEmpty()
-    }
+    val searchResultsNotFound: LiveData<Boolean> =
+        CombinedLiveData(searchResultsReady, searchResults) {
+            (it[0] as Boolean) && (it[1] as List<OverviewInfo>).isEmpty()
+        }
 
 }
 

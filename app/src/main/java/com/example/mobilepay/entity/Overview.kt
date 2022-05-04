@@ -6,13 +6,13 @@ import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
-data class OverviewInfo (
-    @JsonProperty("id") val id:Int,
+data class OverviewInfo(
+    @JsonProperty("id") val id: Int,
     @JsonProperty("type") val type: String,
-    @JsonProperty("avatar")val avatar: String?,
-    @JsonProperty("name")val name: String,
-    @JsonProperty("phoneNumber")val phoneNumber:String,
-    @JsonProperty("email") val email:String
+    @JsonProperty("avatar") val avatar: String?,
+    @JsonProperty("name") val name: String,
+    @JsonProperty("phoneNumber") val phoneNumber: String,
+    @JsonProperty("email") val email: String,
 ) : Parcelable {
 
 

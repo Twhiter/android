@@ -17,41 +17,43 @@ import java.util.*
 
 class BillDetailFragment : Fragment() {
 
-    private lateinit var binding:FragmentBillDetailBinding
-    val args:BillDetailFragmentArgs by navArgs()
+    private lateinit var binding: FragmentBillDetailBinding
+    val args: BillDetailFragmentArgs by navArgs()
 
     val billRecord get() = args.billRecord
-    val isRefunded:Boolean get() = billRecord.billType == BillType.refunded_pay
-    val refundedTimeString:String get() = run {
-        Util.toBillShowDateFormat(billRecord.extraData["refundedTime"] as Date?)?:""
-    }
-
-    val amountColor get() =
-        when {
-            billRecord.billType == BillType.refunded_pay -> requireContext().getColor(R.color.color_danger)
-            billRecord.amount > BigDecimal.ZERO -> requireContext().getColor(R.color.color_success)
-            else -> requireContext().getColor(R.color.black)
+    val isRefunded: Boolean get() = billRecord.billType == BillType.refunded_pay
+    val refundedTimeString: String
+        get() = run {
+            Util.toBillShowDateFormat(billRecord.extraData["refundedTime"] as Date?) ?: ""
         }
 
+    val amountColor
+        get() =
+            when {
+                billRecord.billType == BillType.refunded_pay -> requireContext().getColor(R.color.color_danger)
+                billRecord.amount > BigDecimal.ZERO -> requireContext().getColor(R.color.color_success)
+                else -> requireContext().getColor(R.color.black)
+            }
 
 
+    val shouldRefundBtnShow: Boolean
+        get() =
+            billRecord.billType == BillType.pay && !args.isUser
 
-    val shouldRefundBtnShow:Boolean get() =
-        billRecord.billType == BillType.pay && !args.isUser
-
-    val remarks:String get() = run {
-        if (billRecord.extraData.containsKey("remarks"))
-            billRecord.extraData["remarks"] as String
-        else
-            ""
-    }
+    val remarks: String
+        get() = run {
+            if (billRecord.extraData.containsKey("remarks"))
+                billRecord.extraData["remarks"] as String
+            else
+                ""
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentBillDetailBinding.inflate(layoutInflater,container,false)
+        binding = FragmentBillDetailBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -65,7 +67,6 @@ class BillDetailFragment : Fragment() {
         }
 
     }
-
 
 
 }

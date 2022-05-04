@@ -17,7 +17,6 @@ import com.example.mobilepay.PhoneCode
 import com.example.mobilepay.R
 import com.example.mobilepay.Util
 import com.example.mobilepay.databinding.FragmentMerchantRegister2Binding
-import com.example.mobilepay.entity.ResponseData
 import com.example.mobilepay.network.VerifyApi
 import com.example.mobilepay.network.VerifyApiService
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -27,16 +26,16 @@ import kotlinx.coroutines.launch
 
 class MerchantRegisterFragment2 : Fragment() {
 
-    private val viewModel:ViewModel2 by viewModels()
-    private val infoViewModel:MerchantRegisterViewModel by activityViewModels()
+    private val viewModel: ViewModel2 by viewModels()
+    private val infoViewModel: MerchantRegisterViewModel by activityViewModels()
     private lateinit var binding: FragmentMerchantRegister2Binding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentMerchantRegister2Binding.inflate(inflater,container,false)
+        binding = FragmentMerchantRegister2Binding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -65,7 +64,7 @@ class MerchantRegisterFragment2 : Fragment() {
 
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.country_region_prompt))
-                .setItems(items.toTypedArray()) {_,which ->
+                .setItems(items.toTypedArray()) { _, which ->
                     binding.codeSelect.setText(PhoneCode.COUNTRY_CODES[which].code)
                 }
                 .show()
@@ -87,7 +86,6 @@ class MerchantRegisterFragment2 : Fragment() {
         binding.send.setOnClickListener {
             sendPhoneVerify()
         }
-
 
 
     }
@@ -125,7 +123,7 @@ class MerchantRegisterFragment2 : Fragment() {
     }
 
 
-    private fun checkPhone():Boolean {
+    private fun checkPhone(): Boolean {
 
         //do not check phone number if the phone code is not selected
         if (binding.codeSelect.text.isBlank())
@@ -145,25 +143,25 @@ class MerchantRegisterFragment2 : Fragment() {
         }
     }
 
-    private fun checkCode():Boolean {
+    private fun checkCode(): Boolean {
         return if (binding.codeSelect.text.isBlank()) {
             binding.codeSelectLayout.error = "Please Select Code"
             false
-        }else {
+        } else {
             binding.codeSelectLayout.error = null
             true
         }
     }
 
-    private suspend fun checkPhoneVerifyCode():String? {
+    private suspend fun checkPhoneVerifyCode(): String? {
 
 
         if (binding.phoneVerifyCode.text.isNullOrBlank())
             return "Please Input verify code"
 
         val resp = VerifyApi.service.checkVerifyCode("phone",
-            binding.codeSelect.text.toString() + binding.phone.text.toString()
-            ,binding.phoneVerifyCode.text.toString())
+            binding.codeSelect.text.toString() + binding.phone.text.toString(),
+            binding.phoneVerifyCode.text.toString())
 
         val isCorrect = resp.handleOneWithDefault(requireContext()) {
             it.data ?: false
@@ -175,15 +173,15 @@ class MerchantRegisterFragment2 : Fragment() {
             getString(R.string.incorrect_verify_code_prompt)
     }
 
-    private  fun sendPhoneVerify() {
+    private fun sendPhoneVerify() {
 
         if (!(checkCode() && checkPhone()))
             return
 
         lifecycleScope.launch(Dispatchers.IO) {
 
-           val resp = VerifyApiService.sendVerifyCode("phone",binding.codeSelect.text.toString()
-                   + binding.phone.text.toString())
+            val resp = VerifyApiService.sendVerifyCode("phone", binding.codeSelect.text.toString()
+                    + binding.phone.text.toString())
 
             val isOkay = resp.handleDefault(requireContext())
             if (!isOkay)
@@ -193,12 +191,9 @@ class MerchantRegisterFragment2 : Fragment() {
     }
 
 
-
-
-
 }
 
-class ViewModel2:ViewModel() {
+class ViewModel2 : ViewModel() {
 
     val useIndividualPhone = MutableLiveData(true)
 

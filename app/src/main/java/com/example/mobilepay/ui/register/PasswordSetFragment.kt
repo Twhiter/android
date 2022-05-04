@@ -26,7 +26,7 @@ import java.io.File
 import java.util.*
 
 
-typealias onPayFinishHandler = (pass:String?) -> Unit
+typealias onPayFinishHandler = (pass: String?) -> Unit
 
 
 class PasswordSetFragment : Fragment() {
@@ -35,13 +35,12 @@ class PasswordSetFragment : Fragment() {
 
     val binding get() = _binding
 
-    private val viewModel:RegisterViewModel by activityViewModels()
-
+    private val viewModel: RegisterViewModel by activityViewModels()
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
         _binding = FragmentRegisterPasswordSetBinding.inflate(inflater, container, false)
@@ -51,42 +50,45 @@ class PasswordSetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //check password and repeat password the same
-        binding.confirmPassword.setOnFocusChangeListener {_,isFocused ->
+        binding.confirmPassword.setOnFocusChangeListener { _, isFocused ->
             if (!isFocused)
-            checkPassword()
+                checkPassword()
         }
 
         binding.paymentPassword.setOnClickListener {
 
             viewModel.setPassword("")
-            val paymentDialog = PaymentDialog(requireContext(),layoutInflater)
+            val paymentDialog = PaymentDialog(requireContext(), layoutInflater)
             paymentDialog.setTitle("Please set password")
             paymentDialog.setForgetText("")
-            paymentDialog.setHandler(object :PayHandler {
+            paymentDialog.setHandler(object : PayHandler {
                 override fun onFinish(password: String) {
 
-                    val first:String = password
+                    val first: String = password
 
-                    val paymentDialog2 = PaymentDialog(requireContext(),layoutInflater)
+                    val paymentDialog2 = PaymentDialog(requireContext(), layoutInflater)
                     paymentDialog2.setTitle("Please confirm password")
                     paymentDialog2.setForgetText("")
 
-                    paymentDialog2.setHandler(object :PayHandler {
+                    paymentDialog2.setHandler(object : PayHandler {
                         override fun onFinish(password: String) {
-                            val second:String = password
+                            val second: String = password
                             if (first == second) {
-                                Toast.makeText(requireContext(),"setting password successfully!"
-                                    ,Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(),
+                                    "setting password successfully!",
+                                    Toast.LENGTH_SHORT).show()
                                 viewModel.setPaymentPassword(second)
                             } else
-                                Toast.makeText(requireContext(),"Password not the same",
+                                Toast.makeText(requireContext(), "Password not the same",
                                     Toast.LENGTH_SHORT).show()
                         }
+
                         override fun onClose() {}
                         override fun onForgetPassword() {}
                     }).show()
 
                 }
+
                 override fun onClose() {}
                 override fun onForgetPassword() {}
 
@@ -96,35 +98,32 @@ class PasswordSetFragment : Fragment() {
         binding.finish.setOnClickListener { finish() }
 
 
-
     }
 
 
-    private fun checkPassword():Boolean {
+    private fun checkPassword(): Boolean {
 
         val confirmPwd = binding.confirmPassword.text.toString()
         val password = binding.password.text.toString()
         if (confirmPwd != password) {
             binding.confirmPasswordLayout.error = getString(R.string.password_not_same_prompt)
             return false
-        }
-        else {
+        } else {
             binding.confirmPasswordLayout.error = null
             return true
         }
     }
 
-    private fun checkPaymentPassword():Boolean {
+    private fun checkPaymentPassword(): Boolean {
         return if (viewModel.paymentPassword.value.isNullOrEmpty()) {
-            Toast.makeText(requireContext(),"Payment password not set",Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Payment password not set", Toast.LENGTH_LONG).show()
             false
-        }else
+        } else
             true
     }
 
 
-
-    private fun checkAll():Boolean {
+    private fun checkAll(): Boolean {
         return checkPassword() && checkPaymentPassword()
     }
 
@@ -141,7 +140,7 @@ class PasswordSetFragment : Fragment() {
 
             if (resp.status != ResponseData.OK) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(),resp.errorPrompt,Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), resp.errorPrompt, Toast.LENGTH_LONG).show()
                 }
                 return@launch
             }
@@ -153,30 +152,38 @@ class PasswordSetFragment : Fragment() {
     }
 
 
-    private suspend fun submitData():ResponseData<*> {
+    private suspend fun submitData(): ResponseData<*> {
 
-        val country = MultipartBody.Part.createFormData("country",viewModel.nationality.value!!)
-        val email = MultipartBody.Part.createFormData("email",viewModel.email.value!!)
-        val firstName = MultipartBody.Part.createFormData("firstName",viewModel.firstName.value!!)
-        val lastName = MultipartBody.Part.createFormData("lastName",viewModel.familyName.value!!)
-        val passportNumber = MultipartBody.Part.createFormData("passportNumber",viewModel.IdNumber.value!!)
-        val password = MultipartBody.Part.createFormData("password",viewModel.password.value!!)
-        val paymentPassword = MultipartBody.Part.createFormData("paymentPassword"
-            ,viewModel.paymentPassword.value!!)
-        val phoneNumber = MultipartBody.Part.createFormData("phoneNumber"
-            ,viewModel.phoneCode.value!! + viewModel.phone.value!!)
+        val country = MultipartBody.Part.createFormData("country", viewModel.nationality.value!!)
+        val email = MultipartBody.Part.createFormData("email", viewModel.email.value!!)
+        val firstName = MultipartBody.Part.createFormData("firstName", viewModel.firstName.value!!)
+        val lastName = MultipartBody.Part.createFormData("lastName", viewModel.familyName.value!!)
+        val passportNumber =
+            MultipartBody.Part.createFormData("passportNumber", viewModel.IdNumber.value!!)
+        val password = MultipartBody.Part.createFormData("password", viewModel.password.value!!)
+        val paymentPassword =
+            MultipartBody.Part.createFormData("paymentPassword", viewModel.paymentPassword.value!!)
+        val phoneNumber = MultipartBody.Part.createFormData("phoneNumber",
+            viewModel.phoneCode.value!! + viewModel.phone.value!!)
 
         return withContext(Dispatchers.IO) {
-            val f = File(requireContext().filesDir,UUID.randomUUID().toString() + ".jpeg")
+            val f = File(requireContext().filesDir, UUID.randomUUID().toString() + ".jpeg")
 
-            viewModel.IdPhoto.value!!.compress(Bitmap.CompressFormat.JPEG,100,f.outputStream())
+            viewModel.IdPhoto.value!!.compress(Bitmap.CompressFormat.JPEG, 100, f.outputStream())
 
-            val passportPhoto = MultipartBody.Part.createFormData("passportPhoto",f.name,
-                RequestBody.create(MediaType.parse("image/*"),f))
+            val passportPhoto = MultipartBody.Part.createFormData("passportPhoto", f.name,
+                RequestBody.create(MediaType.parse("image/*"), f))
 
 
-            val resp = UserApi.service.register(country, email, firstName, lastName, passportNumber
-                , passportPhoto, password, paymentPassword, phoneNumber)
+            val resp = UserApi.service.register(country,
+                email,
+                firstName,
+                lastName,
+                passportNumber,
+                passportPhoto,
+                password,
+                paymentPassword,
+                phoneNumber)
             f.delete()
             resp
         }
@@ -184,11 +191,10 @@ class PasswordSetFragment : Fragment() {
 
     private fun toFinalPage() {
         val action = PasswordSetFragmentDirections.actionPasswordSetFragmentToFinalFragment(
-            viewModel.phoneNumber,viewModel.email.value!!
+            viewModel.phoneNumber, viewModel.email.value!!
         )
         findNavController().navigate(action)
     }
-
 
 
 }

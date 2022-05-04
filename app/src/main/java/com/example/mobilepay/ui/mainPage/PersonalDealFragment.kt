@@ -15,7 +15,7 @@ class PersonalDealFragment : Fragment() {
 
 
     private val viewModel: MainPageViewModel by activityViewModels()
-    private lateinit var binding:FragmentPersonalDealBinding
+    private lateinit var binding: FragmentPersonalDealBinding
 
     override fun onResume() {
         super.onResume()
@@ -25,10 +25,10 @@ class PersonalDealFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
-        binding = FragmentPersonalDealBinding.inflate(inflater,container,false)
+        binding = FragmentPersonalDealBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -37,13 +37,14 @@ class PersonalDealFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.transferBtn.setOnClickListener {toTransfer()}
+        binding.transferBtn.setOnClickListener { toTransfer() }
         binding.bill.setOnClickListener { toBill() }
 
     }
 
     private fun toTransfer() {
-        val action = PersonalDealFragmentDirections.actionPersonalDealFramentToTransferChooseFragment()
+        val action =
+            PersonalDealFragmentDirections.actionPersonalDealFramentToTransferChooseFragment()
         findNavController().navigate(action)
     }
 

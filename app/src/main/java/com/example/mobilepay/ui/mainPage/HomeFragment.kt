@@ -1,10 +1,10 @@
 package com.example.mobilepay.ui.mainPage
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -17,7 +17,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel: MainPageViewModel by activityViewModels()
 
-    private lateinit var _binding:FragmentHomeBinding
+    private lateinit var _binding: FragmentHomeBinding
 
     val binding get() = _binding
 
@@ -27,25 +27,23 @@ class HomeFragment : Fragment() {
     }
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
 
-
-        _binding = FragmentHomeBinding.inflate(inflater,container,false);
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return _binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.payLinearLayout.setOnClickListener{ toPay() }
+        binding.payLinearLayout.setOnClickListener { toPay() }
         binding.receiveLinearLayout.setOnClickListener { toReceive() }
         binding.transferLinearLayout.setOnClickListener { toTransfer() }
         binding.payBtn.setOnClickListener { toPay() }
-        binding.requestBtn.setOnClickListener { toTransfer()}
+        binding.requestBtn.setOnClickListener { toTransfer() }
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -66,8 +64,6 @@ class HomeFragment : Fragment() {
         findNavController().navigate(action)
 
     }
-
-
 
 
 }

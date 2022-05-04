@@ -11,15 +11,13 @@ import java.util.*
 
 @Parcelize
 data class BillRecord(
-    @JsonProperty("overviewInfo")val overviewInfo: OverviewInfo,
-    @JsonProperty("billType")val billType:BillType,
-    @JsonProperty("recordId")val recordId:Int,
-    @JsonProperty("amount")val amount:BigDecimal,
-    @JsonProperty("date")val date:Date,
-    @JsonProperty("extraData")  val extraData:@RawValue Map<String, Any>
-): Record, Parcelable {
-
-
+    @JsonProperty("overviewInfo") val overviewInfo: OverviewInfo,
+    @JsonProperty("billType") val billType: BillType,
+    @JsonProperty("recordId") val recordId: Int,
+    @JsonProperty("amount") val amount: BigDecimal,
+    @JsonProperty("date") val date: Date,
+    @JsonProperty("extraData") val extraData: @RawValue Map<String, Any>,
+) : Record, Parcelable {
 
 
     override fun equals(other: Any?): Boolean {
@@ -49,7 +47,7 @@ data class BillRecord(
     }
 }
 
-enum class BillType(@JsonValue val prompt:String) {
+enum class BillType(@JsonValue val prompt: String) {
     transfer_in("Transfer In"),
     transfer_out("Transfer Out"),
     pay("Pay"),

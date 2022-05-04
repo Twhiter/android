@@ -16,7 +16,7 @@ class BusinessDealFragment : Fragment() {
 
 
     private val viewModel: MainPageViewModel by activityViewModels()
-    private lateinit var binding:FragmentBusinessDealBinding
+    private lateinit var binding: FragmentBusinessDealBinding
 
     override fun onResume() {
         super.onResume()
@@ -26,9 +26,9 @@ class BusinessDealFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentBusinessDealBinding.inflate(inflater,container,false)
+        binding = FragmentBusinessDealBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -39,7 +39,7 @@ class BusinessDealFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.apply.setOnClickListener {
-            val intent = Intent(requireContext(),MerchantRegisterActivity::class.java)
+            val intent = Intent(requireContext(), MerchantRegisterActivity::class.java)
             startActivity(intent)
         }
 

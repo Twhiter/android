@@ -26,19 +26,19 @@ import kotlinx.coroutines.withContext
 
 class EmailAndPhoneVerify : Fragment() {
 
-    private lateinit var _binding:FragmentEmailAndPhoneVerifyBinding
+    private lateinit var _binding: FragmentEmailAndPhoneVerifyBinding
 
     val binding get() = _binding
 
-    private val viewModel:RegisterViewModel by activityViewModels()
+    private val viewModel: RegisterViewModel by activityViewModels()
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
-        _binding = FragmentEmailAndPhoneVerifyBinding.inflate(inflater,container,false)
+        _binding = FragmentEmailAndPhoneVerifyBinding.inflate(inflater, container, false)
         return _binding.root
     }
 
@@ -54,7 +54,7 @@ class EmailAndPhoneVerify : Fragment() {
 
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.country_region_prompt))
-                .setItems(items.toTypedArray()) {_,which ->
+                .setItems(items.toTypedArray()) { _, which ->
                     binding.codeSelect.setText(PhoneCode.COUNTRY_CODES[which].code)
                 }
                 .show()
@@ -74,30 +74,30 @@ class EmailAndPhoneVerify : Fragment() {
 
     }
 
-    private fun checkPhoneCode():Boolean {
+    private fun checkPhoneCode(): Boolean {
         return if (binding.codeSelect.text.toString() == "") {
             binding.codeSelectLayout.error = getString(R.string.select_code_prompt)
             false
-        }else {
+        } else {
             binding.codeSelectLayout.error = null
             true
         }
     }
 
-    private fun checkPhone():Boolean {
-        val isOkay:Boolean = Util
+    private fun checkPhone(): Boolean {
+        val isOkay: Boolean = Util
             .checkPhone(binding.codeSelect.toString() + binding.phone.text.toString())
 
         return if (isOkay) {
             true
-        }else {
+        } else {
             binding.phoneLayout.error = getString(R.string.incorrect_phone_number_prompt)
             false
         }
 
     }
 
-    private suspend fun checkPhoneVerifyCode():Boolean {
+    private suspend fun checkPhoneVerifyCode(): Boolean {
 
         if (binding.phoneVerifyCode.text?.isBlank() == true) {
             CoroutineScope(Dispatchers.Main).launch {
@@ -114,14 +114,15 @@ class EmailAndPhoneVerify : Fragment() {
 
         if (resp.status != ResponseData.OK) {
             CoroutineScope(Dispatchers.Main).launch {
-                Toast.makeText(requireContext(),resp.errorPrompt,Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), resp.errorPrompt, Toast.LENGTH_LONG).show()
             }
             return false
         } else {
             if (resp.data == false) {
 
                 CoroutineScope(Dispatchers.Main).launch {
-                    binding.phoneVerifyCodeLayout.error = getString(R.string.incorrect_verify_code_prompt)
+                    binding.phoneVerifyCodeLayout.error =
+                        getString(R.string.incorrect_verify_code_prompt)
                 }
                 return false
             }
@@ -141,22 +142,26 @@ class EmailAndPhoneVerify : Fragment() {
             val resp = sendVerifyCode("phone",
                 binding.codeSelect.text.toString() + binding.phone.text.toString())
 
-                if (resp.status != ResponseData.OK) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), resp.errorPrompt, Toast.LENGTH_LONG).show()
-                    }
-                    return@launch
+            if (resp.status != ResponseData.OK) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), resp.errorPrompt, Toast.LENGTH_LONG).show()
                 }
-                suspendSend(binding.send)
+                return@launch
+            }
+            suspendSend(binding.send)
         }
     }
 
-    private suspend fun checkVerifyCode(type:String,target:String,code:String):ResponseData<Boolean> {
+    private suspend fun checkVerifyCode(
+        type: String,
+        target: String,
+        code: String,
+    ): ResponseData<Boolean> {
         return VerifyApi.service.checkVerifyCode(type, target, code)
     }
 
 
-    private fun checkEmail():Boolean {
+    private fun checkEmail(): Boolean {
         binding.email.text?.apply {
             val isOkay = Util.checkEmail(this.toString())
             if (isOkay) {
@@ -170,30 +175,28 @@ class EmailAndPhoneVerify : Fragment() {
     }
 
 
-
-
     private fun sendEmailVerifyCode() {
         if (!checkEmail())
             return
         CoroutineScope(Dispatchers.IO).launch {
             val resp = sendVerifyCode("email", binding.email.text.toString())
 
-                if (resp.status != ResponseData.OK) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), resp.errorPrompt, Toast.LENGTH_LONG).show()
-                    }
-                    return@launch
+            if (resp.status != ResponseData.OK) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), resp.errorPrompt, Toast.LENGTH_LONG).show()
                 }
-                suspendSend(binding.sendEmail)
+                return@launch
+            }
+            suspendSend(binding.sendEmail)
         }
     }
 
-    private suspend fun checkEmailVerifyCode():Boolean {
+    private suspend fun checkEmailVerifyCode(): Boolean {
 
         if (binding.email.text?.isBlank() == true) {
-           CoroutineScope(Dispatchers.Main).launch {
-               binding.phoneVerifyCodeLayout.error = "Please Input Verify Code"
-           }
+            CoroutineScope(Dispatchers.Main).launch {
+                binding.phoneVerifyCodeLayout.error = "Please Input Verify Code"
+            }
             return false
         }
 
@@ -205,7 +208,7 @@ class EmailAndPhoneVerify : Fragment() {
 
         if (resp.status != ResponseData.OK) {
             lifecycleScope.launch(Dispatchers.Main) {
-                Toast.makeText(requireContext(),resp.errorPrompt,Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), resp.errorPrompt, Toast.LENGTH_LONG).show()
             }
 
             return false
@@ -213,7 +216,8 @@ class EmailAndPhoneVerify : Fragment() {
             if (resp.data == false) {
 
                 lifecycleScope.launch(Dispatchers.Main) {
-                    binding.emailInputLayout.error = getString(R.string.incorrect_verify_code_prompt)
+                    binding.emailInputLayout.error =
+                        getString(R.string.incorrect_verify_code_prompt)
                 }
                 return false
             }
@@ -236,14 +240,13 @@ class EmailAndPhoneVerify : Fragment() {
                 viewModel.setPhoneCode(binding.codeSelect.text.toString())
                 viewModel.setPhone(binding.phone.text.toString())
                 viewModel.setEmail(binding.email.text.toString())
-                val action =  EmailAndPhoneVerifyDirections.actionEmailAndPhoneVerifyToPasswordSetFragment()
+                val action =
+                    EmailAndPhoneVerifyDirections.actionEmailAndPhoneVerifyToPasswordSetFragment()
                 requireView().findNavController().navigate(action)
             }
 
         }
     }
-
-
 
 
 }

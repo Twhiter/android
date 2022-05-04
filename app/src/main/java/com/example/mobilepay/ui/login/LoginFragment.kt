@@ -1,6 +1,5 @@
 package com.example.mobilepay.ui.login
 
-import android.app.VoiceInteractor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import com.example.mobilepay.MainActivity
 import com.example.mobilepay.MainApplication
 import com.example.mobilepay.databinding.FragmentLoginBinding
 import com.example.mobilepay.entity.ResponseData
-import com.example.mobilepay.entity.User
 import com.example.mobilepay.network.MerchantApi
 import com.example.mobilepay.network.UserApi
 import com.example.mobilepay.room.roomEntity.KV
@@ -27,7 +25,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -83,17 +81,18 @@ class LoginFragment : Fragment() {
                 }
 
 
-
                 //store the token
-                db.kvDao().set(KV("token",it.token))
+                db.kvDao().set(KV("token", it.token))
 
                 val userResp = UserApi.service.fetchInfo(it.token)
                 val merchantResp = MerchantApi.service.fetchInfo(it.token)
 
                 if (userResp.errorPrompt != null || userResp.data == null) {
-                   withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         Toast
-                            .makeText(requireContext(),userResp.errorPrompt?:"error",Toast.LENGTH_SHORT)
+                            .makeText(requireContext(),
+                                userResp.errorPrompt ?: "error",
+                                Toast.LENGTH_SHORT)
                             .show()
                     }
                     return@launch
@@ -117,7 +116,7 @@ class LoginFragment : Fragment() {
             }
         }
 
-        withContext(Dispatchers.Main){
+        withContext(Dispatchers.Main) {
             binding.loginLoading.visibility = View.VISIBLE
         }
         job.join()

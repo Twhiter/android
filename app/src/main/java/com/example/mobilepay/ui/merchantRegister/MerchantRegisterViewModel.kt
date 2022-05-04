@@ -6,66 +6,67 @@ import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.ViewModel
 
-class MerchantRegisterViewModel:ViewModel() {
+class MerchantRegisterViewModel : ViewModel() {
 
     val merchantRegisterInfo = MerchantRegisterInfo()
 }
 
 
-class MerchantRegisterInfo :BaseObservable() {
+class MerchantRegisterInfo : BaseObservable() {
 
 
     @get:Bindable
     var companyName = ""
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.companyName)
-    }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.companyName)
+        }
 
     @get:Bindable
     var licenseNumber = ""
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.licenseNumber)
-    }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.licenseNumber)
+        }
 
     @get:Bindable
-    var licensePhoto:Bitmap? = null
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.licensePhoto)
-    }
+    var licensePhoto: Bitmap? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.licensePhoto)
+        }
 
     @get:Bindable
-    var phoneCode:String?=null
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.phoneCode)
-    }
-
-
-    @get:Bindable
-    var phoneDigits:String? = null
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.phoneDigits)
-    }
+    var phoneCode: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.phoneCode)
+        }
 
 
     @get:Bindable
-    var email:String? = ""
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.email)
-    }
+    var phoneDigits: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.phoneDigits)
+        }
 
 
-    val phoneNumber:String? get() {
-        return if (phoneCode == null || phoneDigits == null)
-            null
-        else
-            phoneCode + phoneDigits
-    }
+    @get:Bindable
+    var email: String? = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.email)
+        }
+
+
+    val phoneNumber: String?
+        get() {
+            return if (phoneCode == null || phoneDigits == null)
+                null
+            else
+                phoneCode + phoneDigits
+        }
 
 
 }

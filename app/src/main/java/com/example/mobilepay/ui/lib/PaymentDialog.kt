@@ -15,22 +15,22 @@ import com.example.mobilepay.databinding.FragmentPayKeyboardBinding
 
 class PaymentDialog(private val context: Context, inflater: LayoutInflater) {
 
-    private val builder: AlertDialog.Builder = AlertDialog.Builder(context,R.style.Theme_MobilePay)
+    private val builder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.Theme_MobilePay)
     private val binding: FragmentPayKeyboardBinding = FragmentPayKeyboardBinding.inflate(inflater)
-    private var payHandler:PayHandler = PayHandler.Companion.DefaultHandler
-    private lateinit var dialog:AlertDialog
-    private val password:CharArray = CharArray(6)
+    private var payHandler: PayHandler = PayHandler.Companion.DefaultHandler
+    private lateinit var dialog: AlertDialog
+    private val password: CharArray = CharArray(6)
 
 
-    private var title:String = "Pay"
+    private var title: String = "Pay"
 
     private var forgetText = "forget password?"
 
-    fun setTitle(title:String) {
+    fun setTitle(title: String) {
         this.title = title
     }
 
-    fun setForgetText(forgetText:String) {
+    fun setForgetText(forgetText: String) {
         this.forgetText = forgetText
     }
 
@@ -41,8 +41,6 @@ class PaymentDialog(private val context: Context, inflater: LayoutInflater) {
     fun getForgetText(): String {
         return this.forgetText
     }
-
-
 
 
     fun getBuilder(): AlertDialog.Builder {
@@ -64,13 +62,13 @@ class PaymentDialog(private val context: Context, inflater: LayoutInflater) {
 
     fun show() {
 
-        val numbers:List<Button> = listOf(
-            binding.number0,binding.number1,binding.number2,binding.number3,binding.number4,
-            binding.number5,binding.number6,binding.number7,binding.number8,binding.number9
+        val numbers: List<Button> = listOf(
+            binding.number0, binding.number1, binding.number2, binding.number3, binding.number4,
+            binding.number5, binding.number6, binding.number7, binding.number8, binding.number9
         )
 
-        val digits:List<EditText> = listOf(
-            binding.in1,binding.in2,binding.in3,binding.in4,binding.in5,binding.in6)
+        val digits: List<EditText> = listOf(
+            binding.in1, binding.in2, binding.in3, binding.in4, binding.in5, binding.in6)
 
         digits.map {
             it.inputType = InputType.TYPE_NULL
@@ -78,10 +76,10 @@ class PaymentDialog(private val context: Context, inflater: LayoutInflater) {
 
 
         var currentPos = 0
-        turnOn(digits[0],context)
+        turnOn(digits[0], context)
 
         //set action for number button
-        numbers.forEachIndexed{idx,btn ->
+        numbers.forEachIndexed { idx, btn ->
             btn.setOnClickListener {
 
                 if (currentPos == 6)
@@ -90,11 +88,11 @@ class PaymentDialog(private val context: Context, inflater: LayoutInflater) {
                 digits[currentPos].setText("*")
                 this.password[currentPos] = ((idx + '0'.code).toChar())
 
-                turnOff(digits[currentPos],context)
-                currentPos ++
+                turnOff(digits[currentPos], context)
+                currentPos++
 
                 if (currentPos != 6)
-                    turnOn(digits[currentPos],context)
+                    turnOn(digits[currentPos], context)
 
 
                 //finish inputing
@@ -112,12 +110,12 @@ class PaymentDialog(private val context: Context, inflater: LayoutInflater) {
                 return@setOnClickListener
 
             if (currentPos != 6)
-                turnOff(digits[currentPos],context)
+                turnOff(digits[currentPos], context)
 
-            currentPos --
+            currentPos--
 
             digits[currentPos].text.clear()
-            turnOn(digits[currentPos],context)
+            turnOn(digits[currentPos], context)
 
         }
 
@@ -137,7 +135,8 @@ class PaymentDialog(private val context: Context, inflater: LayoutInflater) {
         this.dialog = builder.setView(binding.root).create()
 
         this.dialog.window?.apply {
-            setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
             setDimAmount(0.4f)
             setGravity(Gravity.BOTTOM)
         }
@@ -150,12 +149,12 @@ class PaymentDialog(private val context: Context, inflater: LayoutInflater) {
     }
 
     companion object {
-        private fun turnOn(editText: EditText,context:Context) {
+        private fun turnOn(editText: EditText, context: Context) {
             editText.backgroundTintList = ColorStateList.valueOf(
                 context.getColor(R.color.alipay))
         }
 
-        private fun turnOff(editText: EditText,context:Context) {
+        private fun turnOff(editText: EditText, context: Context) {
             editText.backgroundTintList = ColorStateList.valueOf(
                 context.getColor(R.color.black))
         }
@@ -165,12 +164,12 @@ class PaymentDialog(private val context: Context, inflater: LayoutInflater) {
 
 interface PayHandler {
 
-    fun onFinish(password:String)
+    fun onFinish(password: String)
     fun onClose()
     fun onForgetPassword()
 
     companion object {
-        object DefaultHandler:PayHandler {
+        object DefaultHandler : PayHandler {
             override fun onFinish(password: String) {}
             override fun onClose() {}
             override fun onForgetPassword() {}

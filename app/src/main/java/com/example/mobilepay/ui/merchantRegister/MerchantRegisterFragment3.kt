@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MultipartBody
-import okhttp3.Request
 import okhttp3.RequestBody
 import java.io.File
 import java.util.*
@@ -38,17 +37,16 @@ import java.util.*
 class MerchantRegisterFinal : Fragment() {
 
     private lateinit var binding: FragmentMerchantRegister3Binding
-    private val infoViewModel:MerchantRegisterViewModel by activityViewModels()
-    private val viewModel:ViewModel3 by viewModels()
-
+    private val infoViewModel: MerchantRegisterViewModel by activityViewModels()
+    private val viewModel: ViewModel3 by viewModels()
 
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentMerchantRegister3Binding.inflate(inflater,container,false)
+        binding = FragmentMerchantRegister3Binding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -83,17 +81,16 @@ class MerchantRegisterFinal : Fragment() {
     }
 
 
-
-    private fun checkEmail():Boolean {
+    private fun checkEmail(): Boolean {
 
         val processor = Processor<String?>()
 
-        val str =  processor.addHandler{
+        val str = processor.addHandler {
             if (binding.email.text.isNullOrBlank())
                 "Please Input"
             else
                 null
-        }.addHandler{
+        }.addHandler {
             if (Util.checkEmail(binding.email.text.toString()))
                 null
             else
@@ -105,14 +102,14 @@ class MerchantRegisterFinal : Fragment() {
         return str == null
     }
 
-    private  fun sendEmailVerifyCode() {
+    private fun sendEmailVerifyCode() {
 
         if (!checkEmail())
             return
 
         lifecycleScope.launch(Dispatchers.IO) {
 
-            val resp = VerifyApiService.sendVerifyCode("email",binding.email.text.toString())
+            val resp = VerifyApiService.sendVerifyCode("email", binding.email.text.toString())
 
             val isOkay = resp.handleDefault(requireContext())
             if (!isOkay)
@@ -121,21 +118,21 @@ class MerchantRegisterFinal : Fragment() {
         }
     }
 
-    private suspend fun checkVerifyCode():String? {
+    private suspend fun checkVerifyCode(): String? {
 
         if (binding.emailVerifyCode.text.isNullOrBlank())
             return "Please Input"
 
         val resp = withContext(Dispatchers.IO) {
-            VerifyApi.service.checkVerifyCode("email",binding.email.text.toString()
-                ,binding.emailVerifyCode.text.toString())
+            VerifyApi.service.checkVerifyCode("email",
+                binding.email.text.toString(),
+                binding.emailVerifyCode.text.toString())
         }
 
         val isOkay = resp.handleDefault(requireContext())
 
         return if (!isOkay) "Incorrect Verify Code" else null
     }
-
 
 
     private fun checkWithNewEmail() {
@@ -173,37 +170,39 @@ class MerchantRegisterFinal : Fragment() {
     }
 
 
-    private suspend fun submitData():ResponseData<String?> {
+    private suspend fun submitData(): ResponseData<String?> {
 
         val token = MainApplication.db().kvDao().get("token")
 
 
-        val companyName = MultipartBody.Part.createFormData("companyName"
-            ,infoViewModel.merchantRegisterInfo.companyName)
+        val companyName = MultipartBody.Part.createFormData("companyName",
+            infoViewModel.merchantRegisterInfo.companyName)
 
-        val licenseNumber = MultipartBody.Part.createFormData("licenseNumber"
-            ,infoViewModel.merchantRegisterInfo.licenseNumber)
+        val licenseNumber = MultipartBody.Part.createFormData("licenseNumber",
+            infoViewModel.merchantRegisterInfo.licenseNumber)
 
         val phoneNumber = infoViewModel.merchantRegisterInfo.phoneNumber?.let {
-            MultipartBody.Part.createFormData("phoneNumber",it)
+            MultipartBody.Part.createFormData("phoneNumber", it)
         }
 
         val email = infoViewModel.merchantRegisterInfo.email?.let {
-            MultipartBody.Part.createFormData("email",it)
+            MultipartBody.Part.createFormData("email", it)
         }
 
         return withContext(Dispatchers.IO) {
 
-            val f = File(requireContext().filesDir,UUID.randomUUID().toString() + ".jpeg")
+            val f = File(requireContext().filesDir, UUID.randomUUID().toString() + ".jpeg")
 
             infoViewModel.merchantRegisterInfo.licensePhoto!!
-                .compress(Bitmap.CompressFormat.JPEG,100,f.outputStream())
+                .compress(Bitmap.CompressFormat.JPEG, 100, f.outputStream())
 
-            val licensePhoto = MultipartBody.Part.createFormData("licensePhoto",f.name
-                , RequestBody.create(MediaType.parse("image/*"),f))
+            val licensePhoto = MultipartBody.Part.createFormData("licensePhoto",
+                f.name,
+                RequestBody.create(MediaType.parse("image/*"), f))
 
-            val resp = MerchantApi.service.register(token!!,companyName, licenseNumber, licensePhoto,
-                phoneNumber,email)
+            val resp =
+                MerchantApi.service.register(token!!, companyName, licenseNumber, licensePhoto,
+                    phoneNumber, email)
             f.delete()
             resp
         }
@@ -214,7 +213,7 @@ class MerchantRegisterFinal : Fragment() {
         //first submit data
         lifecycleScope.launch(Dispatchers.Default) {
             val resp = submitData()
-            var errorPrompt:String? = null
+            var errorPrompt: String? = null
 
             resp.handleOneWithDefault(requireContext()) {
                 errorPrompt = it.data
@@ -224,7 +223,7 @@ class MerchantRegisterFinal : Fragment() {
             // if there is error , show the error and exit
             if (errorPrompt != null) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(),errorPrompt,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), errorPrompt, Toast.LENGTH_SHORT).show()
                 }
                 return@launch
             }
@@ -234,10 +233,10 @@ class MerchantRegisterFinal : Fragment() {
 
                 val action = MerchantRegisterFinalDirections
                     .actionMerchantRegisterFinalToFinalFragment3(
-                        infoViewModel.merchantRegisterInfo.phoneNumber?:
-                        "Your individual account's phone number",
-                        infoViewModel.merchantRegisterInfo.email?:
-                        "Your individual account's email"
+                        infoViewModel.merchantRegisterInfo.phoneNumber
+                            ?: "Your individual account's phone number",
+                        infoViewModel.merchantRegisterInfo.email
+                            ?: "Your individual account's email"
                     )
                 findNavController().navigate(action)
             }
@@ -245,8 +244,8 @@ class MerchantRegisterFinal : Fragment() {
     }
 
 
-
 }
-class ViewModel3:ViewModel() {
+
+class ViewModel3 : ViewModel() {
     val useIndividualEmail = MutableLiveData(true)
 }

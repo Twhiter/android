@@ -12,36 +12,36 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainPageViewModel:ViewModel() {
-    var user:MutableLiveData<User> = MutableLiveData(User.mock)
-    var merchant:MutableLiveData<Merchant> = MutableLiveData(Merchant.mock)
+class MainPageViewModel : ViewModel() {
+    var user: MutableLiveData<User> = MutableLiveData(User.mock)
+    var merchant: MutableLiveData<Merchant> = MutableLiveData(Merchant.mock)
 
-    val userLoading:LiveData<Boolean> = Transformations.map(user) {
+    val userLoading: LiveData<Boolean> = Transformations.map(user) {
         (it == null || it == User.mock)
     }
-    val merchantExist:LiveData<Boolean> = Transformations.map(merchant) {
+    val merchantExist: LiveData<Boolean> = Transformations.map(merchant) {
         !(it == null || it == Merchant.mock)
     }
 
 
-    val userMoneyFormatted:LiveData<String> = Transformations.map(user) {
+    val userMoneyFormatted: LiveData<String> = Transformations.map(user) {
         if (it != null)
             Util.formatBigDecimalToStr(it.moneyAmount)
         else ""
     }
-    val userFrozenMoneyFormatted:LiveData<String> = Transformations.map(user) {
+    val userFrozenMoneyFormatted: LiveData<String> = Transformations.map(user) {
         if (it != null)
             Util.formatBigDecimalToStr(it.frozenMoney)
         else ""
     }
 
-    val merchantMoneyFormatted:LiveData<String> = Transformations.map(merchant) {
+    val merchantMoneyFormatted: LiveData<String> = Transformations.map(merchant) {
         if (it != null)
             Util.formatBigDecimalToStr(it.moneyAmount)
         else ""
     }
 
-    val merchantFrozenMoneyFormatted:LiveData<String> = Transformations.map(user) {
+    val merchantFrozenMoneyFormatted: LiveData<String> = Transformations.map(user) {
         if (it != null)
             Util.formatBigDecimalToStr(it.frozenMoney)
         else ""

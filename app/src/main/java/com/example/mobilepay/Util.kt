@@ -24,7 +24,9 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 import java.math.BigDecimal
@@ -39,28 +41,31 @@ class Util {
 
     companion object {
 
-        const val EMAIL_PATTERN = "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\$"
-         val billsRequestDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        const val EMAIL_PATTERN =
+            "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\$"
+        val billsRequestDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val billsShowDateFormat = SimpleDateFormat("MMM dd hh:mm")
 
-        fun decimalPattern( digitsBeforeZero:Int, digitsAfterZero:Int):Pattern {
+        fun decimalPattern(digitsBeforeZero: Int, digitsAfterZero: Int): Pattern {
 
-            val str = "([0-9]{0,${digitsBeforeZero - 1}})((\\.[0-9]{0,${digitsAfterZero - 1}})?|(\\.)?)"
-           return Pattern.compile(str)
+            val str =
+                "([0-9]{0,${digitsBeforeZero - 1}})((\\.[0-9]{0,${digitsAfterZero - 1}})?|(\\.)?)"
+            return Pattern.compile(str)
         }
 
-        fun toBillRequestDataFormat(date: Date?):String? {
+        fun toBillRequestDataFormat(date: Date?): String? {
             return date?.let {
                 billsRequestDateFormat.format(it)
             }
         }
 
         @Throws(IOException::class)
-         fun createImageFile(): File {
+        fun createImageFile(): File {
 
             // Create an image file name
             val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-            val storageDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val storageDir: File =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
             return File.createTempFile(
                 "JPEG_${timeStamp}_", /* prefix */
                 ".jpg", /* suffix */
@@ -69,27 +74,26 @@ class Util {
         }
 
         @JvmStatic
-        fun toBillShowDateFormat(date: Date?):String? {
+        fun toBillShowDateFormat(date: Date?): String? {
             return date?.let {
                 billsShowDateFormat.format(it)
             }
         }
 
 
-
         fun formatBigDecimalToStr(bigDecimal: BigDecimal) =
-            bigDecimal.setScale(2,RoundingMode.HALF_DOWN).toString()
+            bigDecimal.setScale(2, RoundingMode.HALF_DOWN).toString()
 
-        inline fun<reified T> fromJsonToObject(jsonStr:String): T? {
+        inline fun <reified T> fromJsonToObject(jsonStr: String): T? {
 
             return try {
-                ObjectMapper().readValue(jsonStr,T::class.java)
-            }catch (e: Exception){
+                ObjectMapper().readValue(jsonStr, T::class.java)
+            } catch (e: Exception) {
                 null
             }
         }
 
-         suspend fun suspendSend(btn: Button) {
+        suspend fun suspendSend(btn: Button) {
             withContext(Dispatchers.Main) {
                 val text = btn.text
                 btn.isEnabled = false
@@ -102,11 +106,10 @@ class Util {
             }
         }
 
-        fun checkEmail(email:String):Boolean {
+        fun checkEmail(email: String): Boolean {
             val pattern = Regex(EMAIL_PATTERN)
             return email.matches(pattern)
         }
-
 
 
         suspend fun updateSelfInfo() {
@@ -117,8 +120,8 @@ class Util {
                     val token = MainApplication.db().kvDao().get("token")
                     token?.let {
                         val resp = UserApi.service.fetchInfo(it)
-                       val isOkay = resp.handle({ r-> r.status == ResponseData.OK},
-                           {r -> r.data != null })
+                        val isOkay = resp.handle({ r -> r.status == ResponseData.OK },
+                            { r -> r.data != null })
 
                         if (!isOkay)
                             return@withContext
@@ -126,22 +129,22 @@ class Util {
                         MainApplication.db().userDao().update(resp.data!!)
 
                         val resp1 = MerchantApi.service.fetchInfo(it)
-                        val isOkay1 = resp.handle({ r-> r.status == ResponseData.OK},
-                            {r -> r.data != null })
+                        val isOkay1 = resp.handle({ r -> r.status == ResponseData.OK },
+                            { r -> r.data != null })
 
                         if (!isOkay1)
                             return@withContext
 
                         MainApplication.db().merchantDao().update(merchant = resp1.data!!)
                     }
-                }catch (e:Exception) {
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
         }
 
 
-        suspend fun tryUpdateSelfInfo(context: Context):Boolean {
+        suspend fun tryUpdateSelfInfo(context: Context): Boolean {
 
             var i = 0
             while (i < 3) {
@@ -163,9 +166,9 @@ class Util {
                     MainApplication.db().merchantDao().insert(merchant = resp1.data!!)
                     break
 
-                }catch (e:Exception) {
+                } catch (e: Exception) {
                     e.printStackTrace()
-                    i ++
+                    i++
                     delay(10 * 1000L)
                     continue
                 }
@@ -184,8 +187,8 @@ class Util {
             val canvasHeight = canvas.height
             canvas.drawBitmap(qrcode, Matrix(), null)
 
-            val resizeLogo = Bitmap.
-            createScaledBitmap(logo, qrcode.width / 6, qrcode.height / 6, true)
+            val resizeLogo =
+                Bitmap.createScaledBitmap(logo, qrcode.width / 6, qrcode.height / 6, true)
 
             val centreX = (canvasWidth - resizeLogo.width) / 2
             val centreY = (canvasHeight - resizeLogo.height) / 2
@@ -194,7 +197,7 @@ class Util {
             return combined
         }
 
-        fun getQrCodeBitmap(content:String): Bitmap {
+        fun getQrCodeBitmap(content: String): Bitmap {
             val size = 512 //pixels
 
             val bits = QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, size, size)
@@ -207,23 +210,22 @@ class Util {
             }
         }
 
-        fun getQrCodeBitmapWithLogo(content:String,logo: Bitmap): Bitmap {
+        fun getQrCodeBitmapWithLogo(content: String, logo: Bitmap): Bitmap {
             return mergeBitmaps(logo, getQrCodeBitmap(content))
         }
 
         @Throws(NumberParseException::class)
-        fun checkPhone(phoneNumber:String):Boolean {
-            val phoneUtil =  PhoneNumberUtil.getInstance()
+        fun checkPhone(phoneNumber: String): Boolean {
+            val phoneUtil = PhoneNumberUtil.getInstance()
             val phoneNUmber: Phonenumber.PhoneNumber?
-           try {
+            try {
                 phoneNUmber = phoneUtil.parse(phoneNumber,
-                   null)
-           }catch (e:NumberParseException ) {
-               return false
-           }
+                    null)
+            } catch (e: NumberParseException) {
+                return false
+            }
             return phoneUtil.isPossibleNumber(phoneNUmber)
         }
-
 
 
     }
@@ -234,7 +236,7 @@ class Util {
 class DecimalDigitsInputFilter(
     private val digitsBeforeZero: Int,
     private val digitsAfterZero: Int,
-):InputFilter {
+) : InputFilter {
 
     override fun filter(
         source: CharSequence?,
@@ -245,12 +247,12 @@ class DecimalDigitsInputFilter(
         dend: Int,
     ): CharSequence? {
 
-        val matcher: Matcher = Util.decimalPattern(digitsBeforeZero,digitsAfterZero).matcher(dest)
+        val matcher: Matcher = Util.decimalPattern(digitsBeforeZero, digitsAfterZero).matcher(dest)
         return if (!matcher.matches()) "" else null
     }
 }
 
-class WrapContentLinearLayoutManager(context:Context) : LinearLayoutManager(context) {
+class WrapContentLinearLayoutManager(context: Context) : LinearLayoutManager(context) {
 
     override fun onLayoutChildren(recycler: Recycler, state: RecyclerView.State) {
         try {
@@ -266,10 +268,11 @@ class CombinedLiveData<R>(
     private val combine: (datas: List<Any?>) -> R,
 ) : MediatorLiveData<R>() {
 
-    private val datas: MutableList<Any?> = MutableList(liveDatas.size) { index -> liveDatas[index].value }
+    private val datas: MutableList<Any?> =
+        MutableList(liveDatas.size) { index -> liveDatas[index].value }
 
     init {
-        for(i in liveDatas.indices){
+        for (i in liveDatas.indices) {
             super.addSource(liveDatas[i]) {
                 datas[i] = it
                 value = combine(datas)
@@ -281,14 +284,14 @@ class CombinedLiveData<R>(
 
 class Processor<T> {
 
-    private val list= mutableListOf<ProcessHandler<T?>>()
+    private val list = mutableListOf<ProcessHandler<T?>>()
 
     fun addHandler(handler: ProcessHandler<T?>): Processor<T> {
         list.add(handler)
         return this
     }
 
-    fun process():T? {
+    fun process(): T? {
         list.forEach {
             val result = it.handle()
             if (result != null)
@@ -299,27 +302,27 @@ class Processor<T> {
 }
 
 fun interface ProcessHandler<T> {
-    fun handle():T?
+    fun handle(): T?
 }
 
-data class PhoneCode( val countryName:String,val code: String) {
+data class PhoneCode(val countryName: String, val code: String) {
 
 
     companion object {
         val COUNTRY_CODES = getCodes()
-        private fun getCodes():List<PhoneCode> {
+        private fun getCodes(): List<PhoneCode> {
 
             val context: Context = MainApplication.applicationContext()
 
             val ids = context.resources.obtainTypedArray(R.array.phoneCodes)
-            val codes:MutableList<PhoneCode> = mutableListOf()
+            val codes: MutableList<PhoneCode> = mutableListOf()
 
 
             for (i in 0 until ids.length()) {
-                val id = ids.getResourceId(i,0)
+                val id = ids.getResourceId(i, 0)
 
                 val arr = context.resources.getStringArray(id)
-                codes.add(PhoneCode(arr[0],arr[1]))
+                codes.add(PhoneCode(arr[0], arr[1]))
             }
             ids.recycle()
             return codes

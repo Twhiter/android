@@ -25,16 +25,14 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
-import java.lang.Exception
 import java.net.URL
 
 
 class QrCodeReceiveFragment : Fragment() {
 
-    private lateinit var binding:FragmentQrCodeBinding
-    private val activityViewModel:MainPageViewModel by activityViewModels()
-    private val viewModel:QrCodeReceiveModel by viewModels {
+    private lateinit var binding: FragmentQrCodeBinding
+    private val activityViewModel: MainPageViewModel by activityViewModels()
+    private val viewModel: QrCodeReceiveModel by viewModels {
         QrCodeReceiveViewModelFactory(activityViewModel)
     }
 
@@ -43,7 +41,7 @@ class QrCodeReceiveFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentQrCodeBinding.inflate(inflater,container,false)
+        binding = FragmentQrCodeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -58,32 +56,33 @@ class QrCodeReceiveFragment : Fragment() {
             lifecycleScope.launch(Dispatchers.IO) {
                 val logo = try {
                     val url = URL(it)
-                    BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                }catch  (e: Exception) {
+                    BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                } catch (e: Exception) {
                     e.printStackTrace()
-                    (ResourcesCompat.getDrawable(requireContext().resources
-                        , R.drawable.ic_broken_image, null) as VectorDrawable).toBitmap()
+                    (ResourcesCompat.getDrawable(requireContext().resources,
+                        R.drawable.ic_broken_image,
+                        null) as VectorDrawable).toBitmap()
                 }
 
-                val id:Int
-                val type:Type
+                val id: Int
+                val type: Type
 
                 if (viewModel.isUser.value!!) {
                     id = activityViewModel.user.value!!.userId
                     type = Type.User
-                }
-                else {
+                } else {
                     id = activityViewModel.merchant.value!!.merchantId
                     type = Type.Merchant
                 }
 
-                val qrCodeContentStr = ObjectMapper().writeValueAsString(QrCodeContent(id,type))
+                val qrCodeContentStr = ObjectMapper().writeValueAsString(QrCodeContent(id, type))
                 val bitmap = try {
-                    Util.getQrCodeBitmapWithLogo(qrCodeContentStr,logo)
-                }catch (e:Exception) {
+                    Util.getQrCodeBitmapWithLogo(qrCodeContentStr, logo)
+                } catch (e: Exception) {
                     e.printStackTrace()
-                    (ResourcesCompat.getDrawable(requireContext().resources
-                        , R.drawable.ic_broken_image, null) as VectorDrawable).toBitmap()
+                    (ResourcesCompat.getDrawable(requireContext().resources,
+                        R.drawable.ic_broken_image,
+                        null) as VectorDrawable).toBitmap()
                 }
 
                 withContext(Dispatchers.Main) {
@@ -98,7 +97,6 @@ class QrCodeReceiveFragment : Fragment() {
         }
 
 
-
     }
 
     override fun onResume() {
@@ -107,7 +105,7 @@ class QrCodeReceiveFragment : Fragment() {
     }
 }
 
-class QrCodeReceiveModel(private val activityViewModel: MainPageViewModel): ViewModel() {
+class QrCodeReceiveModel(private val activityViewModel: MainPageViewModel) : ViewModel() {
 
     val isUser = MutableLiveData(true)
 
@@ -118,19 +116,19 @@ class QrCodeReceiveModel(private val activityViewModel: MainPageViewModel): View
             MainApplication.applicationContext().getString(R.string.merchant_receive_qr_code)
     }
 
-    val isBtnEnabled:LiveData<Boolean> = activityViewModel.merchantExist
-    val avatarUrl:LiveData<String> = Transformations.map(isUser) {
+    val isBtnEnabled: LiveData<Boolean> = activityViewModel.merchantExist
+    val avatarUrl: LiveData<String> = Transformations.map(isUser) {
         if (it)
             BASE_URL + activityViewModel.user.value!!.avatar
         else
             BASE_URL + activityViewModel.merchant.value!!.merchantLogo
     }
 
-    val qrCodeBitMap:MutableLiveData<Bitmap> = MutableLiveData(null)
+    val qrCodeBitMap: MutableLiveData<Bitmap> = MutableLiveData(null)
 }
 
-class QrCodeReceiveViewModelFactory(private val activityViewModel: MainPageViewModel)
-    : ViewModelProvider.Factory {
+class QrCodeReceiveViewModelFactory(private val activityViewModel: MainPageViewModel) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return (QrCodeReceiveModel(activityViewModel)) as T
     }

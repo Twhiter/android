@@ -39,18 +39,18 @@ import java.math.RoundingMode
 class PayFragment : Fragment() {
 
     private lateinit var binding: FragmentPayBinding
-    private val viewModel:PayViewModel by viewModels()
-    private val args:PayFragmentArgs by navArgs()
-    private val activityViewModel:MainPageViewModel by activityViewModels()
+    private val viewModel: PayViewModel by viewModels()
+    private val args: PayFragmentArgs by navArgs()
+    private val activityViewModel: MainPageViewModel by activityViewModels()
 
-    private lateinit var paymentDialog:PaymentDialog
+    private lateinit var paymentDialog: PaymentDialog
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentPayBinding.inflate(inflater,container,false)
+        binding = FragmentPayBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -62,10 +62,10 @@ class PayFragment : Fragment() {
 
         renderPayeeInfo()
 
-        binding.amount.filters = arrayOf(DecimalDigitsInputFilter(5,2))
+        binding.amount.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
 
 
-        binding.amount.addTextChangedListener(object :TextWatcher {
+        binding.amount.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -88,29 +88,32 @@ class PayFragment : Fragment() {
 
             if (viewModel.type.value!! == Type.Merchant) {
                 if (activityViewModel.merchant.value!!.merchantId == args.qrCodeContent.id) {
-                    Toast.makeText(requireContext(),"Can't pay to self merchant",Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(),
+                        "Can't pay to self merchant",
+                        Toast.LENGTH_SHORT)
                         .show()
                     return@setOnClickListener
                 }
-            }else {
+            } else {
                 if (activityViewModel.user.value!!.userId == args.qrCodeContent.id) {
-                    Toast.makeText(requireContext(),"Can't transfer to self",Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), "Can't transfer to self", Toast.LENGTH_SHORT)
                         .show()
                     return@setOnClickListener
                 }
             }
 
-            paymentDialog = PaymentDialog(requireContext(),layoutInflater)
+            paymentDialog = PaymentDialog(requireContext(), layoutInflater)
             paymentDialog.setTitle("Pay")
             paymentDialog.setForgetText("forget password?")
-            paymentDialog.setHandler(object :PayHandler {
+            paymentDialog.setHandler(object : PayHandler {
                 override fun onFinish(password: String) {
-                    when(args.qrCodeContent.type) {
+                    when (args.qrCodeContent.type) {
                         Type.Merchant -> pay(password)
                         Type.User -> transfer(password)
                         else -> {}
                     }
                 }
+
                 override fun onClose() {}
                 override fun onForgetPassword() {}
             }).show()
@@ -118,46 +121,54 @@ class PayFragment : Fragment() {
         }
     }
 
-    private  fun pay(paymentPassword:String) {
+    private fun pay(paymentPassword: String) {
         val db = MainApplication.db()
         lifecycleScope.launch(Dispatchers.IO) {
 
             val token = db.kvDao().get("token")
-            val amount = BigDecimal(binding.amount.text.toString()).setScale(2,RoundingMode.UNNECESSARY)
+            val amount =
+                BigDecimal(binding.amount.text.toString()).setScale(2, RoundingMode.UNNECESSARY)
             token?.let {
 
-                val progressDialog:ProgressDialog
+                val progressDialog: ProgressDialog
                 withContext(Dispatchers.Main) {
-                     progressDialog = ProgressDialog.show(requireContext(), "Waiting for Payment",
+                    progressDialog = ProgressDialog.show(requireContext(), "Waiting for Payment",
                         "", false)
                 }
 
                 // to let execute serially
                 withContext(Dispatchers.IO) {
-                    val resp = PayApi.service.pay(it,args.qrCodeContent.id,amount,paymentPassword
-                        ,binding.remarks.text.toString())
+                    val resp = PayApi.service.pay(it,
+                        args.qrCodeContent.id,
+                        amount,
+                        paymentPassword,
+                        binding.remarks.text.toString())
                     resp.handleOneWithDefault(requireContext()) { r ->
 
                         if (r.data == null)
                             false
                         else {
                             if (r.data.payOverview == null) {
-                                lifecycleScope.launch(Dispatchers.Main){
-                                    Toast.makeText(requireContext(),r.data.prompt,Toast.LENGTH_SHORT).show()
+                                lifecycleScope.launch(Dispatchers.Main) {
+                                    Toast.makeText(requireContext(),
+                                        r.data.prompt,
+                                        Toast.LENGTH_SHORT).show()
                                 }
                                 false
-                            }else {
-                                lifecycleScope.launch(Dispatchers.Main){
-                                    Toast.makeText(requireContext(),"Pay successfully",Toast.LENGTH_SHORT).show()
+                            } else {
+                                lifecycleScope.launch(Dispatchers.Main) {
+                                    Toast.makeText(requireContext(),
+                                        "Pay successfully",
+                                        Toast.LENGTH_SHORT).show()
                                     Util.updateSelfInfo()
 
                                     val action = PayFragmentDirections
                                         .actionPayFragmentToPaymentSuccess(
-                                        binding.amount.text.toString(),
-                                        viewModel.overview.value!!.name,
+                                            binding.amount.text.toString(),
+                                            viewModel.overview.value!!.name,
                                             activityViewModel.user.value!!.moneyAmount.setScale(2)
                                                 .toString()
-                                    )
+                                        )
                                     findNavController().navigate(action)
                                 }
                                 true
@@ -180,17 +191,21 @@ class PayFragment : Fragment() {
         val db = MainApplication.db()
         lifecycleScope.launch(Dispatchers.IO) {
             val token = db.kvDao().get("token")
-            val amount = BigDecimal(binding.amount.text.toString()).setScale(2,RoundingMode.UNNECESSARY)
+            val amount =
+                BigDecimal(binding.amount.text.toString()).setScale(2, RoundingMode.UNNECESSARY)
             token?.let {
 
-                val progressDialog:ProgressDialog
+                val progressDialog: ProgressDialog
                 withContext(Dispatchers.Main) {
                     progressDialog = ProgressDialog.show(requireContext(), "Waiting for Transfer",
                         "", false)
                 }
 
                 withContext(Dispatchers.IO) {
-                    val resp = TransferApi.service.transfer(it,args.qrCodeContent.id,amount,paymentPassword,
+                    val resp = TransferApi.service.transfer(it,
+                        args.qrCodeContent.id,
+                        amount,
+                        paymentPassword,
                         binding.remarks.text.toString())
                     resp.handleOneWithDefault(requireContext()) { r ->
 
@@ -198,13 +213,17 @@ class PayFragment : Fragment() {
                             false
                         else {
                             if (r.data.transfer == null) {
-                                lifecycleScope.launch(Dispatchers.Main){
-                                    Toast.makeText(requireContext(),r.data.prompt,Toast.LENGTH_SHORT).show()
+                                lifecycleScope.launch(Dispatchers.Main) {
+                                    Toast.makeText(requireContext(),
+                                        r.data.prompt,
+                                        Toast.LENGTH_SHORT).show()
                                 }
                                 false
-                            }else {
-                                lifecycleScope.launch(Dispatchers.Main){
-                                    Toast.makeText(requireContext(),"Transfer successfully",Toast.LENGTH_SHORT).show()
+                            } else {
+                                lifecycleScope.launch(Dispatchers.Main) {
+                                    Toast.makeText(requireContext(),
+                                        "Transfer successfully",
+                                        Toast.LENGTH_SHORT).show()
                                     Util.updateSelfInfo()
                                     val action = PayFragmentDirections
                                         .actionPayFragmentToPaymentSuccess(
@@ -213,7 +232,7 @@ class PayFragment : Fragment() {
                                             activityViewModel.user.value!!.moneyAmount.setScale(2)
                                                 .toString()
                                         )
-                                    Log.d("Mainss","before navigation")
+                                    Log.d("Mainss", "before navigation")
                                     findNavController().navigate(action)
                                 }
                                 true
@@ -238,15 +257,14 @@ class PayFragment : Fragment() {
 
         lifecycleScope.launch(Dispatchers.IO) {
 
-            val resp = when(qrCodeContent.type) {
+            val resp = when (qrCodeContent.type) {
                 Type.User -> UserApi.service.fetchOverviewInfo(qrCodeContent.id)
                 Type.Merchant -> MerchantApi.service.fetchOverviewInfo(qrCodeContent.id)
                 Type.MerchantWithConfirmation -> MerchantApi.service.fetchOverviewInfo(qrCodeContent.id)
             }
 
             //handle response
-            val isOkay = resp.handleOneWithDefault(requireContext()){
-                    r ->
+            val isOkay = resp.handleOneWithDefault(requireContext()) { r ->
                 if (r.data == null) {
                     lifecycleScope.launch(Dispatchers.Main) {
                         Toast.makeText(
@@ -255,7 +273,7 @@ class PayFragment : Fragment() {
                         ).show()
                     }
                     false
-                }else {
+                } else {
                     true
                 }
             }
@@ -270,14 +288,14 @@ class PayFragment : Fragment() {
 
 }
 
-class PayViewModel:ViewModel() {
+class PayViewModel : ViewModel() {
 
-    val type:MutableLiveData<Type> = MutableLiveData(Type.User)
+    val type: MutableLiveData<Type> = MutableLiveData(Type.User)
     val overview = MutableLiveData(OverviewInfo.mock)
-    val isLoading:LiveData<Boolean> = Transformations.map(overview) { it == OverviewInfo.mock }
+    val isLoading: LiveData<Boolean> = Transformations.map(overview) { it == OverviewInfo.mock }
 
 
-    val btnTextResId:LiveData<Int> = Transformations.map(type) {
+    val btnTextResId: LiveData<Int> = Transformations.map(type) {
         if (it == Type.Merchant)
             R.string.pay_prompt
         else

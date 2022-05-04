@@ -18,24 +18,20 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.mobilepay.Util
 import com.example.mobilepay.databinding.FragmentScanBinding
 import com.example.mobilepay.entity.QrCodeContent
-import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -53,9 +49,9 @@ class ScanFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding =  FragmentScanBinding.inflate(layoutInflater)
+        binding = FragmentScanBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -64,26 +60,22 @@ class ScanFragment : Fragment() {
 
         if (allPermissionsGranted()) {
             startCamera()
-        }else {
+        } else {
             tryRequestPermissions()
         }
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
 
-
-
-
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS)
-                if (allPermissionsGranted())
-                    startCamera()
+            if (allPermissionsGranted())
+                startCamera()
             else {
                 Toast.makeText(requireContext(),
                     "Permissions not granted by the user.",
@@ -111,7 +103,7 @@ class ScanFragment : Fragment() {
                 .also { it.setSurfaceProvider(binding.barScanner.surfaceProvider) }
 
             val qrCodeImageAnalyzer = ImageAnalysis.Builder().build().also {
-                it.setAnalyzer(cameraExecutor,QRCodeImageAnalyzer())
+                it.setAnalyzer(cameraExecutor, QRCodeImageAnalyzer())
             }
 
             //select back camera as default
@@ -122,42 +114,39 @@ class ScanFragment : Fragment() {
                 cameraProvider.unbindAll()
 
                 //bind the use case to the camera
-                cameraProvider.bindToLifecycle(this,cameraSelector,preview
-                    ,qrCodeImageAnalyzer)
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview, qrCodeImageAnalyzer)
 
-            }catch (e: Exception) {
-                Log.d("Mainss","error")
+            } catch (e: Exception) {
+                Log.d("Mainss", "error")
             }
-        },ContextCompat.getMainExecutor(requireContext()))
-    }
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(requireContext(),it) == PackageManager.PERMISSION_GRANTED
+        }, ContextCompat.getMainExecutor(requireContext()))
     }
 
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
+    }
 
 
     private fun tryRequestPermissions() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity()
-                ,Manifest.permission.CAMERA)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                Manifest.permission.CAMERA)
+        ) {
 
-            Snackbar.make(binding.root,"Need this permission", Snackbar.LENGTH_INDEFINITE)
-                .setAction("OK"){
+            Snackbar.make(binding.root, "Need this permission", Snackbar.LENGTH_INDEFINITE)
+                .setAction("OK") {
                     ActivityCompat.requestPermissions(
                         requireActivity(),
                         REQUIRED_PERMISSIONS,
                         REQUEST_CODE_PERMISSIONS
                     )
                 }.show()
-        }
-        else
+        } else
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 REQUIRED_PERMISSIONS,
                 REQUEST_CODE_PERMISSIONS
             )
     }
-
-
 
 
     companion object {
@@ -180,7 +169,6 @@ class ScanFragment : Fragment() {
 
         private val scanner = BarcodeScanning.getClient(options)
     }
-
 
 
     private inner class QRCodeImageAnalyzer : ImageAnalysis.Analyzer {
@@ -214,14 +202,14 @@ class ScanFragment : Fragment() {
 
                 val qrCodeContent = Util.fromJsonToObject<QrCodeContent>(text)
 
-                lifecycleScope.launch(Dispatchers.Main){
+                lifecycleScope.launch(Dispatchers.Main) {
                     qrCodeContent?.let {
                         mutex.lock()
                         try {
                             val action = ScanFragmentDirections.actionScanFragmentToPayFragment(it)
                             findNavController().navigate(action)
                             lifecycleScope.coroutineContext.cancelChildren()
-                        }catch (e:Exception) {
+                        } catch (e: Exception) {
                             mutex.unlock()
                         }
                     }

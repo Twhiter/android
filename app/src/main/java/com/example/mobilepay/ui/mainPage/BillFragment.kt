@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -40,19 +39,19 @@ class BillFragment : Fragment() {
     private val args: BillFragmentArgs by navArgs()
 
     private lateinit var binding: FragmentBillBinding
-    private val viewModel:BillFragmentViewModel by viewModels()
+    private val viewModel: BillFragmentViewModel by viewModels()
 
     private var pageNum = 1
     private var headers: Set<String> = TreeSet()
     private var records = mutableListOf<Record?>()
     private var isDataOver = false
-    private lateinit var filterData:FilterData
+    private lateinit var filterData: FilterData
 
 
-    private lateinit var adapter:BillAdapter
+    private lateinit var adapter: BillAdapter
 
 
-    val isUser:Boolean get() = args.isUser
+    val isUser: Boolean get() = args.isUser
 
 
     override fun onCreateView(
@@ -85,7 +84,8 @@ class BillFragment : Fragment() {
 
             if (records.lastOrNull() != null &&
                 !isDataOver &&
-                !binding.billRecords.canScrollVertically(1)) {
+                !binding.billRecords.canScrollVertically(1)
+            ) {
                 loadData()
             }
         }
@@ -121,7 +121,7 @@ class BillFragment : Fragment() {
 
     private fun clear() {
         filterData = FilterData(getFullBillTypes(isUser).toMutableList(),
-            null,null,null,null)
+            null, null, null, null)
         pageNum = 1
         records.clear()
         isDataOver = false
@@ -184,13 +184,14 @@ class BillFragment : Fragment() {
     }
 
     companion object {
-        private val userBillTypes = listOf(BillType.export_to_merchant, BillType.import_from_merchant,
-            BillType.pay,BillType.refunded_pay,BillType.transfer_in,BillType.transfer_out)
+        private val userBillTypes =
+            listOf(BillType.export_to_merchant, BillType.import_from_merchant,
+                BillType.pay, BillType.refunded_pay, BillType.transfer_in, BillType.transfer_out)
 
-        private val merchantBillTypes = listOf(BillType.import_from_user,BillType.export_to_user,
-            BillType.pay,BillType.refunded_pay)
+        private val merchantBillTypes = listOf(BillType.import_from_user, BillType.export_to_user,
+            BillType.pay, BillType.refunded_pay)
 
-        private fun getFullBillTypes(isUser:Boolean) =
+        private fun getFullBillTypes(isUser: Boolean) =
             if (isUser) userBillTypes else merchantBillTypes
 
 
@@ -199,7 +200,7 @@ class BillFragment : Fragment() {
         const val RECORD = 2
 
 
-        private class Diff: DiffUtil.ItemCallback<Record>() {
+        private class Diff : DiffUtil.ItemCallback<Record>() {
             override fun areItemsTheSame(
                 oldItem: Record,
                 newItem: Record,
@@ -214,16 +215,16 @@ class BillFragment : Fragment() {
             ): Boolean {
                 return if (oldItem is HeaderRecord && newItem is HeaderRecord) {
                     oldItem.head == newItem.head
-                }else if (oldItem is BillRecord && newItem is BillRecord) {
+                } else if (oldItem is BillRecord && newItem is BillRecord) {
                     oldItem == newItem
-                }else
+                } else
                     false
             }
         }
     }
 
 
-     inner class FilterDialog(filterObj:FilterData) {
+    inner class FilterDialog(filterObj: FilterData) {
 
 
         private val selected = filterObj.copy(billTypes = filterObj.billTypes.toMutableList())
@@ -232,16 +233,16 @@ class BillFragment : Fragment() {
 
         fun show() {
 
-            binding.min.filters=  arrayOf(DecimalDigitsInputFilter(5,2))
-            binding.max.filters=  arrayOf(DecimalDigitsInputFilter(5,2))
+            binding.min.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
+            binding.max.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
 
             binding.billFragment = this@BillFragment
             binding.filterDialog = this
             binding.lifecycleOwner = this@BillFragment
 
-             dialog = AlertDialog.Builder(requireContext(),R.style.Theme_MobilePay)
+            dialog = AlertDialog.Builder(requireContext(), R.style.Theme_MobilePay)
                 .setView(binding.root)
-                .setPositiveButton("Confirm") { _,_ ->
+                .setPositiveButton("Confirm") { _, _ ->
                     this.dialog.dismiss()
                     this@BillFragment.clear()
 
@@ -258,121 +259,119 @@ class BillFragment : Fragment() {
                         billTypes = this.selected.billTypes.toMutableList())
                     loadData()
                 }
-                 .setNegativeButton("Cancel") { _,_ ->
-                     this.dialog.dismiss()
-                 }
-                 .setNeutralButton("Reset") { _,_ ->
-                     this.dialog.dismiss()
-                     this@BillFragment.clear()
-                     this@BillFragment.loadData()
-                 }.create()
+                .setNegativeButton("Cancel") { _, _ ->
+                    this.dialog.dismiss()
+                }
+                .setNeutralButton("Reset") { _, _ ->
+                    this.dialog.dismiss()
+                    this@BillFragment.clear()
+                    this@BillFragment.loadData()
+                }.create()
             dialog.show()
         }
 
-         fun startClick() {
+        fun startClick() {
 
-             val startMaxCalendar = Calendar.getInstance()
-              if (selected.end == null)
-                 startMaxCalendar.add(Calendar.DAY_OF_MONTH,-1)
-             else {
-                 startMaxCalendar.time = selected.end!!
-                 startMaxCalendar.add(Calendar.DAY_OF_MONTH,-1)
-             }
+            val startMaxCalendar = Calendar.getInstance()
+            if (selected.end == null)
+                startMaxCalendar.add(Calendar.DAY_OF_MONTH, -1)
+            else {
+                startMaxCalendar.time = selected.end!!
+                startMaxCalendar.add(Calendar.DAY_OF_MONTH, -1)
+            }
 
 
-             val datePicker = DatePickerDialog(requireContext(),{ _, y, m, d ->
+            val datePicker = DatePickerDialog(requireContext(), { _, y, m, d ->
 
-                 val calendar = Calendar.getInstance()
-                 calendar.set(Calendar.YEAR,y)
-                 calendar.set(Calendar.MONTH,m)
-                 calendar.set(Calendar.DAY_OF_MONTH,d)
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.YEAR, y)
+                calendar.set(Calendar.MONTH, m)
+                calendar.set(Calendar.DAY_OF_MONTH, d)
 
-                 calendar.set(Calendar.HOUR,0)
-                 calendar.set(Calendar.MINUTE,0)
-                 calendar.set(Calendar.SECOND,0)
+                calendar.set(Calendar.HOUR, 0)
+                calendar.set(Calendar.MINUTE, 0)
+                calendar.set(Calendar.SECOND, 0)
 
-                 selected.start = calendar.time
-                 binding.startDate.setText(
-                     SimpleDateFormat("yyyy/MM/dd").format(calendar.time))
+                selected.start = calendar.time
+                binding.startDate.setText(
+                    SimpleDateFormat("yyyy/MM/dd").format(calendar.time))
 
-             },startMaxCalendar.get(Calendar.YEAR),startMaxCalendar.get(Calendar.MONTH),
-                 startMaxCalendar.get(Calendar.DAY_OF_MONTH))
+            }, startMaxCalendar.get(Calendar.YEAR), startMaxCalendar.get(Calendar.MONTH),
+                startMaxCalendar.get(Calendar.DAY_OF_MONTH))
 
-             datePicker.datePicker.maxDate = startMaxCalendar.time.time
-             datePicker.show()
-         }
-
-         fun endClick() {
-
-             val endMinCalendar = Calendar.getInstance()
-                 if (selected.start == null)
-                     endMinCalendar.time = Date(0)
-                 else {
-                     endMinCalendar.time = selected.start!!
-                     endMinCalendar.add(Calendar.DAY_OF_MONTH,1)
-                 }
-             val now = Calendar.getInstance()
-
-             val datePicker = DatePickerDialog(requireContext(),{ _, y, m, d ->
-
-                 val calendar = Calendar.getInstance()
-                 calendar.set(Calendar.YEAR,y)
-                 calendar.set(Calendar.MONTH,m)
-                 calendar.set(Calendar.DAY_OF_MONTH,d)
-
-                 calendar.set(Calendar.HOUR,0)
-                 calendar.set(Calendar.MINUTE,0)
-                 calendar.set(Calendar.SECOND,0)
-
-                 selected.end = calendar.time
-                 binding.endDate.setText(
-                     SimpleDateFormat("yyyy/MM/dd").format(calendar.time))
-
-             },now.get(Calendar.YEAR),now.get(Calendar.MONTH),
-                 now.get(Calendar.DAY_OF_MONTH))
-
-             datePicker.datePicker.minDate = endMinCalendar.time.time
-             datePicker.datePicker.maxDate = now.time.time
-
-             datePicker.show()
-         }
-
-        fun importClick(btnView: View) {
-            generalClick(BillType.import_from_merchant,BillType.import_from_user,btnView)
+            datePicker.datePicker.maxDate = startMaxCalendar.time.time
+            datePicker.show()
         }
 
-         fun exportClick(btnView: View) {
-             generalClick(BillType.export_to_merchant,BillType.export_to_user,btnView)
-         }
+        fun endClick() {
 
-         fun payClick(btnView: View) {
-             generalClick(BillType.pay,BillType.pay,btnView)
-         }
+            val endMinCalendar = Calendar.getInstance()
+            if (selected.start == null)
+                endMinCalendar.time = Date(0)
+            else {
+                endMinCalendar.time = selected.start!!
+                endMinCalendar.add(Calendar.DAY_OF_MONTH, 1)
+            }
+            val now = Calendar.getInstance()
 
-         fun refundedClick(btn:View) {
-             generalClick(BillType.refunded_pay,BillType.refunded_pay,btn)
-         }
+            val datePicker = DatePickerDialog(requireContext(), { _, y, m, d ->
 
-         fun transferInClick(btnView: View) {
-             generalClick(BillType.transfer_in,BillType.transfer_in,btnView)
-         }
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.YEAR, y)
+                calendar.set(Calendar.MONTH, m)
+                calendar.set(Calendar.DAY_OF_MONTH, d)
 
-         fun transferOutClick(btnView: View){
-             generalClick(BillType.transfer_out,BillType.transfer_out,btnView)
-         }
+                calendar.set(Calendar.HOUR, 0)
+                calendar.set(Calendar.MINUTE, 0)
+                calendar.set(Calendar.SECOND, 0)
 
-         fun setClickedColor(one:BillType,other:BillType?):Int {
-             val billType = if (isUser) one else other
-             return if (selected.billTypes.contains(billType))
-                 requireContext().getColor(R.color.white)
-             else
-                 requireContext().getColor(R.color.gray_e5)
-         }
+                selected.end = calendar.time
+                binding.endDate.setText(
+                    SimpleDateFormat("yyyy/MM/dd").format(calendar.time))
+
+            }, now.get(Calendar.YEAR), now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH))
+
+            datePicker.datePicker.minDate = endMinCalendar.time.time
+            datePicker.datePicker.maxDate = now.time.time
+
+            datePicker.show()
+        }
+
+        fun importClick(btnView: View) {
+            generalClick(BillType.import_from_merchant, BillType.import_from_user, btnView)
+        }
+
+        fun exportClick(btnView: View) {
+            generalClick(BillType.export_to_merchant, BillType.export_to_user, btnView)
+        }
+
+        fun payClick(btnView: View) {
+            generalClick(BillType.pay, BillType.pay, btnView)
+        }
+
+        fun refundedClick(btn: View) {
+            generalClick(BillType.refunded_pay, BillType.refunded_pay, btn)
+        }
+
+        fun transferInClick(btnView: View) {
+            generalClick(BillType.transfer_in, BillType.transfer_in, btnView)
+        }
+
+        fun transferOutClick(btnView: View) {
+            generalClick(BillType.transfer_out, BillType.transfer_out, btnView)
+        }
+
+        fun setClickedColor(one: BillType, other: BillType?): Int {
+            val billType = if (isUser) one else other
+            return if (selected.billTypes.contains(billType))
+                requireContext().getColor(R.color.white)
+            else
+                requireContext().getColor(R.color.gray_e5)
+        }
 
 
-
-
-        private fun generalClick(one:BillType, other:BillType, btnView: View) {
+        private fun generalClick(one: BillType, other: BillType, btnView: View) {
             val billType = if (isUser) one else other
 
             if (selected.billTypes.contains(billType)) {
@@ -386,13 +385,14 @@ class BillFragment : Fragment() {
     }
 
 
-    inner class BillAdapter(val context: Context): ListAdapter<Record, RecyclerView.ViewHolder>(Diff()) {
+    inner class BillAdapter(val context: Context) :
+        ListAdapter<Record, RecyclerView.ViewHolder>(Diff()) {
 
 
-        inner class Head(val binding:ListBillsRecordsHeadBinding)
-            : RecyclerView.ViewHolder(binding.root) {
+        inner class Head(val binding: ListBillsRecordsHeadBinding) :
+            RecyclerView.ViewHolder(binding.root) {
 
-            fun onBind(title:String) {
+            fun onBind(title: String) {
                 binding.head.text = title
             }
         }
@@ -400,15 +400,16 @@ class BillFragment : Fragment() {
         inner class Record(val binding: ListBillsRecordsItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
 
-            fun onBind(bill:BillRecord) {
-                binding.action.text = context.getString(R.string.action_and_name
-                    ,bill.billType.prompt,bill.overviewInfo.name)
+            fun onBind(bill: BillRecord) {
+                binding.action.text = context.getString(R.string.action_and_name,
+                    bill.billType.prompt,
+                    bill.overviewInfo.name)
 
                 //show avatar
-                bindImage(binding.avatar,bill.overviewInfo.avatar)
+                bindImage(binding.avatar, bill.overviewInfo.avatar)
 
                 // show money amount
-                binding.money.text = bill.amount.setScale(2,RoundingMode.UNNECESSARY)
+                binding.money.text = bill.amount.setScale(2, RoundingMode.UNNECESSARY)
                     .toString()
 
                 // show money color
@@ -433,7 +434,7 @@ class BillFragment : Fragment() {
             }
         }
 
-        inner class Loading(val binding:LoadingItemBinding): RecyclerView.ViewHolder(binding.root)
+        inner class Loading(val binding: LoadingItemBinding) : RecyclerView.ViewHolder(binding.root)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -441,17 +442,17 @@ class BillFragment : Fragment() {
             when (viewType) {
                 LOADING -> {
                     val binding = LoadingItemBinding.inflate(
-                        LayoutInflater.from(parent.context),parent,false)
+                        LayoutInflater.from(parent.context), parent, false)
                     return Loading(binding)
                 }
                 HEADER -> {
                     val binding = ListBillsRecordsHeadBinding.inflate(
-                        LayoutInflater.from(parent.context),parent,false)
+                        LayoutInflater.from(parent.context), parent, false)
                     return Head(binding)
                 }
                 else -> {
                     val binding = ListBillsRecordsItemBinding.inflate(
-                        LayoutInflater.from(parent.context),parent,false)
+                        LayoutInflater.from(parent.context), parent, false)
                     return Record(binding)
                 }
             }
@@ -477,30 +478,22 @@ class BillFragment : Fragment() {
 }
 
 
-
-
-
-class BillFragmentViewModel:ViewModel() {
+class BillFragmentViewModel : ViewModel() {
     val isResultNotFound = MutableLiveData(false)
 }
 
 data class FilterData(
-    val billTypes:MutableList<BillType>,
-    var min:BigDecimal?,
-    var max:BigDecimal?,
-    var start:Date?,
-    var end:Date?)
+    val billTypes: MutableList<BillType>,
+    var min: BigDecimal?,
+    var max: BigDecimal?,
+    var start: Date?,
+    var end: Date?,
+)
 
 
+interface Record
 
-
-
-
-
-
-interface Record{}
-
-data class HeaderRecord(val head:String):Record
+data class HeaderRecord(val head: String) : Record
 
 
 

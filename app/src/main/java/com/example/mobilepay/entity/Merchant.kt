@@ -17,7 +17,8 @@ data class Merchant(
     @JsonProperty("merchantEmail") val merchantEmail: String,
     @JsonProperty("frozenMoney") val frozenMoney: BigDecimal,
     @JsonProperty("moneyAmount") val moneyAmount: BigDecimal,
-    @JsonProperty("state") val state: String){
+    @JsonProperty("state") val state: String,
+) {
 
 
     companion object {
@@ -36,7 +37,6 @@ data class Merchant(
             ""
         )
     }
-
 
 
 }

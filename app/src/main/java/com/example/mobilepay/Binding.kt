@@ -14,12 +14,10 @@ import com.example.mobilepay.network.BASE_URL
 fun loadImage(iv: ImageView, bitmap: Bitmap?) {
 
 
-
     if (bitmap != null) {
         iv.setImageBitmap(bitmap)
         iv.visibility = View.VISIBLE
-    }
-    else
+    } else
         iv.visibility = View.INVISIBLE
 }
 
@@ -33,14 +31,14 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             error(R.drawable.ic_broken_image)
         }
     }
-    if(imgUrl == null) {
+    if (imgUrl == null) {
         imgView.setImageResource(R.drawable.ic_broken_image)
     }
 }
 
 
 @BindingAdapter("selectedItem")
-fun setSelection(atv: AutoCompleteTextView,value:String?) {
+fun setSelection(atv: AutoCompleteTextView, value: String?) {
     value?.apply {
         atv.adapter.autofillOptions?.apply {
             atv.listSelection = indexOf(value)
@@ -48,7 +46,7 @@ fun setSelection(atv: AutoCompleteTextView,value:String?) {
     }
 }
 
-fun string(resourceId: Int,vararg formatArgs:Any) = MainApplication.applicationContext()
-    .getString(resourceId,formatArgs)
+fun string(resourceId: Int, vararg formatArgs: Any) = MainApplication.applicationContext()
+    .getString(resourceId, formatArgs)
 
 

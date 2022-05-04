@@ -5,23 +5,24 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
-import java.util.HashMap
 
 interface VerifyApiService {
 
     @POST("api/verifyCode")
-    suspend fun sendVerifyCode(@Body requestData:Map<String,String>):ResponseData<*>
+    suspend fun sendVerifyCode(@Body requestData: Map<String, String>): ResponseData<*>
 
     @GET("api/verifyCode")
-    suspend fun checkVerifyCode(@Query("type")type:String
-                                ,@Query("target")target:String
-                                ,@Query("code")code:String):ResponseData<Boolean>
+    suspend fun checkVerifyCode(
+        @Query("type") type: String,
+        @Query("target") target: String,
+        @Query("code") code: String,
+    ): ResponseData<Boolean>
 
     companion object {
 
-        suspend fun sendVerifyCode(type:String,target: String):ResponseData<*> {
+        suspend fun sendVerifyCode(type: String, target: String): ResponseData<*> {
 
-            val m = HashMap<String,String>()
+            val m = HashMap<String, String>()
             m["type"] = type
             m["target"] = target
 
@@ -32,7 +33,7 @@ interface VerifyApiService {
 }
 
 object VerifyApi {
-    val service:VerifyApiService by lazy {
+    val service: VerifyApiService by lazy {
         retrofit.create(VerifyApiService::class.java)
     }
 }
