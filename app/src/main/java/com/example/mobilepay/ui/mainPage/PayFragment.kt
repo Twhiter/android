@@ -57,6 +57,8 @@ class PayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.amount.value = args.qrCodeContent.amount?.setScale(2,
+            RoundingMode.UNNECESSARY).toString()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -80,6 +82,7 @@ class PayFragment : Fragment() {
         })
 
         binding.payBtn.setOnClickListener {
+
 
             if (binding.amount.text.toString().isBlank()) {
                 binding.amount.error = requireContext().getString(R.string.empty_amount_prompt)
@@ -293,6 +296,7 @@ class PayViewModel : ViewModel() {
     val type: MutableLiveData<Type> = MutableLiveData(Type.User)
     val overview = MutableLiveData(OverviewInfo.mock)
     val isLoading: LiveData<Boolean> = Transformations.map(overview) { it == OverviewInfo.mock }
+    val amount:MutableLiveData<String> = MutableLiveData(null)
 
 
     val btnTextResId: LiveData<Int> = Transformations.map(type) {

@@ -108,6 +108,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView17"
             app:layout_constraintTop_toTopOf="@+id/textView17"
+            android:text="@{viewModel.amount}"
+            android:enabled="@{viewModel.amount == null}"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <EditText
