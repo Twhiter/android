@@ -150,7 +150,6 @@ class Util {
             while (i < 3) {
 
                 try {
-
                     val token = MainApplication.db().kvDao().get("token") ?: throw Exception()
                     val resp = UserApi.service.fetchInfo(token)
                     if (!resp.handleDefault(context))
@@ -163,7 +162,8 @@ class Util {
                     if (!resp1.handleDefault(context))
                         throw Exception()
 
-                    MainApplication.db().merchantDao().insert(merchant = resp1.data!!)
+                    if (resp1.data != null)
+                        MainApplication.db().merchantDao().insert(merchant = resp1.data)
                     break
 
                 } catch (e: Exception) {

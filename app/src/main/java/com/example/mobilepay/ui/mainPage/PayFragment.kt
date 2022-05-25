@@ -20,8 +20,7 @@ import com.example.mobilepay.MainApplication
 import com.example.mobilepay.R
 import com.example.mobilepay.Util
 import com.example.mobilepay.databinding.FragmentPayBinding
-import com.example.mobilepay.entity.OverviewInfo
-import com.example.mobilepay.entity.Type
+import com.example.mobilepay.entity.*
 import com.example.mobilepay.network.MerchantApi
 import com.example.mobilepay.network.PayApi
 import com.example.mobilepay.network.TransferApi
@@ -57,8 +56,10 @@ class PayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.amount.value = args.qrCodeContent.amount?.setScale(2,
-            RoundingMode.UNNECESSARY).toString()
+        viewModel.amount.value = if (args.qrCodeContent.amount != null)
+            args.qrCodeContent.amount!!.setScale(2, RoundingMode.UNNECESSARY).toString()
+        else null
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -113,7 +114,7 @@ class PayFragment : Fragment() {
                     when (args.qrCodeContent.type) {
                         Type.Merchant -> pay(password)
                         Type.User -> transfer(password)
-                        else -> {}
+                        Type.MerchantWithConfirmation -> payWithConfirm(password)
                     }
                 }
 
@@ -124,70 +125,7 @@ class PayFragment : Fragment() {
         }
     }
 
-    private fun pay(paymentPassword: String) {
-        val db = MainApplication.db()
-        lifecycleScope.launch(Dispatchers.IO) {
 
-            val token = db.kvDao().get("token")
-            val amount =
-                BigDecimal(binding.amount.text.toString()).setScale(2, RoundingMode.UNNECESSARY)
-            token?.let {
-
-                val progressDialog: ProgressDialog
-                withContext(Dispatchers.Main) {
-                    progressDialog = ProgressDialog.show(requireContext(), "Waiting for Payment",
-                        "", false)
-                }
-
-                // to let execute serially
-                withContext(Dispatchers.IO) {
-                    val resp = PayApi.service.pay(it,
-                        args.qrCodeContent.id,
-                        amount,
-                        paymentPassword,
-                        binding.remarks.text.toString())
-                    resp.handleOneWithDefault(requireContext()) { r ->
-
-                        if (r.data == null)
-                            false
-                        else {
-                            if (r.data.payOverview == null) {
-                                lifecycleScope.launch(Dispatchers.Main) {
-                                    Toast.makeText(requireContext(),
-                                        r.data.prompt,
-                                        Toast.LENGTH_SHORT).show()
-                                }
-                                false
-                            } else {
-                                lifecycleScope.launch(Dispatchers.Main) {
-                                    Toast.makeText(requireContext(),
-                                        "Pay successfully",
-                                        Toast.LENGTH_SHORT).show()
-                                    Util.updateSelfInfo()
-
-                                    val action = PayFragmentDirections
-                                        .actionPayFragmentToPaymentSuccess(
-                                            binding.amount.text.toString(),
-                                            viewModel.overview.value!!.name,
-                                            activityViewModel.user.value!!.moneyAmount.setScale(2)
-                                                .toString()
-                                        )
-                                    findNavController().navigate(action)
-                                }
-                                true
-                            }
-                        }
-                    }
-                }
-
-                withContext(Dispatchers.Main) {
-                    progressDialog.dismiss()
-                    paymentDialog.dismiss()
-                }
-
-            }
-        }
-    }
 
     private fun transfer(paymentPassword: String) {
 
@@ -196,62 +134,185 @@ class PayFragment : Fragment() {
             val token = db.kvDao().get("token")
             val amount =
                 BigDecimal(binding.amount.text.toString()).setScale(2, RoundingMode.UNNECESSARY)
-            token?.let {
 
-                val progressDialog: ProgressDialog
-                withContext(Dispatchers.Main) {
-                    progressDialog = ProgressDialog.show(requireContext(), "Waiting for Transfer",
+            if (token == null)
+                return@launch
+
+
+            val progressDialog: ProgressDialog
+            withContext(Dispatchers.Main) {
+                progressDialog = ProgressDialog.show(requireContext(), "Waiting for Transfer",
+                    "", false)
+            }
+
+            withContext(Dispatchers.IO) {
+                val resp = TransferApi.service.transfer(token,
+                    args.qrCodeContent.id,
+                    amount,
+                    paymentPassword,
+                    binding.remarks.text.toString())
+
+                handleTransferResp(resp)
+            }
+
+            withContext(Dispatchers.Main) {
+                progressDialog.dismiss()
+                paymentDialog.dismiss()
+            }
+
+        }
+    }
+    private fun pay(paymentPassword: String) {
+        val db = MainApplication.db()
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            val token = db.kvDao().get("token")
+            val amount =
+                BigDecimal(binding.amount.text.toString()).setScale(2, RoundingMode.UNNECESSARY)
+
+            if (token == null)
+                return@launch
+
+
+            val progressDialog: ProgressDialog
+            withContext(Dispatchers.Main) {
+                progressDialog = ProgressDialog.show(requireContext(), "Waiting for Payment",
                         "", false)
-                }
+            }
 
-                withContext(Dispatchers.IO) {
-                    val resp = TransferApi.service.transfer(it,
-                        args.qrCodeContent.id,
-                        amount,
-                        paymentPassword,
-                        binding.remarks.text.toString())
-                    resp.handleOneWithDefault(requireContext()) { r ->
+            // to let execute serially
+            withContext(Dispatchers.IO) {
+                val resp = PayApi.service.pay(token,
+                    args.qrCodeContent.id,
+                    amount,
+                    paymentPassword,
+                    binding.remarks.text.toString())
+                handlePaymentResp(resp)
+            }
 
-                        if (r.data == null)
-                            false
-                        else {
-                            if (r.data.transfer == null) {
-                                lifecycleScope.launch(Dispatchers.Main) {
-                                    Toast.makeText(requireContext(),
-                                        r.data.prompt,
-                                        Toast.LENGTH_SHORT).show()
-                                }
-                                false
-                            } else {
-                                lifecycleScope.launch(Dispatchers.Main) {
-                                    Toast.makeText(requireContext(),
-                                        "Transfer successfully",
-                                        Toast.LENGTH_SHORT).show()
-                                    Util.updateSelfInfo()
-                                    val action = PayFragmentDirections
-                                        .actionPayFragmentToPaymentSuccess(
-                                            binding.amount.text.toString(),
-                                            viewModel.overview.value!!.name,
-                                            activityViewModel.user.value!!.moneyAmount.setScale(2)
-                                                .toString()
-                                        )
-                                    Log.d("Mainss", "before navigation")
-                                    findNavController().navigate(action)
-                                }
-                                true
-                            }
-                        }
+            withContext(Dispatchers.Main) {
+                progressDialog.dismiss()
+                paymentDialog.dismiss()
+            }
+
+        }
+    }
+    private fun payWithConfirm(paymentPassword: String) {
+        val db = MainApplication.db()
+
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val token = db.kvDao().get("token")
+            val amount =
+                BigDecimal(binding.amount.text.toString()).setScale(2, RoundingMode.UNNECESSARY)
+
+            if (token == null)
+                return@launch
+
+            val progressDialog: ProgressDialog
+            withContext(Dispatchers.Main) {
+                progressDialog = ProgressDialog.show(requireContext(), "Waiting for Payment",
+                    "", false)
+            }
+
+            // to let execute serially
+            withContext(Dispatchers.IO) {
+                val resp = PayApi.service.payWithConfirm(token,
+                    args.qrCodeContent.sessionId!!,
+                    paymentPassword,
+                    binding.remarks.text.toString())
+                handlePaymentResp(resp)
+            }
+
+            withContext(Dispatchers.Main) {
+                progressDialog.dismiss()
+                paymentDialog.dismiss()
+            }
+
+
+        }
+
+    }
+
+    private fun handleTransferResp(resp: ResponseData<TransferResp>) {
+
+        resp.handleOneWithDefault(requireContext()) { r ->
+
+            if (r.data == null)
+                false
+            else {
+                if (r.data.transfer == null) {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        Toast.makeText(requireContext(),
+                            r.data.prompt,
+                            Toast.LENGTH_SHORT).show()
                     }
+                    false
+                } else {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        Toast.makeText(requireContext(),
+                            "Transfer successfully",
+                            Toast.LENGTH_SHORT).show()
+                        Util.updateSelfInfo()
+                        val action = PayFragmentDirections
+                            .actionPayFragmentToPaymentSuccess(
+                                binding.amount.text.toString(),
+                                viewModel.overview.value!!.name,
+                                activityViewModel.user.value!!.moneyAmount.setScale(2)
+                                    .toString()
+                            )
+                        findNavController().navigate(action)
+                    }
+                    true
                 }
+            }
+        }
 
-                withContext(Dispatchers.Main) {
-                    progressDialog.dismiss()
-                    paymentDialog.dismiss()
+
+
+    }
+
+
+
+    private fun handlePaymentResp(resp:ResponseData<PayResp>) {
+
+        resp.handleOneWithDefault(requireContext()) { r ->
+
+            if (r.data == null)
+                false
+            else {
+                if (r.data.payOverview == null) {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        Toast.makeText(requireContext(),
+                            r.data.prompt,
+                            Toast.LENGTH_SHORT).show()
+                    }
+                    false
+                } else {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        Toast.makeText(requireContext(),
+                            "Pay successfully",
+                            Toast.LENGTH_SHORT).show()
+                        Util.updateSelfInfo()
+
+                        val action = PayFragmentDirections
+                            .actionPayFragmentToPaymentSuccess(
+                                binding.amount.text.toString(),
+                                viewModel.overview.value!!.name,
+                                activityViewModel.user.value!!.moneyAmount.setScale(2)
+                                    .toString()
+                            )
+                        findNavController().navigate(action)
+                    }
+                    true
                 }
-
             }
         }
     }
+
+
+
+
 
 
     private fun renderPayeeInfo() {
@@ -300,7 +361,7 @@ class PayViewModel : ViewModel() {
 
 
     val btnTextResId: LiveData<Int> = Transformations.map(type) {
-        if (it == Type.Merchant)
+        if (it == Type.Merchant || it == Type.MerchantWithConfirmation)
             R.string.pay_prompt
         else
             R.string.transfer_prompt

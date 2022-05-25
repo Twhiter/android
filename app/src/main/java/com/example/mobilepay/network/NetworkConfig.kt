@@ -6,7 +6,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-const val BASE_URL = "http://10.0.2.2:8080"
+const val BASE_URL = "http://34.118.47.158:8080"
 
 val client = OkHttpClient.Builder()
     .readTimeout(60, TimeUnit.SECONDS)

@@ -33,7 +33,15 @@
         android:id="@+id/businessDealFragment"
         android:name="com.example.mobilepay.ui.mainPage.BusinessDealFragment"
         android:label="fragment_business_deal"
-        tools:layout="@layout/fragment_business_deal" />
+        tools:layout="@layout/fragment_business_deal" >
+        <action
+            android:id="@+id/action_businessDealFragment_to_billFragment"
+            app:destination="@id/billFragment" >
+            <argument
+                android:name="isUser"
+                android:defaultValue="false" />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/scanFragment"
         android:name="com.example.mobilepay.ui.mainPage.ScanFragment"
