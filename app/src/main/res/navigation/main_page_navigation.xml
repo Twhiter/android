@@ -118,4 +118,23 @@
             android:name="isUser"
             app:argType="boolean" />
     </fragment>
+    <fragment
+        android:id="@+id/merchantSettingDetailFragment"
+        android:name="com.example.mobilepay.ui.mainPage.MerchantSettingDetailFragment"
+        android:label="MerchantSettingDetailFragment" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.mobilepay.ui.mainPage.SettingFragment"
+        android:label="SettingFragment" >
+        <action
+            android:id="@+id/action_settingFragment_to_userSettingDetailFragment"
+            app:destination="@id/userSettingDetailFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_merchantSettingDetailFragment"
+            app:destination="@id/merchantSettingDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userSettingDetailFragment"
+        android:name="com.example.mobilepay.ui.mainPage.UserSettingDetailFragment"
+        android:label="UserSettingDetailFragment" />
 </navigation>

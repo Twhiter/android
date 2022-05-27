@@ -68,6 +68,12 @@ class MainPageActivity : AppCompatActivity() {
         }
 
         binding.bottomNavigation.setOnItemReselectedListener {}
+
+        binding.userFloatingBtn.setOnClickListener {
+            navController.navigate(R.id.settingFragment)
+        }
+
+
     }
 
     override fun onResume() {
@@ -93,11 +99,7 @@ class MainPageActivity : AppCompatActivity() {
 
                                 delay(1000L)
 
-                                val intent = Intent(this@MainPageActivity,
-                                    MainActivity::class.java)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                this@MainPageActivity.startActivity(intent)
-                                this@MainPageActivity.finish()
+                                MainActivity.toLoginPage(this@MainPageActivity)
                             }
                         }
                     }

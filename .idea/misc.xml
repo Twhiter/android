@@ -54,6 +54,10 @@
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_register_password_set.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.3625" />
+        <entry key="app/src/main/res/layout/fragment_setting2.xml" value="0.3625" />
+        <entry key="app/src/main/res/layout/fragment_setting_merchant.xml" value="0.3625" />
+        <entry key="app/src/main/res/layout/fragment_setting_user.xml" value="0.3625" />
         <entry key="app/src/main/res/layout/fragment_transfer_choose.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/list_bills_records_head.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/list_bills_records_item.xml" value="0.3458333333333333" />
@@ -68,6 +72,8 @@
         <entry key="app/src/main/res/layout/search_result_list_item.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/test.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/menu/home_bottom_navigation_menu.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.299" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.3625" />
       </map>
     </option>
   </component>

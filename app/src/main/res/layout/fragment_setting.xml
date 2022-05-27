@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.mobilepay.ui.mainPage.model.MainPageViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.mainPage.SettingFragment">
+
+        <TextView
+            android:id="@+id/userDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/user_detail"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@+id/userDetail"
+            app:layout_constraintStart_toStartOf="@+id/userDetail"
+            app:layout_constraintTop_toBottomOf="@+id/userDetail" />
+
+        <TextView
+            android:id="@+id/merchantDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:enabled="@{viewModel.merchantExist}"
+            android:text="@string/merchant_detail"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/userDetail"
+            app:layout_constraintStart_toStartOf="@+id/userDetail"
+            app:layout_constraintTop_toBottomOf="@+id/userDetail" />
+
+
+        <Button
+            android:id="@+id/logout"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/log_out"
+            android:textColor="@color/color_danger"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@+id/merchantDetail"
+            app:layout_constraintStart_toStartOf="@+id/merchantDetail"
+            app:layout_constraintTop_toBottomOf="@+id/merchantDetail" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
