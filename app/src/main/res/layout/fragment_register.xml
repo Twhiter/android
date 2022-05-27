@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/first_name"
+                android:id="@+id/firstName"
                 android:text="@{viewmodel.firstName}"
                 android:layout_width="match_parent"
                 android:maxLines="1"

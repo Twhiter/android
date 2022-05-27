@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.mobilepay.MainActivity
 import com.example.mobilepay.MainApplication
@@ -60,7 +61,7 @@ class LoginFragment : Fragment() {
         phoneAndPwd["phone"] = binding.phone.text.toString()
         phoneAndPwd["password"] = binding.password.text.toString()
 
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = lifecycleScope.launch(Dispatchers.IO) {
             val resp = UserApi.service.login(phoneAndPwd)
 
             if (resp.status != ResponseData.OK) {
@@ -82,7 +83,7 @@ class LoginFragment : Fragment() {
 
 
                 //store the token
-                db.kvDao().set(KV("token", it.token))
+                db.kvDao().set(KV("token", it.token!!))
 
                 val userResp = UserApi.service.fetchInfo(it.token)
                 val merchantResp = MerchantApi.service.fetchInfo(it.token)
@@ -112,6 +113,7 @@ class LoginFragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(requireContext(), "Successfully Login!", Toast.LENGTH_SHORT)
                         .show()
+                    MainActivity.toMainPage(requireActivity())
                 }
             }
         }
@@ -119,12 +121,13 @@ class LoginFragment : Fragment() {
         withContext(Dispatchers.Main) {
             binding.loginLoading.visibility = View.VISIBLE
         }
+
         job.join()
 
         withContext(Dispatchers.Main) {
             binding.loginLoading.visibility = View.GONE
-            delay(300)
-            MainActivity.toMainPage(requireActivity())
         }
+
+
     }
 }

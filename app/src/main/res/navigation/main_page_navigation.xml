@@ -28,6 +28,20 @@
         <action
             android:id="@+id/action_personalDealFrament_to_billFragment"
             app:destination="@id/billFragment" />
+        <action
+            android:id="@+id/action_personalDealFrament_to_exportFragment"
+            app:destination="@id/exportFragment" >
+            <argument
+                android:name="isUser"
+                android:defaultValue="true" />
+        </action>
+        <action
+            android:id="@+id/action_personalDealFrament_to_importFragment"
+            app:destination="@id/importFragment" >
+            <argument
+                android:name="isUser"
+                android:defaultValue="true" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/businessDealFragment"
@@ -37,6 +51,20 @@
         <action
             android:id="@+id/action_businessDealFragment_to_billFragment"
             app:destination="@id/billFragment" >
+            <argument
+                android:name="isUser"
+                android:defaultValue="false" />
+        </action>
+        <action
+            android:id="@+id/action_businessDealFragment_to_importFragment"
+            app:destination="@id/importFragment" >
+            <argument
+                android:name="isUser"
+                android:defaultValue="false" />
+        </action>
+        <action
+            android:id="@+id/action_businessDealFragment_to_exportFragment"
+            app:destination="@id/exportFragment" >
             <argument
                 android:name="isUser"
                 android:defaultValue="false" />
@@ -137,4 +165,22 @@
         android:id="@+id/userSettingDetailFragment"
         android:name="com.example.mobilepay.ui.mainPage.UserSettingDetailFragment"
         android:label="UserSettingDetailFragment" />
+    <fragment
+        android:id="@+id/importFragment"
+        android:name="com.example.mobilepay.ui.mainPage.ImportFragment"
+        android:label="fragment_import"
+        tools:layout="@layout/fragment_import" >
+        <argument
+            android:name="isUser"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/exportFragment"
+        android:name="com.example.mobilepay.ui.mainPage.ExportFragment"
+        android:label="fragment_export"
+        tools:layout="@layout/fragment_export" >
+        <argument
+            android:name="isUser"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

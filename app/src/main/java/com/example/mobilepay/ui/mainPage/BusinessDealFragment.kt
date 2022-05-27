@@ -48,6 +48,16 @@ class BusinessDealFragment : Fragment() {
             toBill()
         }
 
+        binding.importBtn.setOnClickListener {
+            val action = BusinessDealFragmentDirections.actionBusinessDealFragmentToImportFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.exportBnt.setOnClickListener {
+            val action = BusinessDealFragmentDirections.actionBusinessDealFragmentToExportFragment()
+            findNavController().navigate(action)
+        }
+
     }
 
     private fun toBill() {

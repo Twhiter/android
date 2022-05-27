@@ -40,6 +40,17 @@ class PersonalDealFragment : Fragment() {
         binding.transferBtn.setOnClickListener { toTransfer() }
         binding.bill.setOnClickListener { toBill() }
 
+
+        binding.importBtn.setOnClickListener {
+            val action = PersonalDealFragmentDirections.actionPersonalDealFramentToImportFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.exportBnt.setOnClickListener {
+            val action = PersonalDealFragmentDirections.actionPersonalDealFramentToExportFragment()
+            findNavController().navigate(action)
+        }
+
     }
 
     private fun toTransfer() {
