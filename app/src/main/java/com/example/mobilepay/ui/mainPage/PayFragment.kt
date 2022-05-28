@@ -4,7 +4,6 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -126,7 +125,6 @@ class PayFragment : Fragment() {
     }
 
 
-
     private fun transfer(paymentPassword: String) {
 
         val db = MainApplication.db()
@@ -162,6 +160,7 @@ class PayFragment : Fragment() {
 
         }
     }
+
     private fun pay(paymentPassword: String) {
         val db = MainApplication.db()
         lifecycleScope.launch(Dispatchers.IO) {
@@ -177,7 +176,7 @@ class PayFragment : Fragment() {
             val progressDialog: ProgressDialog
             withContext(Dispatchers.Main) {
                 progressDialog = ProgressDialog.show(requireContext(), "Waiting for Payment",
-                        "", false)
+                    "", false)
             }
 
             // to let execute serially
@@ -197,6 +196,7 @@ class PayFragment : Fragment() {
 
         }
     }
+
     private fun payWithConfirm(paymentPassword: String) {
         val db = MainApplication.db()
 
@@ -269,12 +269,10 @@ class PayFragment : Fragment() {
         }
 
 
-
     }
 
 
-
-    private fun handlePaymentResp(resp:ResponseData<PayResp>) {
+    private fun handlePaymentResp(resp: ResponseData<PayResp>) {
 
         resp.handleOneWithDefault(requireContext()) { r ->
 
@@ -309,10 +307,6 @@ class PayFragment : Fragment() {
             }
         }
     }
-
-
-
-
 
 
     private fun renderPayeeInfo() {
@@ -357,7 +351,7 @@ class PayViewModel : ViewModel() {
     val type: MutableLiveData<Type> = MutableLiveData(Type.User)
     val overview = MutableLiveData(OverviewInfo.mock)
     val isLoading: LiveData<Boolean> = Transformations.map(overview) { it == OverviewInfo.mock }
-    val amount:MutableLiveData<String> = MutableLiveData(null)
+    val amount: MutableLiveData<String> = MutableLiveData(null)
 
 
     val btnTextResId: LiveData<Int> = Transformations.map(type) {

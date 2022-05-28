@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +15,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.mobilepay.MainApplication
 import com.example.mobilepay.databinding.FragmentImportBinding
 import com.example.mobilepay.network.ExportAndImportApi
-import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,9 +24,9 @@ import java.math.RoundingMode
 
 class ImportFragment : Fragment() {
 
-    private lateinit var binding:FragmentImportBinding
-    private val viewModel:ImportViewModel by viewModels()
-    private val args:ImportFragmentArgs by navArgs()
+    private lateinit var binding: FragmentImportBinding
+    private val viewModel: ImportViewModel by viewModels()
+    private val args: ImportFragmentArgs by navArgs()
 
 
     override fun onResume() {
@@ -40,9 +38,9 @@ class ImportFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentImportBinding.inflate(inflater,container,false)
+        binding = FragmentImportBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -87,19 +85,20 @@ class ImportFragment : Fragment() {
 
                 val token = MainApplication.db().kvDao().get("token")!!
                 val userType: String = if (args.isUser) "user" else "merchant"
-                val amount = BigDecimal(binding.amount.text.toString()).setScale(2, RoundingMode.UNNECESSARY)
+                val amount =
+                    BigDecimal(binding.amount.text.toString()).setScale(2, RoundingMode.UNNECESSARY)
 
                 val resp = ExportAndImportApi.service.importFundsFromBank(token, userType, amount)
 
                 withContext(Dispatchers.Main) {
-                    resp.handleOneWithDefault(requireContext()) {_ ->
+                    resp.handleOneWithDefault(requireContext()) { _ ->
 
                         val prompt = resp.data!!
 
                         if (resp.data == "")
-                            Toast.makeText(requireContext(),"Success",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                         else
-                            Toast.makeText(requireContext(),prompt,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), prompt, Toast.LENGTH_SHORT).show()
 
                         viewModel.isLoading.value = false
                         true
@@ -114,80 +113,75 @@ class ImportFragment : Fragment() {
         checkCardNumber() && checkMM() && checkYY() && checkCVC() && checkName() && checkAmount()
 
 
-    private fun checkCardNumber():Boolean {
+    private fun checkCardNumber(): Boolean {
 
         if (binding.cardNumber.text.isNullOrBlank()) {
             binding.cardNumberInputLayout.error = "Please Input"
             return false
-        }else {
+        } else {
             binding.cardNumberInputLayout.error = null
             return true
         }
     }
 
-    private fun checkMM():Boolean {
+    private fun checkMM(): Boolean {
 
         if (binding.month.text.isNullOrBlank()) {
             binding.month.error = "Please Input"
             return false
-        }else {
+        } else {
             binding.month.error = null
             return true
         }
     }
 
-    private fun checkYY():Boolean {
+    private fun checkYY(): Boolean {
         if (binding.year.text.isNullOrBlank()) {
             binding.year.error = "Please Input"
             return false
-        }else {
+        } else {
             binding.year.error = null
             return true
         }
     }
 
-    private fun checkCVC():Boolean {
+    private fun checkCVC(): Boolean {
         if (binding.CVC.text.isNullOrBlank()) {
             binding.CVC.error = "Please Input"
             return false
         } else if (binding.CVC.text.length < 3) {
             binding.CVC.error = "Enter 3 digits CVC"
             return false
-        }
-        else {
+        } else {
             binding.CVC.error = null
             return true
         }
     }
 
-    private fun checkName():Boolean {
+    private fun checkName(): Boolean {
         if (binding.name.text.isNullOrBlank()) {
             binding.nameInputLayout.error = "Please Input"
             return false
-        }
-        else {
+        } else {
             binding.nameInputLayout.error = null
             return true
         }
     }
 
-    private fun checkAmount():Boolean {
+    private fun checkAmount(): Boolean {
         if (binding.amount.text.isNullOrBlank()) {
             binding.amountInputLayout.error = "Please Input"
             return false
-        }
-        else {
+        } else {
             binding.amountInputLayout.error = null
             return true
         }
     }
 
 
-
-
 }
 
 
-class ImportViewModel:ViewModel() {
+class ImportViewModel : ViewModel() {
     val isLoading = MutableLiveData(false)
 }

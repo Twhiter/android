@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.mobilepay.databinding.FragmentSettingMerchantBinding
-import com.example.mobilepay.databinding.FragmentSettingUserBinding
 import com.example.mobilepay.ui.mainPage.model.MainPageViewModel
 
 
@@ -17,13 +16,12 @@ class MerchantSettingDetailFragment : Fragment() {
     private lateinit var binding: FragmentSettingMerchantBinding
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentSettingMerchantBinding.inflate(inflater,container,false)
+        binding = FragmentSettingMerchantBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,9 +35,6 @@ class MerchantSettingDetailFragment : Fragment() {
         super.onResume()
         MainPageActivity.getInstance()?.setFullScreenVisibility(View.GONE)
     }
-
-
-
 
 
 }

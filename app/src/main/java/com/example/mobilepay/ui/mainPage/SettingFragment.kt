@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 class SettingFragment : Fragment() {
 
-    private lateinit var binding:FragmentSettingBinding
+    private lateinit var binding: FragmentSettingBinding
     private val viewModel: MainPageViewModel by activityViewModels()
 
     override fun onResume() {
@@ -31,9 +31,9 @@ class SettingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentSettingBinding.inflate(inflater,container,false)
+        binding = FragmentSettingBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,17 +52,18 @@ class SettingFragment : Fragment() {
         }
 
         binding.userDetail.setOnClickListener {
-            val action = SettingFragmentDirections.actionSettingFragmentToUserSettingDetailFragment()
+            val action =
+                SettingFragmentDirections.actionSettingFragmentToUserSettingDetailFragment()
             findNavController().navigate(action)
         }
 
         binding.merchantDetail.setOnClickListener {
-            val action = SettingFragmentDirections.actionSettingFragmentToMerchantSettingDetailFragment()
+            val action =
+                SettingFragmentDirections.actionSettingFragmentToMerchantSettingDetailFragment()
             findNavController().navigate(action)
         }
 
     }
-
 
 
 }

@@ -14,11 +14,11 @@ class SelfExportAndImportDialog(val context: Context, inflater: LayoutInflater) 
 
     val binding = FragmentSelfExportImportBinding.inflate(inflater)
     private val builder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.Theme_MobilePay)
-    private lateinit var dialog:AlertDialog
-    private lateinit var handler:() -> Unit
+    private lateinit var dialog: AlertDialog
+    private lateinit var handler: () -> Unit
 
     fun setAvailable(amount: String): SelfExportAndImportDialog {
-        binding.available.text = context.getString(R.string.available_amount,amount)
+        binding.available.text = context.getString(R.string.available_amount, amount)
         return this
     }
 
@@ -42,7 +42,7 @@ class SelfExportAndImportDialog(val context: Context, inflater: LayoutInflater) 
 
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-           this.handler()
+            this.handler()
         }
     }
 
@@ -57,7 +57,7 @@ class SelfExportAndImportDialog(val context: Context, inflater: LayoutInflater) 
             inflater: LayoutInflater,
             amountStr: String,
             text: String,
-            handler: (FragmentSelfExportImportBinding,SelfExportAndImportDialog) -> Unit,
+            handler: (FragmentSelfExportImportBinding, SelfExportAndImportDialog) -> Unit,
         ) {
             val dialog = SelfExportAndImportDialog(context, inflater)
             val viewBinding = dialog.binding
@@ -76,7 +76,7 @@ class SelfExportAndImportDialog(val context: Context, inflater: LayoutInflater) 
             dialog.setOnOkay(text) {
                 if (!checkAmount())
                     return@setOnOkay
-                handler(viewBinding,dialog)
+                handler(viewBinding, dialog)
             }.setAvailable(amountStr)
                 .show()
         }

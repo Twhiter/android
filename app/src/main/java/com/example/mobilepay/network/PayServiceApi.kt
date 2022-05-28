@@ -27,7 +27,7 @@ interface PayServiceApi {
 
 
     @PUT("/api/payment/state")
-    suspend fun refundPay(@Header("token") token:String,@Body payId:Int):ResponseData<String>
+    suspend fun refundPay(@Header("token") token: String, @Body payId: Int): ResponseData<String>
 }
 
 object PayApi {

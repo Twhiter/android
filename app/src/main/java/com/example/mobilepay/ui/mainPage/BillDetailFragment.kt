@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.withCreated
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.mobilepay.MainApplication
@@ -16,14 +15,11 @@ import com.example.mobilepay.Util
 import com.example.mobilepay.databinding.FragmentBillDetailBinding
 import com.example.mobilepay.entity.BillType
 import com.example.mobilepay.network.PayApi
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat
 import com.fasterxml.jackson.databind.util.StdDateFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -36,7 +32,7 @@ class BillDetailFragment : Fragment() {
     val isRefunded: Boolean get() = billRecord.billType == BillType.refunded_pay
     val refundedTimeString: String
         get() = run {
-            val date:Date?
+            val date: Date?
             if (billRecord.extraData["refundedTime"] == null)
                 date = null
             else
@@ -91,12 +87,12 @@ class BillDetailFragment : Fragment() {
                 val token = MainApplication.db().kvDao().get("token")
                 if (token == null) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(),"token expired, can't process",
+                        Toast.makeText(requireContext(), "token expired, can't process",
                             Toast.LENGTH_SHORT).show()
                     }
                     return@launch
                 }
-                val resp = PayApi.service.refundPay(token,billRecord.recordId)
+                val resp = PayApi.service.refundPay(token, billRecord.recordId)
                 var prompt = ""
                 resp.handleOneWithDefault(requireContext()) {
                     prompt = it.data!!
@@ -106,22 +102,19 @@ class BillDetailFragment : Fragment() {
 
                 if (prompt != "") {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(),prompt,
+                        Toast.makeText(requireContext(), prompt,
                             Toast.LENGTH_SHORT).show()
                     }
                     return@launch
                 }
 
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(),"Refund Success",
+                    Toast.makeText(requireContext(), "Refund Success",
                         Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
             }
         }
-
-
-
 
 
     }

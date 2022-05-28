@@ -1,7 +1,6 @@
 package com.example.mobilepay.ui.mainPage
 
 import android.Manifest
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
