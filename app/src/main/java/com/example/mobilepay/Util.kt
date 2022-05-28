@@ -10,14 +10,19 @@ import android.text.InputFilter
 import android.text.Spanned
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
+import com.example.mobilepay.databinding.FragmentSelfExportImportBinding
 import com.example.mobilepay.entity.ResponseData
+import com.example.mobilepay.network.ExportAndImportApi
 import com.example.mobilepay.network.MerchantApi
 import com.example.mobilepay.network.UserApi
+import com.example.mobilepay.ui.mainPage.SelfExportAndImportDialog
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
@@ -26,6 +31,7 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
@@ -227,7 +233,75 @@ class Util {
             return phoneUtil.isPossibleNumber(phoneNUmber)
         }
 
+        fun export(
+            lifecycleScope: LifecycleCoroutineScope,
+            viewBinding: FragmentSelfExportImportBinding, context: Context,
+            dialog: SelfExportAndImportDialog,
+        ) {
+            lifecycleScope.launch(Dispatchers.IO) {
 
+                val token = MainApplication.db().kvDao().get("token")!!
+                val amount = BigDecimal(viewBinding.amount.text.toString())
+                    .setScale(2, RoundingMode.UNNECESSARY)
+                val resp = ExportAndImportApi.service.exportToMerchant(token, amount)
+
+
+                withContext(Dispatchers.Main) {
+                    resp.handleOneWithDefault(context) { r ->
+
+                        if (r.data == "") {
+                            Toast.makeText(context, "Success", Toast.LENGTH_SHORT)
+                                .show()
+                            dialog.dismiss()
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                Util.updateSelfInfo()
+                            }
+                        } else
+                            Toast.makeText(context, r.data!!, Toast.LENGTH_SHORT)
+                                .show()
+
+                        true
+                    }
+
+                }
+
+
+            }
+        }
+
+        fun importFromMerchant(
+            lifecycleScope: LifecycleCoroutineScope,
+            viewBinding: FragmentSelfExportImportBinding, context: Context,
+            dialog: SelfExportAndImportDialog,
+        ) {
+            lifecycleScope.launch(Dispatchers.IO) {
+
+                val token = MainApplication.db().kvDao().get("token")!!
+                val amount = BigDecimal(viewBinding.amount.text.toString())
+                    .setScale(2, RoundingMode.UNNECESSARY)
+                val resp = ExportAndImportApi.service.importFromMerchant(token, amount)
+
+
+                withContext(Dispatchers.Main) {
+                    resp.handleOneWithDefault(context) { r ->
+
+                        if (r.data == "") {
+                            Toast.makeText(context, "Success", Toast.LENGTH_SHORT)
+                                .show()
+                            dialog.dismiss()
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                Util.updateSelfInfo()
+                            }
+                        } else
+                            Toast.makeText(context, r.data!!, Toast.LENGTH_SHORT)
+                                .show()
+
+                        true
+                    }
+
+                }
+            }
+        }
     }
 
 

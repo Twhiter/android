@@ -26,6 +26,17 @@ interface ExportAndImportServiceApi {
                                     @Field("paymentPassword") paymentPassword:String
     ):ResponseData<String>
 
+
+    @FormUrlEncoded
+    @POST("/api/export")
+    suspend fun exportToMerchant(@Header("token") token:String,
+                                 @Field("amount") amount: BigDecimal):ResponseData<String>
+
+    @FormUrlEncoded
+    @POST("/api/import")
+    suspend fun importFromMerchant(@Header("token") token: String,
+                                   @Field("amount") amount:BigDecimal):ResponseData<String>
+
 }
 
 object ExportAndImportApi {

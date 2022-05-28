@@ -56,6 +56,7 @@
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_register_password_set.xml" value="0.3614583333333333" />
         <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/fragment_self_export_import.xml" value="0.3625" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.3625" />
         <entry key="app/src/main/res/layout/fragment_setting2.xml" value="0.3625" />
         <entry key="app/src/main/res/layout/fragment_setting_merchant.xml" value="0.3625" />

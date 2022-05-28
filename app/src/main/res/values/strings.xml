@@ -136,8 +136,8 @@
 
     <string name="user_detail">User Detail</string>
     <string name="merchant_detail">Merchant Detail</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
     <string name="credit_debit_card">Credit/Debit Card</string>
     <string name="card_number">Card Number</string>
     <string name="import_">Import</string>
@@ -151,6 +151,9 @@
     <string name="amount">Amount</string>
     <string name="expiration_date">Expiration Date</string>
     <string name="security_code">Security Code</string>
+
+
+    <string name="available_amount">Available: %s BYN</string>
 
 
 </resources>

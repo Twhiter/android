@@ -61,7 +61,7 @@ class MainPageViewModel : ViewModel() {
             }
 
 
-            CoroutineScope(Dispatchers.IO).launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 MainApplication.db().merchantDao().get(userId.toInt()).collect {
                     withContext(Dispatchers.Main) {
                         merchant.value = it
