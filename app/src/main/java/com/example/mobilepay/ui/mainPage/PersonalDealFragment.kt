@@ -77,7 +77,8 @@ class PersonalDealFragment : Fragment() {
 
     private val merchantExist
         get() = run {
-            !(viewModel.merchant.value == Merchant.mock || viewModel.merchant.value == null)
+            !(viewModel.merchant.value == Merchant.mock || viewModel.merchant.value == null
+                    || viewModel.merchant.value!!.state == "unverified")
         }
 
 

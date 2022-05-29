@@ -19,9 +19,15 @@ class MainPageViewModel : ViewModel() {
     val userLoading: LiveData<Boolean> = Transformations.map(user) {
         (it == null || it == User.mock)
     }
-    val merchantExist: LiveData<Boolean> = Transformations.map(merchant) {
-        !(it == null || it == Merchant.mock)
+    val merchantExistAndVerified: LiveData<Boolean> = Transformations.map(merchant) {
+        !(it == null || it == Merchant.mock || it.state == "unverified")
     }
+
+    val merchantExist: LiveData<Boolean> = Transformations.map(merchant) {
+        !(it == null || it == Merchant.mock )
+    }
+
+
 
 
     val userMoneyFormatted: LiveData<String> = Transformations.map(user) {

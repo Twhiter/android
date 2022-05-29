@@ -63,6 +63,7 @@ class PasswordSetFragment : Fragment() {
             paymentDialog.setForgetText("")
             paymentDialog.setHandler(object : PayHandler {
                 override fun onFinish(password: String) {
+                    paymentDialog.dismiss()
 
                     val first: String = password
 
@@ -81,9 +82,11 @@ class PasswordSetFragment : Fragment() {
                             } else
                                 Toast.makeText(requireContext(), "Password not the same",
                                     Toast.LENGTH_SHORT).show()
+
+                            paymentDialog2.dismiss()
                         }
 
-                        override fun onClose() {}
+                        override fun onClose() {paymentDialog.dismiss()}
                         override fun onForgetPassword() {}
                     }).show()
 

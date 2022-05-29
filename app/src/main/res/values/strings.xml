@@ -154,6 +154,7 @@
 
 
     <string name="available_amount">Available: %s BYN</string>
+    <string name="merchant_account_waiting_for_verification">Merchant Account Waiting for Verification</string>
 
 
 </resources>

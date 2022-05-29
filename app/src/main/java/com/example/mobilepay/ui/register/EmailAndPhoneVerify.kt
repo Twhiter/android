@@ -86,7 +86,7 @@ class EmailAndPhoneVerify : Fragment() {
 
     private fun checkPhone(): Boolean {
         val isOkay: Boolean = Util
-            .checkPhone(binding.codeSelect.toString() + binding.phone.text.toString())
+            .checkPhone(binding.codeSelect.text.toString() + binding.phone.text.toString())
 
         return if (isOkay) {
             true
@@ -100,7 +100,7 @@ class EmailAndPhoneVerify : Fragment() {
     private suspend fun checkPhoneVerifyCode(): Boolean {
 
         if (binding.phoneVerifyCode.text?.isBlank() == true) {
-            CoroutineScope(Dispatchers.Main).launch {
+            lifecycleScope.launch {
                 binding.phoneVerifyCodeLayout.error = "Please Input Verify Code"
             }
             return false

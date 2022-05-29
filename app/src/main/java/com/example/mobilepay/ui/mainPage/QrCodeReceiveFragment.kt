@@ -116,7 +116,7 @@ class QrCodeReceiveModel(private val activityViewModel: MainPageViewModel) : Vie
             MainApplication.applicationContext().getString(R.string.merchant_receive_qr_code)
     }
 
-    val isBtnEnabled: LiveData<Boolean> = activityViewModel.merchantExist
+    val isBtnEnabled: LiveData<Boolean> = activityViewModel.merchantExistAndVerified
     val avatarUrl: LiveData<String> = Transformations.map(isUser) {
         if (it)
             BASE_URL + activityViewModel.user.value!!.avatar
